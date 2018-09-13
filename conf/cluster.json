@@ -1,0 +1,4 @@
+{
+"workers" : 1,
+"min_workers" : 1
+}
