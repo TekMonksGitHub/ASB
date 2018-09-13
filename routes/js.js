@@ -1,5 +1,5 @@
 /* 
- * csvparser.js, CSV reader - To convert CSV to JSON messages
+ * js.js - Runs native JS code
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */

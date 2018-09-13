@@ -27,13 +27,20 @@
 	"output": {
 		"type": "aiinsights_push",
 		"dependencies":"route2",
+		"host": "127.0.0.1",
+		"host_secure": false,
+		"port": 9200,
 		"index": "payments",
 		"fieldtypes":{
 			"ChargeFromDate1":"date",
 			"ChargeEnteredDate1":"date"
+		},
+		"fieldformats":{
+			"ChargeFromDate1":"dd-MMM-yy",
+			"ChargeEnteredDate1":"dd-MMM-yy"
 		}
 	},
-	"garbageCollector": {
+	"garbagecollector": {
 		"type": "simple",
 		"dependencies":"output",
 		"isMessageConsumer": true
