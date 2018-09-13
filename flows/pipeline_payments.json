@@ -11,7 +11,8 @@
 		"type": "csvfilereader",
 		"dependencies":["listener"],
 		"rowsPerParse": 5,
-		"skip_first_row":true
+		"skip_first_row":true,
+		"donePath":"c:/users/rohit kapoor/source/json_esb/done"
 	},
 	"route1": {
 		"type":"csvparser",

@@ -5,6 +5,9 @@
  */
 
 const LineByLineReader = require('line-by-line');
+const fs = require("fs");
+const path = require("path");
+const utils = require(CONSTANTS.LIBDIR+"/utils.js");
 const messageFactory = require(CONSTANTS.LIBDIR+"/messageFactory.js");
 
 exports.start = (routeName, csvfilereader, messageContainer, message) => {
@@ -46,7 +49,10 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
         message.csvfilereader.lr.on("end", _ => {
             injectMessages(csvlines, routeName, messageContainer);   // the leftover lines
             LOG.info(`[CSVFILEREADER] Done processing file ${message.content.path}, lines read = ${linesRead}`);
-            messageContainer.remove(message)
+            messageContainer.remove(message);
+
+            let newPath = `${csvfilereader.donePath}/${path.basename(message.content.path)}.${utils.getTimeStamp()}`;
+            fs.rename(message.content.path, newPath, err => LOG.error(`[CSVFILEREADER] Error moving: ${err}`));
         });
     }
 }
