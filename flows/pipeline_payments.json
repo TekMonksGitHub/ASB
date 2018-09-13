@@ -10,22 +10,22 @@
 	"route0":{
 		"type": "csvfilereader",
 		"dependencies":["listener"],
-		"isMessageConsumer": true,
-		"rowsPerChunk": 10000,
+		"rowsPerParse": 5,
 		"skip_first_row":true
 	},
 	"route1": {
 		"type":"csvparser",
 		"dependencies":["route0"],
-		"csv_headers":["FacilityName","ClaimID","ChargeFromDate1","ChargeEnteredDate1","CPTCode","RevCode","PatientID","PatientName","PaymentAmt","PaymentDate1","PaymentCheckNo","PayerName","Charge To Date","Charge Units"]
+		"csv_headers":["FacilityName","ClaimID","ChargeFromDate1","ChargeEnteredDate1","CPTCode","RevCode","PatientID","PatientName","PaymentAmt","PaymentDate1","PaymentCheckNo","PayerName","Charge To Date","Charge Units"],
+		"trimValues": true
 	},
 	"route2": {
 		"type":"js",
 		"dependencies":["route1"],
-		"js":"if (((record.RevCode == '0912') || (record.RevCode == '1002') || record.RevCode == '0915')) && (record.CPTCode == 'G0479')) record.RevCode = '';"
+		"js":"if (((message.content.RevCode == '0912') || (message.content.RevCode == '1002') || (message.content.RevCode == '0915')) && (message.content.CPTCode == 'G0479')) message.content.RevCode = '';"
 	},
 	"output": {
-		"type": "aiinsights_record",
+		"type": "aiinsights_push",
 		"dependencies":"route2",
 		"index": "payments",
 		"fieldtypes":{

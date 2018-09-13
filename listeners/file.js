@@ -20,7 +20,7 @@ exports.start = (routeName, listener, messageContainer, _) => {
                 if (err) {LOG.error(`[FILELISTENER] Error moving: ${err}`); return;}
 
                 let message = messageFactory.newMessage();
-                message[CONSTANTS.MSGCONSTANTS.FILEPATH] = newPath;
+                message.content.path = newPath;
                 message.addRouteDone(routeName);
                 messageContainer.add(message);
             });
