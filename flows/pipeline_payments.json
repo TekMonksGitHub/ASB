@@ -3,8 +3,8 @@
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path":"c:/users/rohit kapoor/source/infinitidashboard/in/WF Charges4 - Infinity Behavioral Health Services.csv",
-		"donePath":"c:/users/rohit kapoor/source/infinitidashboard/done",
+		"path":"c:/users/rohit kapoor/source/json_esb/in/WF Charges4 - Infinity Behavioral Health Services.csv",
+		"donePath":"c:/users/rohit kapoor/source/json_esb/done",
 		"interval":1000
 	},
 	"route0":{
