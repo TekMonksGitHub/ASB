@@ -6,6 +6,8 @@
 
 const fs = require("fs");
 
-exports.start = nodeName, listener, messageContainer, message => {
-    LOG.info(`[CSVFILEREADER] Reading CSV file: ${message[CONSTANTS.MSGCONSTANTS.FILEPATH]}`);
+exports.start = (routeName, listener, messageContainer, message) => {
+    LOG.info(`[CSVFILEREADER] Processing CSV file: ${message[CONSTANTS.MSGCONSTANTS.FILEPATH]}`);
+    messageContainer.remove(message);
+    
 }

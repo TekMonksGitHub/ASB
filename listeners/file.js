@@ -4,27 +4,26 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-const path = require("path");
 const fs = require("fs");
-const path = require(CONSTANTS.LIBDIR+"/messageFactory.js");
+const path = require("path");
+const messageFactory = require(CONSTANTS.LIBDIR+"/messageFactory.js");
 const utils = require(CONSTANTS.LIBDIR+"/utils.js");
 
-exports.start = nodeName, listener, messageContainer, _ => {
-    LOG.info(`[FILELISTENER] Watching file: ${listener.path}`);
-    path.exists(listener.path, result => {
-        if (result) { 
+exports.start = (routeName, listener, messageContainer, _) => {
+    LOG.debug(`[FILELISTENER] Watching file: ${listener.path}`);
+    fs.access(listener.path, fs.constants.F_OK, error => {
+        if (!error) { 
             LOG.info(`[FILELISTENER] Detected: ${listener.path}`); 
-            let newPath = `${listener.donePath}/${path.basename(listener.path)}.${utils.getDateTime()}`;
+            let newPath = `${listener.donePath}/${path.basename(listener.path)}.${utils.getTimeStamp()}`;
 
             fs.rename(listener.path, newPath, err => {
                 if (err) {LOG.error(`[FILELISTENER] Error moving: ${err}`); return;}
 
                 let message = messageFactory.newMessage();
                 message[CONSTANTS.MSGCONSTANTS.FILEPATH] = newPath;
-                message.addNodeDone(nodeName);
+                message.addRouteDone(routeName);
                 messageContainer.add(message);
             });
-            
         }
     });
 }
