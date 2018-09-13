@@ -10,6 +10,7 @@
 	"route0":{
 		"type": "csvfilereader",
 		"dependencies":["listener"],
+		"isMessageConsumer": true,
 		"rowsPerChunk": 10000,
 		"skip_first_row":true
 	},
@@ -34,6 +35,7 @@
 	},
 	"garbageCollector": {
 		"type": "simple",
-		"dependencies":"output"
+		"dependencies":"output",
+		"isMessageConsumer": true
 	}
 }
