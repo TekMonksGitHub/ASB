@@ -9,7 +9,7 @@ const path = require("path");
 const messageFactory = require(CONSTANTS.LIBDIR+"/messageFactory.js");
 const utils = require(CONSTANTS.LIBDIR+"/utils.js");
 
-exports.start = (routeName, listener, messageContainer, _) => {
+exports.start = (routeName, listener, messageContainer, _message) => {
     LOG.debug(`[FILELISTENER] Watching file: ${listener.path}`);
     fs.access(listener.path, fs.constants.F_OK, error => {
         if (!error) { 

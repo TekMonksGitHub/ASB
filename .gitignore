@@ -65,4 +65,6 @@ in
 done
 out
 processing
-flows
+
+# Sensitive flows
+flows/pipeline_payments.json

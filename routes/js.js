@@ -5,12 +5,16 @@
  */
 
 exports.start = (routeName, js, messageContainer, message) => {
-    try {
-        eval(js.js);
-        message.addRouteDone(routeName);
-    } catch (e) {
-        LOG.error(`[JS] Error in computing: ${e}, dropping this message`);
-        LOG.error(`[JS] Dropping: ${JSON.stringify(message)}`);
-        messageContainer.remove(message);
+    if (js.module) {
+        require(js.module).start(routeName, js, messageContainer, message);
+    } else {
+        try {
+            eval(js.js);
+            message.addRouteDone(routeName);
+        } catch (e) {
+            LOG.error(`[ROUTE_JS] Error in computing: ${e}, dropping this message`);
+            LOG.error(`[ROUTE_JS] Dropping: ${JSON.stringify(message)}`);
+            messageContainer.remove(message);
+        }
     }
 }
