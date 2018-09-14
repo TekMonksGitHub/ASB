@@ -6,12 +6,12 @@
 
 const http = require("http");
 const urlMod = require("url");
-let server = null; 
 
-exports.start = (routeName, listener, messageContainer, message_factory) => {
-    if (server) return; // already listening
+exports.start = (routeName, listener, messageContainer) => {
+    if (listener.flow.env.server) return; // already listening
 
-    server = http.createServer((_, res) => res.setHeader("Access-Control-Allow-Origin", "*")).listen(listener.port);
+    let server = http.createServer((_, res) => res.setHeader("Access-Control-Allow-Origin", "*")).listen(listener.port);
+    listener.flow.env.server = server;
 
     server.on("request", (req, res) => {
         let endPoint = urlMod.parse(req.url, true).pathname;
@@ -36,7 +36,7 @@ exports.start = (routeName, listener, messageContainer, message_factory) => {
                 return;
             }
 
-            let message = message_factory.newMessage();
+            let message = MESSAGE_FACTORY.newMessage();
             message.http_listener = {req, res};
             message.content = content;
             message.addRouteDone(routeName);

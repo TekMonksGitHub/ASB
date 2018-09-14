@@ -8,7 +8,6 @@ const LineByLineReader = require('line-by-line');
 const fs = require("fs");
 const path = require("path");
 const utils = require(CONSTANTS.LIBDIR+"/utils.js");
-const messageFactory = require(CONSTANTS.LIBDIR+"/messageFactory.js");
 
 exports.start = (routeName, csvfilereader, messageContainer, message) => {
     if (message.csvfilereader && message.csvfilereader.ignorecall) return;
@@ -60,7 +59,7 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
 function injectMessages(lines, routeName, messageContainer) {
     LOG.info(`[CSVFILEREADER] Injecting ${lines.length} new messages`);
     lines.forEach(line => {
-        let message = messageFactory.newMessage();
+        let message = MESSAGE_FACTORY.newMessage();
         message.content.csv = line;
         message.addRouteDone(routeName);
         messageContainer.add(message);

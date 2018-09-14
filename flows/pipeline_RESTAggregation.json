@@ -1,0 +1,42 @@
+{
+	"flow": {
+		"name":"Hello aggregation REST API",
+		"disabled": false
+	},
+	"listener": {
+		"type":"js", 
+		"isMessageGenerator": true,
+		"module":"c:/users/rohit kapoor/source/json_esb/custom/http_listener.js",
+		"port":9091,
+		"url":"/hello"
+	},
+	"route0":{
+		"type": "branch",
+		"dependencies":"listener",
+		"outputs":["route0.1", "route0.2"]
+	},
+	"route1.1":{
+		"type": "js",
+		"dependencies":"route0.1",
+		"js":"message.content.response1 = `Hello ${message.content.name}`; delete message.content.name;"
+	},
+	"route1.2":{
+		"type": "js",
+		"dependencies":"route0.2",
+		"js":"message.content.response2 = `How are you doing, ${message.content.name}?`; delete message.content.name;"
+	},
+	"route2":{
+		"type": "simple_aggregator",
+		"dependencies":[["route1.1"],["route1.2"]]
+	},
+	"output": {
+		"type":"js",
+		"dependencies":"route2",
+		"module":"c:/users/rohit kapoor/source/json_esb/custom/http_responder.js"
+	},
+	"garbagecollector": {
+		"type": "simple",
+		"dependencies":"output",
+		"isMessageConsumer": true
+	}
+}

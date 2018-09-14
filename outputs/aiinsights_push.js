@@ -6,11 +6,9 @@
 
 const rest = require(CONSTANTS.LIBDIR+"/rest.js");
 
-let firstCall = true;
-let searchIndexBeingCreated = false;
-
 exports.start = (routeName, aiinsights_push, messageContainer, message) => {
-    if (searchIndexBeingCreated || (message.aiinsights_push && message.aiinsights_push.isBeingWorkedOn)) return;
+    if (aiinsights_push.flow.env.searchIndexBeingCreated || 
+        (message.aiinsights_push && message.aiinsights_push.isBeingWorkedOn)) return;
 
     message.aiinsights_push = {};
     message.aiinsights_push.isBeingWorkedOn = true;
@@ -34,11 +32,11 @@ exports.start = (routeName, aiinsights_push, messageContainer, message) => {
         });
     }
 
-    if (firstCall) {
-        firstCall = false; 
-        searchIndexBeingCreated = true;
+    if (!aiinsights_push.flow.env.previouslyCalled) {
+        aiinsights_push.flow.env.previouslyCalled = true; 
+        aiinsights_push.flow.env.searchIndexBeingCreated = true;
         createSearchIndex(aiinsights_push, message, err => {
-            searchIndexBeingCreated = false; 
+            aiinsights_push.flow.env.searchIndexBeingCreated = false; 
             postMessage(err);
         });
     } else postMessage();

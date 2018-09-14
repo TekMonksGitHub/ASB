@@ -5,7 +5,6 @@
  */
 
 const Papa = require("papaparse"); 
-const messageFactory = require(CONSTANTS.LIBDIR+"/messageFactory.js");
 
 exports.start = (routeName, csvparser, messageContainer, message) => {
     messageContainer.remove(message);
@@ -22,7 +21,7 @@ exports.start = (routeName, csvparser, messageContainer, message) => {
     let jsonObj = {};
     csvparser.csv_headers.forEach((header, index) => {jsonObj[header] = csvparser.trimValues?values[index].trim():values[index];});
 
-    let messageOut = messageFactory.newMessage();
+    let messageOut = MESSAGE_FACTORY.newMessage();
     messageOut.content = jsonObj;
     messageOut.addRouteDone(routeName);
     messageContainer.add(messageOut);

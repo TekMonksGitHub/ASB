@@ -6,7 +6,6 @@
 
 const fs = require("fs");
 const path = require("path");
-const messageFactory = require(CONSTANTS.LIBDIR+"/messageFactory.js");
 const utils = require(CONSTANTS.LIBDIR+"/utils.js");
 
 exports.start = (routeName, listener, messageContainer, _message) => {
@@ -19,7 +18,7 @@ exports.start = (routeName, listener, messageContainer, _message) => {
             fs.rename(listener.path, newPath, err => {
                 if (err) {LOG.error(`[FILELISTENER] Error moving: ${err}`); return;}
 
-                let message = messageFactory.newMessage();
+                let message = MESSAGE_FACTORY.newMessage();
                 message.content.path = newPath;
                 message.addRouteDone(routeName);
                 messageContainer.add(message);
