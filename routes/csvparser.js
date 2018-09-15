@@ -8,12 +8,12 @@ const papa = require("papaparse");
 
 exports.start = (routeName, csvparser, messageContainer, message) => {
     message.addRouteDone(routeName);
-    LOG.debug("[CSVPARSER] Called for CSV message: "+message.content.csv);
+    LOG.debug("[CSVPARSER] Called for CSV message: "+message.content);
 
-    let results = papa.parse(message.content.csv);
+    let results = papa.parse(message.content);
     if (results.errors && results.errors.length) {
         LOG.error(`[CSVPARSER] Failed to parse incoming message: ${results.errors.join(",")}`);
-        LOG.error(`[CSVPARSER] Error message was: ${message.content.csv}`);
+        LOG.error(`[CSVPARSER] Error message was: ${message.content}`);
         message.addRouteDone(`${routeName}.error`);
         return;
     }

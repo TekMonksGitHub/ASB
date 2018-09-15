@@ -10,4 +10,7 @@ The following are needed for the CSV route nodes
 - line-by-line
 - papaparse
 
+The following are needed for the XML route nodes
+- fast-xml-parser
+
 License: GNU Affero General Public License v3.0. For commercial license please contact TekMonks.com

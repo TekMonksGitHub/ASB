@@ -1,0 +1,33 @@
+{
+	"flow":{
+		"name":"XML to JSON"
+	},
+	"listener": {
+		"type":"file", 
+		"isMessageGenerator": true,
+		"path":"c:/test/in/Test.xml",
+		"donePath":"c:/test/processing"
+	},
+	"route0":{
+		"type": "filereader",
+		"dependencies":["listener"],
+        "donePath":"c:/test/done",
+        "encoding":"utf8"
+	},
+	"route1": {
+		"type":"xmlparser",
+		"dependencies":["route0"]
+	},
+	"output": {
+		"type": "filewriter",
+        "dependencies":"route1",
+		"path":"c:/test/Test.json",
+		"prettyJSON": 4,
+		"append":false
+	},
+	"garbagecollector": {
+		"type": "simple",
+		"dependencies":[["output"],["listener.error"],["route0.error"],["route1.error"],["output.error"]],
+		"isMessageConsumer": true
+	}
+}
