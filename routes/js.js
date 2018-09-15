@@ -14,6 +14,7 @@ exports.start = (routeName, js, messageContainer, message) => {
         } catch (e) {
             LOG.error(`[ROUTE_JS] Error in computing: ${e}, dropping this message`);
             LOG.error(`[ROUTE_JS] Dropping: ${JSON.stringify(message)}`);
+            
             messageContainer.remove(message);
         }
     }

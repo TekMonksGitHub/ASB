@@ -14,6 +14,7 @@ exports.start = (routeName, csvparser, messageContainer, message) => {
     if (results.errors && results.errors.length) {
         LOG.error(`[CSVPARSER] Failed to parse incoming message: ${results.errors.join(",")}`);
         LOG.error(`[CSVPARSER] Error message was: ${message.content.csv}`);
+        message.addRouteDone(`{routeName}.error`);
         return;
     }
 

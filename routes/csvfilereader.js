@@ -27,9 +27,9 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
         message.csvfilereader.lr.on("error", err => {
             LOG.error(`[CSVFILEREADER] Giving up, error processing file ${message.content.path}: ${err}`);
             LOG.error(`[CSVFILEREADER] Lines read before error = ${linesRead}`);
-            messageContainer.remove(message);
             message.csvfilereader.lr.close();
             message.csvfilereader.lr.end();
+            message.addRouteDone(`${routeName}.error`);
         });
 
         message.csvfilereader.lr.on("line", line => {

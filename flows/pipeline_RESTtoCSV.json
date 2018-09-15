@@ -1,0 +1,38 @@
+{
+	"flow": {
+		"name":"REST API to write to a local CSV file"
+	},
+	"listener": {
+		"type":"rest_listener", 
+		"isMessageGenerator": true,
+		"host": "127.0.0.1",
+		"port":9090,
+		"url":"/tocsv",
+		"allow_origin": "*",
+		"timeout": 120000
+	},
+	"route0":{
+		"type": "csvwriter",
+        "dependencies":["listener"],
+        "path":"c:/test/json2csv.csv"
+	},
+	"route1": {
+		"type":"js",
+        "dependencies":"route0",
+        "js":"message.content = {}; message.content.result=true; "
+    },
+    "route2": {
+		"type":"js",
+        "dependencies":"route0.error",
+        "js":"message.content = {}; message.content.result=false; "
+    },
+    "output1": {
+		"type":"rest_responder",
+		"dependencies":[["route1"], ["route2"]]
+	},
+	"garbagecollector": {
+		"type": "simple",
+		"dependencies":"output",
+		"isMessageConsumer": true
+	}
+}
