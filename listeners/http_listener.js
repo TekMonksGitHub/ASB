@@ -21,7 +21,7 @@ exports.start = (routeName, listener, messageContainer) => {
 		
 		req.on("end", _ => {
             let message = MESSAGE_FACTORY.newMessage();
-            message.http_listener = {listener, req, res};
+            message.env.http_listener = {listener, req, res};
             message.content = data;
             message.addRouteDone(routeName);
             messageContainer.add(message);

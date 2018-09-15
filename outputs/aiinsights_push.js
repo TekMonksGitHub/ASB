@@ -6,27 +6,27 @@
 
 const rest = require(CONSTANTS.LIBDIR+"/rest.js");
 
-exports.start = (routeName, aiinsights_push, messageContainer, message) => {
+exports.start = (routeName, aiinsights_push, _messageContainer, message) => {
     if (aiinsights_push.flow.env.searchIndexBeingCreated || 
-        (message.aiinsights_push && message.aiinsights_push.isBeingWorkedOn)) return;
+        (message.env[routeName] && message.env[routeName].isBeingWorkedOn)) return;
 
-    message.aiinsights_push = {};
-    message.aiinsights_push.isBeingWorkedOn = true;
+    message.env[routeName] = {};
+    message.env[routeName].isBeingWorkedOn = true;
 
     let postMessage = err => {
-        if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); messageContainer.remove(message); return;}
+        if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); message.addRouteDone(`${routeName}.error`);; return;}
 
         let poster = aiinsights_push.host_secure?rest.postHttps:rest.post;
         poster(aiinsights_push.host, aiinsights_push.port, `${aiinsights_push.index}/doc`, message.content, (err, result, status) =>{
-            if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); messageContainer.remove(message); return;}
+            if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); message.addRouteDone(`${routeName}.error`);; return;}
 
             if (status == 200 || status == 201) {
                 LOG.info(`[AIINSIGHTS_PUSH] Created document, ${result}`); 
                 message.addRouteDone(routeName);
-                message.aiinsights_push.isBeingWorkedOn = false;
+                message.env[routeName].isBeingWorkedOn = false;
             } else {
                 LOG.error(`[AIINSIGHTS_PUSH] error, status = ${status}, giving up`); 
-                messageContainer.remove(message); 
+                message.addRouteDone(`${routeName}.error`);; 
                 return;
             }
         });

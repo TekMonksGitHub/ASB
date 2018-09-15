@@ -7,10 +7,10 @@
 const httpServerFactory = require(`${CONSTANTS.LIBDIR}/httpServerFactory.js`);
 
 exports.start = (routeName, _output, _messageContainer, message) => {
-    let response = message.http_listener.res;
+    let response = message.env.http_listener.res;
 
     httpServerFactory.send200Reply(response, JSON.stringify(message.content), "application/json", 
-        message.http_listener.listener.allow_origin);
+        message.env.http_listener.listener.allow_origin);
 
     message.addRouteDone(routeName);
 }

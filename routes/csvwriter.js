@@ -7,8 +7,8 @@
 const fs = require("fs");
 
 exports.start = (routeName, csvwriter, _messageContainer, message) => {
-    if (message.csvwriter && message.csvwriter.isBeingProcessed) return;    // already working on it.
-    if (!message.csvwriter) message.csvwriter = {}; message.csvwriter.isBeingProcessed = true;
+    if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
+    if (!message.env[routeName]) message.env[routeName] = {}; message.env[routeName].isBeingProcessed = true;
 
     let handleError = e => {LOG.error(`[CSVWRITER] ${e}`); message.addRouteDone(`${routeName}.error`); return;}
 

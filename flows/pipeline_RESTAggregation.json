@@ -30,11 +30,11 @@
 	},
 	"output": {
 		"type":"rest_responder",
-		"dependencies":"route2"
+		"dependencies":["route2","!route1.1","!route1.2"]
 	},
 	"garbagecollector": {
 		"type": "simple",
-		"dependencies":"output",
+		"dependencies":[["output"],["route1.1"],["route1.2"]],
 		"isMessageConsumer": true
 	}
 }

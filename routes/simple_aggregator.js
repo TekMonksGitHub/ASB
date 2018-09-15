@@ -7,27 +7,25 @@
 exports.start = (routeName, simple_aggregator, messageContainer, message) => {
     LOG.info(`[SIMPLE_AGGREGATOR] Called with message timestamp: ${message.timestamp}`);
 
-    if (!simple_aggregator.flow.env.out) simple_aggregator.flow.env.out = MESSAGE_FACTORY.newMessage();
-    if (!simple_aggregator.flow.env.aggregator_count) simple_aggregator.flow.env.aggregator_count = 0;
+    if (!simple_aggregator.flow.env[routeName]) simple_aggregator.flow.env[routeName] = {};
+    let env = simple_aggregator.flow.env[routeName];    // define our working environment
 
-    // aggregate message content
-    Object.keys(message.content).forEach(k => simple_aggregator.flow.env.out.content[k] = message.content[k]);
-    
-    // add in any custom message properties as a shallow clone, best we can do
-    Object.keys(message).forEach(k => {
-        if (!Object.keys(simple_aggregator.flow.env.out).includes(k)) simple_aggregator.flow.env.out[k] = message[k];
-    });
+    if (!env.out) {env.out = MESSAGE_FACTORY.newMessage(); env.aggregator_count = 0;}
 
-    simple_aggregator.flow.env.aggregator_count++;
+    // aggregate message content, must be enumeratable for this to work
+    env.out.content = Object.assign(env.out.content, message.content);
+    env.out.env = Object.assign(env.out.env, message.env);
 
-    messageContainer.remove(message);       // we've aggregated it, clean up
+    env.aggregator_count++;
 
-    if (simple_aggregator.flow.env.aggregator_count == simple_aggregator.dependencies.length) {
+    message.addRouteDone(routeName);       // we've aggregated it
+
+    if (env.aggregator_count == simple_aggregator.dependencies.length) {
         LOG.info("[SIMPLE_AGGREGATOR] Done aggregating.");
-        simple_aggregator.flow.env.out.addRouteDone(routeName);
-        messageContainer.add(simple_aggregator.flow.env.out);
+        env.out.addRouteDone(routeName);
+        messageContainer.add(env.out);
         
-        simple_aggregator.flow.env.out = null;     // release memory, we are done!
-        delete simple_aggregator.flow.env.aggregator_count;
+        env.out = null;     // release memory, we are done!
+        delete env.aggregator_count;
     }
 }

@@ -5,9 +5,7 @@
  */
 
 exports.start = (routeName, output, messageContainer, message) => {
-    if (output.module) {
-        require(output.module).start(routeName, output, messageContainer, message);
-    } else {
+    if (output.module) {require(output.module).start(routeName, output, messageContainer, message);} else {
         try {
             eval(output.js);
             message.addRouteDone(routeName);
