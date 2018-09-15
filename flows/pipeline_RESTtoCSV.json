@@ -1,6 +1,7 @@
 {
 	"flow": {
-		"name":"REST API to write to a local CSV file"
+		"name":"REST API to write to a local CSV file",
+		"disabled":true
 	},
 	"listener": {
 		"type":"rest_listener", 
@@ -13,7 +14,8 @@
 	},
 	"route0":{
 		"type": "csvwriter",
-        "dependencies":["listener"],
+		"dependencies":["listener"],
+		"headers":["firstname", "lastname"],
         "path":"c:/test/json2csv.csv"
 	},
 	"route1": {

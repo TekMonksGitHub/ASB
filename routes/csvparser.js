@@ -4,13 +4,13 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-const Papa = require("papaparse"); 
+const papa = require("papaparse"); 
 
 exports.start = (routeName, csvparser, messageContainer, message) => {
     message.addRouteDone(routeName);
     LOG.debug("[CSVPARSER] Called for CSV message: "+message.content.csv);
 
-    let results = Papa.parse(message.content.csv);
+    let results = papa.parse(message.content.csv);
     if (results.errors && results.errors.length) {
         LOG.error(`[CSVPARSER] Failed to parse incoming message: ${results.errors.join(",")}`);
         LOG.error(`[CSVPARSER] Error message was: ${message.content.csv}`);

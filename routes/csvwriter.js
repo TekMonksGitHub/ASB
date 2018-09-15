@@ -5,6 +5,7 @@
  */
 
 const fs = require("fs");
+const papa = require("papaparse"); 
 
 exports.start = (routeName, csvwriter, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
@@ -12,21 +13,28 @@ exports.start = (routeName, csvwriter, _messageContainer, message) => {
 
     let handleError = e => {LOG.error(`[CSVWRITER] ${e}`); message.addRouteDone(`${routeName}.error`); return;}
 
+    let keys = Object.keys(message.content);
+
+    // sanity tests
     if (!message.content) {handleError("No content. Skipping."); return;}
+    if (csvwriter.headers && (keys.length != csvwriter.headers.length)) 
+        {handleError("Header / Data mismatch. Check specified headers."); return;}
 
-    let headers = ""; let values = ""; let keys = Object.keys(message.content);
-
-    keys.forEach((k, i) => {
-        if (k.indexOf(",") > -1) headers += `"${k}"`; else headers += k;
-        if (message.content[k].indexOf(",") > -1) values += `"${message.content[k]}"`; else values += message.content[k];
-
-        if (i+1 != keys.length) { headers += ","; values += ","; }
-    })
+    // let convert...
+    let values = []; keys.forEach(k => values.push(message.content[k]));
+    let headersCSV = (csvwriter.headers?papa.unparse([csvwriter.headers]):papa.unparse([keys]));
+    let valuesCSV = papa.unparse([values]);
     
+    // write it out
     fs.access(csvwriter.path, fs.constants.F_OK, error => {
-        let handleWriteResult = e => {if (e) handleError(`Write error: ${e}`); else message.addRouteDone(routeName);};
+        let handleWriteResult = e => {
+            if (e) handleError(`Write error: ${e}`); else {
+                message.addRouteDone(routeName);
+                delete message.env[routeName].isBeingProcessed; // clean our garbage
+            }
+        }
 
-        if (!error) fs.appendFile(csvwriter.path, `${values}\n`, handleWriteResult);
-        else fs.writeFile(csvwriter.path, `${headers}\n${values}\n`, handleWriteResult);
+        if (!error) fs.appendFile(csvwriter.path, `${valuesCSV}\n`, handleWriteResult);
+        else fs.writeFile(csvwriter.path, `${headersCSV}\n${valuesCSV}\n`, handleWriteResult);
     });
 }
