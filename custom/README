@@ -1,0 +1,3 @@
+Add nodes with custom code here. For example custom listeners, or route or output nodes.
+
+Use the appropriate JS node and the module option to point to custom compute nodes in this directory.
