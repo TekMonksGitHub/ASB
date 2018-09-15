@@ -5,9 +5,11 @@
 	"listener": {
 		"type":"rest_listener", 
 		"isMessageGenerator": true,
+		"host": "127.0.0.1",
 		"port":9090,
 		"url":"/hello",
-		"allow_origin": "*"
+		"allow_origin": "*",
+		"timeout": 120000
 	},
 	"route0":{
 		"type": "js",
