@@ -1,5 +1,5 @@
 /* 
- * rest_listener.js, REST API listener - for REST API support
+ * http_listener.js, HTTP listener - for any incoming HTTP requests.
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
@@ -20,22 +20,13 @@ exports.start = (routeName, listener, messageContainer) => {
         req.on("data", chunk => data += chunk);
 		
 		req.on("end", _ => {
-            let content;
-            try {content = JSON.parse(data);} catch (err) {
-                LOG.error("[REST_LISTENER] Bad incoming request, dropping.");
-                res.writeHead(500, {"Content-Type": "text/plain"});
-                res.write("Bad request.\n");
-                res.end();
-                return;
-            }
-
             let message = MESSAGE_FACTORY.newMessage();
             message.http_listener = {listener, req, res};
-            message.content = content;
+            message.content = data;
             message.addRouteDone(routeName);
             messageContainer.add(message);
-            LOG.info(`[REST_LISTENER] Injected new message`);
-            LOG.debug(`[REST_LISTENER] Incoming request: ${data}`);
+            LOG.info(`[HTTP_LISTENER] Injected new message`);
+            LOG.debug(`[HTTP_LISTENER] Incoming request: ${data}`);
         });
     });
 }
