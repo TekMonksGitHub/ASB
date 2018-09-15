@@ -1,4 +1,3 @@
 {
-    "cpuInterval":10,
-    "diskIOBufferSize": 4096
+    "cpuInterval":10
 }

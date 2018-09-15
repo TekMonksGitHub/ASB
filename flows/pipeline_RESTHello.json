@@ -6,7 +6,8 @@
 		"type":"rest_listener", 
 		"isMessageGenerator": true,
 		"port":9090,
-		"url":"/hello"
+		"url":"/hello",
+		"allow_origin": "*"
 	},
 	"route0":{
 		"type": "js",

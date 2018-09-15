@@ -10,7 +10,7 @@ const urlMod = require("url");
 exports.start = (routeName, listener, messageContainer) => {
     if (listener.flow.env.server) return; // already listening
 
-    let server = http.createServer((_, res) => res.setHeader("Access-Control-Allow-Origin", "*")).listen(listener.port);
+    let server = http.createServer().listen(listener.port);
     listener.flow.env.server = server;
 
     server.on("request", (req, res) => {
@@ -37,7 +37,7 @@ exports.start = (routeName, listener, messageContainer) => {
             }
 
             let message = MESSAGE_FACTORY.newMessage();
-            message.rest_listener = {req, res};
+            message.rest_listener = {listener, req, res};
             message.content = content;
             message.addRouteDone(routeName);
             messageContainer.add(message);
