@@ -3,9 +3,8 @@
 		"name":"Hello world REST API"
 	},
 	"listener": {
-		"type":"js", 
+		"type":"rest_listener", 
 		"isMessageGenerator": true,
-		"module":"c:/users/rohit kapoor/source/json_esb/custom/http_listener.js",
 		"port":9090,
 		"url":"/hello"
 	},
@@ -15,9 +14,8 @@
 		"js":"message.content.response = `Hello ${message.content.name}`; delete message.content.name;"
 	},
 	"output": {
-		"type":"js",
-		"dependencies":["listener", "route0"],
-		"module":"c:/users/rohit kapoor/source/json_esb/custom/http_responder.js"
+		"type":"rest_responder",
+		"dependencies":["listener", "route0"]
 	},
 	"garbagecollector": {
 		"type": "simple",

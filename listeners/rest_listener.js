@@ -1,5 +1,5 @@
 /* 
- * http_listener.js, HTTP listener - HTTP listener implemented as a custom module
+ * rest_listener.js, REST API listener - for REST API support
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
@@ -37,7 +37,7 @@ exports.start = (routeName, listener, messageContainer) => {
             }
 
             let message = MESSAGE_FACTORY.newMessage();
-            message.http_listener = {req, res};
+            message.rest_listener = {req, res};
             message.content = content;
             message.addRouteDone(routeName);
             messageContainer.add(message);

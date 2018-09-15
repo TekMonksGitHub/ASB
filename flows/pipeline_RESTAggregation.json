@@ -4,9 +4,8 @@
 		"disabled": false
 	},
 	"listener": {
-		"type":"js", 
+		"type":"rest_listener", 
 		"isMessageGenerator": true,
-		"module":"c:/users/rohit kapoor/source/json_esb/custom/http_listener.js",
 		"port":9091,
 		"url":"/hello"
 	},
@@ -30,9 +29,8 @@
 		"dependencies":[["route1.1"],["route1.2"]]
 	},
 	"output": {
-		"type":"js",
-		"dependencies":"route2",
-		"module":"c:/users/rohit kapoor/source/json_esb/custom/http_responder.js"
+		"type":"rest_responder",
+		"dependencies":"route2"
 	},
 	"garbagecollector": {
 		"type": "simple",
