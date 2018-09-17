@@ -35,7 +35,7 @@ exports.start = (routeName, listener, messageContainer) => {
             message.content = content;
             message.addRouteDone(routeName);
             messageContainer.add(message);
-            LOG.info(`[REST_LISTENER] Injected new message`);
+            LOG.info(`[REST_LISTENER] Injected new message with timestamp: ${message.timestamp}`);
             LOG.debug(`[REST_LISTENER] Incoming request: ${data}`);
         });
     });
