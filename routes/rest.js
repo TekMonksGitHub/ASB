@@ -14,7 +14,15 @@ exports.start = (routeName, rest, _messageContainer, message) => {
 
     if (rest.isSecure) rest.method = rest.method+"Https";           // handle secure calls
     if (rest.method == "delete") rest.method = "deleteHttp";        // delete is a reserved word in JS
-    restClient[rest.method](rest.host, rest.port, rest.path, message.content, (error, data) =>{
+
+    let headers = {};                                               // handle headers
+    if (rest.headers) rest.headers.forEach(v => {
+        let pair = v.split(":"); pair.forEach((v, i) => pair[i] = v.trim());
+        let key = pair[0]; pair.splice(0,1); let value = pair.join("");
+        headers[key] = value;
+    });
+
+    restClient[rest.method](rest.host, rest.port, rest.path, headers, message.content, (error, data) =>{
         if (error) {
             LOG.error(`[REST] Call failed with error: ${error}`);
             message.addRouteDone(`${routeName}.error`);

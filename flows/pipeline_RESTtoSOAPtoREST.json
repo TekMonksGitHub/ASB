@@ -1,0 +1,47 @@
+{
+	"flow": {
+		"name":"Expose SOAP API as REST"
+	},
+	"listener": {
+		"type":"rest_listener", 
+		"isMessageGenerator": true,
+		"host": "127.0.0.1",
+		"port":9091,
+		"url":"/weather",
+		"allow_origin": "*",
+		"timeout": 120000
+	},
+	"route0":{
+		"type": "js",
+		"dependencies":["listener"],
+		"js":"flow.route1.path=`/xml/SOAP_server/ndfdXMLclient.php?whichClient=NDFDgen&lat=${message.content.lat}&lon=${message.content.lon}&listLatLon=&lat1=&lon1=&lat2=&lon2=&resolutionSub=&listLat1=&listLon1=&listLat2=&listLon2=&resolutionList=&endPoint1Lat=&endPoint1Lon=&endPoint2Lat=&endPoint2Lon=&listEndPoint1Lat=&listEndPoint1Lon=&listEndPoint2Lat=&listEndPoint2Lon=&zipCodeList=&listZipCodeList=&centerPointLat=&centerPointLon=&distanceLat=&distanceLon=&resolutionSquare=&listCenterPointLat=&listCenterPointLon=&listDistanceLat=&listDistanceLon=&listResolutionSquare=&citiesLevel=&listCitiesLevel=&sector=&gmlListLatLon=&featureType=&requestedTime=&startTime=&endTime=&compType=&propertyName=&product=glance&begin=2004-01-01T00%3A00%3A00&end=2022-09-16T00%3A00%3A00&Unit=e&temp=temp&Submit=Submit`"
+    },
+    "route1":{
+		"type": "httpclient",
+        "dependencies":["route0"],
+        "host":"graphical.weather.gov",
+        "port":443,
+		"isSecure": true,
+		"method":"get",
+		"path": "",
+		"headers":["USER-AGENT: JSON_ESB", "ACCEPT: text/html,application/xhtml+xml,application/xml"]
+    },
+    "route2": {
+		"type":"xmlparser",
+		"dependencies":["route1"]
+	},
+	"route.error": {
+		"type":"js",
+		"dependencies":[["listener.error"],["route0.error"],["route1.error"],["route2.error"]],
+		"js":"message.content={}; message.content.result=false;"
+	},
+	"output": {
+		"type":"rest_responder",
+		"dependencies":[["route2"],["route.error"]]
+	},
+	"garbagecollector": {
+		"type": "simple",
+		"dependencies":[["output"],["listener.error"],["route0.error"],["route1.error"],["route2.error"],["output.error"]],
+		"isMessageConsumer": true
+	}
+}
