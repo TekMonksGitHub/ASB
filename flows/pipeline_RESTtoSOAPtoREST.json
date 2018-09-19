@@ -1,6 +1,8 @@
 {
 	"flow": {
-		"name":"Expose SOAP API as REST"
+		"name":"Expose SOAP API as REST",
+		"disabled": false,
+		"autoGC": false
 	},
 	"listener": {
 		"type":"rest_listener", 

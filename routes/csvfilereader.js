@@ -12,7 +12,8 @@ const utils = require(CONSTANTS.LIBDIR+"/utils.js");
 exports.start = (routeName, csvfilereader, messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].ignorecall) return;
     if (!message.env[routeName]) message.env[routeName] = {};
-    message.env[routeName].ignorecall = true;        // we are reading the file now
+    message.env[routeName].ignorecall = true;           // we are reading the file now
+    message.setGCEligible(false);                       // we are not done
 
     LOG.info(`[CSVFILEREADER] Processing CSV file: ${message.env.path}`);
     
@@ -30,6 +31,7 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
             message.env[routeName].lr.close();
             message.env[routeName].lr.end();
             message.addRouteError(routeName);
+            message.setGCEligible(true);
         });
 
         message.env[routeName].lr.on("line", line => {
@@ -49,6 +51,7 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
             injectMessages(csvlines, routeName, messageContainer);   // the leftover lines
             LOG.info(`[CSVFILEREADER] Done processing file ${message.env.path}, lines read = ${linesRead}`);
             message.addRouteDone(routeName);
+            message.setGCEligible(true);
 
             if (csvfilereader.donePath) try {
                 let newPath = `${csvfilereader.donePath}/${path.basename(message.env.path)}.${utils.getTimeStamp()}`;

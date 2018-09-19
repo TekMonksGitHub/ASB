@@ -1,6 +1,7 @@
 {
 	"flow":{
-		"name":"XML to JSON"
+		"name":"XML to JSON",
+		"disabled":false
 	},
 	"listener": {
 		"type":"file", 
@@ -24,10 +25,5 @@
 		"path":"c:/test/Test.json",
 		"prettyJSON": 4,
 		"append":false
-	},
-	"garbagecollector": {
-		"type": "simple",
-		"dependencies":[["output"],["listener.error"],["route0.error"],["route1.error"],["output.error"]],
-		"isMessageConsumer": true
 	}
 }

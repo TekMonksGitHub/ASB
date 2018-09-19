@@ -12,31 +12,36 @@ exports.start = (routeName, aiinsights_push, _messageContainer, message) => {
 
     message.env[routeName] = {};
     message.env[routeName].isBeingWorkedOn = true;
+    message.setGCEligible(false);       // we are working on this message, so don't thrash it yet.
 
     let postMessage = err => {
         if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); message.addRouteError(routeName);;; return;}
 
         let poster = aiinsights_push.host_secure?rest.postHttps:rest.post;
         poster(aiinsights_push.host, aiinsights_push.port, `${aiinsights_push.index}/doc`, message.content, (err, result, status) =>{
-            if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); message.addRouteError(routeName);;; return;}
+            let handleError = e => {
+                LOG.error(`[AIINSIGHTS_PUSH] error: ${e}, giving up`); 
+                message.addRouteError(routeName);
+                delete message.env[routeName];  // clean up
+                message.setGCEligible(true);    // we are done, GC it if you want
+            }
+            if (err) handleError(err);
 
             if (status == 200 || status == 201) {
                 LOG.info(`[AIINSIGHTS_PUSH] Created document, ${result}`); 
                 message.addRouteDone(routeName);
-                message.env[routeName].isBeingWorkedOn = false;
-            } else {
-                LOG.error(`[AIINSIGHTS_PUSH] error, status = ${status}, giving up`); 
-                message.addRouteError(routeName);;; 
-                return;
-            }
+                delete message.env[routeName];  // clean up
+                message.setGCEligible(true);    // we are done, GC it if you want
+            } else handleError(`status = ${status}`)
         });
     }
 
-    if (!aiinsights_push.flow.env.previouslyCalled) {
-        aiinsights_push.flow.env.previouslyCalled = true; 
-        aiinsights_push.flow.env.searchIndexBeingCreated = true;
+    if (!aiinsights_push.flow.env[routeName] || !aiinsights_push.flow.env[routeName].previouslyCalled) {
+        if (!aiinsights_push.flow.env[routeName]) aiinsights_push.flow.env[routeName] = {};
+        aiinsights_push.flow.env[routeName].previouslyCalled = true; 
+        aiinsights_push.flow.env[routeName].searchIndexBeingCreated = true;
         createSearchIndex(aiinsights_push, message, err => {
-            aiinsights_push.flow.env.searchIndexBeingCreated = false; 
+            delete aiinsights_push.flow.env[routeName].searchIndexBeingCreated; 
             postMessage(err);
         });
     } else postMessage();

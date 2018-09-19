@@ -1,7 +1,8 @@
 {
 	"flow": {
 		"name":"REST API to write to a local CSV file",
-		"disabled":true
+		"disabled":false,
+		"autoGC":false
 	},
 	"listener": {
 		"type":"rest_listener", 
@@ -28,7 +29,7 @@
         "dependencies":"route0.error",
         "js":"message.content = {}; message.content.result=false; "
     },
-    "output1": {
+    "output": {
 		"type":"rest_responder",
 		"dependencies":[["route1"], ["route2"]]
 	},

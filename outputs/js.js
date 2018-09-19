@@ -5,6 +5,8 @@
  */
 
 exports.start = (routeName, output, messageContainer, message) => {
+    LOG.info(`[OUTPUT_JS] Processing message with timestamp: ${message.timestamp}`);
+    
     if (output.module) {require(output.module).start(routeName, output, messageContainer, message);} else {
         try {
             eval(output.js);

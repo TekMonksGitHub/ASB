@@ -5,6 +5,8 @@
  */
 
 exports.start = (routeName, js, messageContainer, message) => {
+    LOG.info(`[ROUTE_JS] Processing message with timestamp: ${message.timestamp}`);
+
     if (js.module) {require(js.module).start(routeName, js, messageContainer, message);} else {
         try {
             let flow = js.flow; // allows JS code below to call the flow.

@@ -20,10 +20,5 @@
 	"output": {
 		"type":"rest_responder",
 		"dependencies":["listener", "route0"]
-	},
-	"garbagecollector": {
-		"type": "simple",
-		"dependencies":"output",
-		"isMessageConsumer": true
 	}
 }

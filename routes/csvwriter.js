@@ -10,8 +10,10 @@ const papa = require("papaparse");
 exports.start = (routeName, csvwriter, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
     if (!message.env[routeName]) message.env[routeName] = {}; message.env[routeName].isBeingProcessed = true;
+    message.setGCEligible(false);
 
-    let handleError = e => {LOG.error(`[CSVWRITER] ${e}`); message.addRouteError(routeName); return;}
+    let handleError = e => {
+        LOG.error(`[CSVWRITER] ${e}`); message.addRouteError(routeName); message.setGCEligible(true); return;}
 
     let keys = Object.keys(message.content);
 
@@ -30,6 +32,7 @@ exports.start = (routeName, csvwriter, _messageContainer, message) => {
         let handleWriteResult = e => {
             if (e) handleError(`Write error: ${e}`); else {
                 message.addRouteDone(routeName);
+                message.setGCEligible(true);
                 delete message.env[routeName].isBeingProcessed; // clean our garbage
             }
         }
