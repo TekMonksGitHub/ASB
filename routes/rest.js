@@ -25,7 +25,7 @@ exports.start = (routeName, rest, _messageContainer, message) => {
     restClient[rest.method](rest.host, rest.port, rest.path, headers, message.content, (error, data) =>{
         if (error) {
             LOG.error(`[REST] Call failed with error: ${error}`);
-            message.addRouteDone(`${routeName}.error`);
+            message.addRouteError(routeName);
             delete message.env[routeName];  // clean up our mess
         } else {
             message.addRouteDone(`${routeName}`);

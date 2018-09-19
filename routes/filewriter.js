@@ -10,7 +10,7 @@ exports.start = (routeName, filewriter, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
     if (!message.env[routeName]) message.env[routeName] = {}; message.env[routeName].isBeingProcessed = true;
 
-    let handleError = e => {LOG.error(`[FILEWRITER] ${e}`); message.addRouteDone(`${routeName}.error`); return;}
+    let handleError = e => {LOG.error(`[FILEWRITER] ${e}`); message.addRouteError(routeName); return;}
 
     let handleWriteResult = e => {
         if (e) handleError(`Write error: ${e}`); else {

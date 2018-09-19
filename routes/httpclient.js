@@ -27,7 +27,7 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
     http[httpclient.method](httpclient.host, httpclient.port, httpclient.path, headers, message.content, (error, data) =>{
         if (error) {
             LOG.error(`[HTTP] Call failed with error: ${error}`);
-            message.addRouteDone(`${routeName}.error`);
+            message.addRouteError(routeName);
             delete message.env[routeName];  // clean up our mess
         } else {
             message.addRouteDone(`${routeName}`);

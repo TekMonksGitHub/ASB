@@ -17,6 +17,6 @@ exports.start = (routeName, _xmlparser, _messageContainer, message) => {
         LOG.info(`[XMLPARSER] Parsed message with timestamp: ${message.timestamp}`);
     } catch (e) {
         LOG.error(`[XMLPARSER] Error parsing XML: ${e}`);
-        message.addRouteDone(`${routeName}.error`);
+        message.addRouteError(routeName);
     }
 }

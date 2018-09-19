@@ -11,7 +11,7 @@ exports.start = (routeName, csvwriter, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
     if (!message.env[routeName]) message.env[routeName] = {}; message.env[routeName].isBeingProcessed = true;
 
-    let handleError = e => {LOG.error(`[CSVWRITER] ${e}`); message.addRouteDone(`${routeName}.error`); return;}
+    let handleError = e => {LOG.error(`[CSVWRITER] ${e}`); message.addRouteError(routeName); return;}
 
     let keys = Object.keys(message.content);
 

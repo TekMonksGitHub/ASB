@@ -12,7 +12,7 @@ exports.start = (routeName, filereader, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
     if (!message.env[routeName]) message.env[routeName] = {}; message.env[routeName].isBeingProcessed = true;
 
-    let handleError = e => {LOG.error(`[FILEREADER] ${e}`); message.addRouteDone(`${routeName}.error`); return;}
+    let handleError = e => {LOG.error(`[FILEREADER] ${e}`); message.addRouteError(routeName); return;}
 
     let handleReadResult = (e, data) => {
         if (e) handleError(`Read error: ${e}`); else {

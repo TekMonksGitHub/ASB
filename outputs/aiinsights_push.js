@@ -14,11 +14,11 @@ exports.start = (routeName, aiinsights_push, _messageContainer, message) => {
     message.env[routeName].isBeingWorkedOn = true;
 
     let postMessage = err => {
-        if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); message.addRouteDone(`${routeName}.error`);; return;}
+        if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); message.addRouteError(routeName);;; return;}
 
         let poster = aiinsights_push.host_secure?rest.postHttps:rest.post;
         poster(aiinsights_push.host, aiinsights_push.port, `${aiinsights_push.index}/doc`, message.content, (err, result, status) =>{
-            if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); message.addRouteDone(`${routeName}.error`);; return;}
+            if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); message.addRouteError(routeName);;; return;}
 
             if (status == 200 || status == 201) {
                 LOG.info(`[AIINSIGHTS_PUSH] Created document, ${result}`); 
@@ -26,7 +26,7 @@ exports.start = (routeName, aiinsights_push, _messageContainer, message) => {
                 message.env[routeName].isBeingWorkedOn = false;
             } else {
                 LOG.error(`[AIINSIGHTS_PUSH] error, status = ${status}, giving up`); 
-                message.addRouteDone(`${routeName}.error`);; 
+                message.addRouteError(routeName);;; 
                 return;
             }
         });

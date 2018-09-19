@@ -29,7 +29,7 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
             LOG.error(`[CSVFILEREADER] Lines read before error = ${linesRead}`);
             message.env[routeName].lr.close();
             message.env[routeName].lr.end();
-            message.addRouteDone(`${routeName}.error`);
+            message.addRouteError(routeName);
         });
 
         message.env[routeName].lr.on("line", line => {

@@ -9,11 +9,11 @@ exports.start = (routeName, js, messageContainer, message) => {
         try {
             let flow = js.flow; // allows JS code below to call the flow.
             eval(js.js);
-            message.addRouteDone(routeName);
+            if (!js.isAsync) message.addRouteDone(routeName);
         } catch (e) {
             LOG.error(`[ROUTE_JS] Error in computing: ${e}, dropping this message`);
             LOG.error(`[ROUTE_JS] Dropping: ${JSON.stringify(message)}`);
-            message.addRouteDone(`${routeName}.error`);
+            message.addRouteError(routeName);
         }
     }
 }

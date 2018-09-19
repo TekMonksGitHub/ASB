@@ -5,5 +5,14 @@
  */
 
 exports.start = (routeName, listener, messageContainer, _message) => {
-    require(listener.module).start(routeName, listener, messageContainer);
+    if (listener.module) {require(listener.module).start(routeName, output, messageContainer, message);} else {
+        try {
+            eval(listener.js);
+            if (!js.isAsync) message.addRouteDone(routeName);
+        } catch (e) {
+            LOG.error(`[LISTENER_JS] Error in computing: ${e}, dropping this message`);
+            LOG.error(`[LISTENER_JS] Dropping: ${JSON.stringify(message)}`);
+            message.addRouteError(routeName);
+        }
+    }
 }
