@@ -6,13 +6,14 @@
 
 const papa = require("papaparse"); 
 
-exports.start = (routeName, csvparser, messageContainer, message) => {
-    message.addRouteDone(routeName);
+exports.start = (routeName, csvparser, _messageContainer, message) => {
     LOG.debug("[CSVPARSER] Called for CSV message: "+message.content);
 
-    let results = papa.parse(message.content);
-    if (results.errors && results.errors.length) {
-        LOG.error(`[CSVPARSER] Failed to parse incoming message: ${results.errors.join(",")}`);
+    let results = null;
+    let exception = null; try{results = papa.parse(message.content);} catch(e){exception=e;}
+    if (exception || (results && results.errors && results.errors.length)) {
+        let err = (exception ? exception: (results?results.errors.join(","):"Unknown error") );
+        LOG.error(`[CSVPARSER] Failed to parse incoming message: ${err}`);
         LOG.error(`[CSVPARSER] Error message was: ${message.content}`);
         message.addRouteError(routeName);
         return;
@@ -22,8 +23,6 @@ exports.start = (routeName, csvparser, messageContainer, message) => {
     let jsonObj = {};
     csvparser.csv_headers.forEach((header, index) => {jsonObj[header] = csvparser.trimValues?values[index].trim():values[index];});
 
-    let messageOut = MESSAGE_FACTORY.newMessage();
-    messageOut.content = jsonObj;
-    messageOut.addRouteDone(routeName);
-    messageContainer.add(messageOut);
+    message.content = jsonObj;
+    message.addRouteDone(routeName);
 }

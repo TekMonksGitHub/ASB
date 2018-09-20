@@ -55,7 +55,7 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
 
             if (csvfilereader.donePath) try {
                 let newPath = `${csvfilereader.donePath}/${path.basename(message.env.path)}.${utils.getTimeStamp()}`;
-                fs.rename(message.env.path, newPath, err => LOG.error(`[CSVFILEREADER] Error moving: ${err}`));
+                fs.rename(message.env.path, newPath, err => {if (err) LOG.error(`[CSVFILEREADER] Error moving: ${err}`)});
             } catch (e) {LOG.error(`[CSVFILEREADER] Error moving: ${err}`);}
         });
     }

@@ -22,6 +22,7 @@ exports.start = (routeName, listener, messageContainer, _message) => {
                 message.env.path = newPath;
                 message.addRouteDone(routeName);
                 messageContainer.add(message);
+                LOG.info(`[FILELISTENER] Injected message with timestamp: ${message.timestamp}`); 
             });
         }
     });

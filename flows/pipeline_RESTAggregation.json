@@ -1,7 +1,7 @@
 {
 	"flow": {
 		"name":"Hello aggregation REST API",
-		"disabled": false
+		"disabled": true
 	},
 	"listener": {
 		"type":"rest_listener", 

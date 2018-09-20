@@ -15,10 +15,10 @@ exports.start = (routeName, aiinsights_push, _messageContainer, message) => {
     message.setGCEligible(false);       // we are working on this message, so don't thrash it yet.
 
     let postMessage = err => {
-        if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); message.addRouteError(routeName);;; return;}
+        if (err) {LOG.error(`[AIINSIGHTS_PUSH] Error: ${err}, giving up`); message.addRouteError(routeName); return;}
 
         let poster = aiinsights_push.host_secure?rest.postHttps:rest.post;
-        poster(aiinsights_push.host, aiinsights_push.port, `${aiinsights_push.index}/doc`, message.content, (err, result, status) =>{
+        poster(aiinsights_push.host, aiinsights_push.port, `${aiinsights_push.index}/doc`, {}, message.content, (err, result, status) =>{
             let handleError = e => {
                 LOG.error(`[AIINSIGHTS_PUSH] error: ${e}, giving up`); 
                 message.addRouteError(routeName);
@@ -51,7 +51,7 @@ function createSearchIndex(aiinsights_push, message, cb) {
     LOG.info("[AIINSIGHTS_PUSH] Connecting to AI Insights Search...");
 
     let getter = aiinsights_push.host_secure?rest.getHttps:rest.get;
-    getter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, null, (err, _, status)=>{
+    getter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, {}, null, (err, _, status)=>{
         if (err) {cb(err); return;}
 
         if (status == 404) {
@@ -70,7 +70,7 @@ function createSearchIndex(aiinsights_push, message, cb) {
             });
 
             let putter = aiinsights_push.host_secure?rest.putHttps:rest.put;
-            putter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, elasticIndex, (err, _, status) => {
+            putter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, {}, elasticIndex, (err, _, status) => {
                 if (err) cb(err);
                 else if (status != 200) cb(`Error: Unable to create Elastic index. Error code: ${status}`);
                 else cb();

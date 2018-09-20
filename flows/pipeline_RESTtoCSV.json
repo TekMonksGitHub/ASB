@@ -1,7 +1,7 @@
 {
 	"flow": {
 		"name":"REST API to write to a local CSV file",
-		"disabled":false,
+		"disabled":true,
 		"autoGC":false
 	},
 	"listener": {

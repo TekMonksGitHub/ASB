@@ -1,6 +1,7 @@
 {
 	"flow": {
-		"name":"Hello world REST API"
+		"name":"Hello world REST API",
+		"disabled": true
 	},
 	"listener": {
 		"type":"rest_listener", 
