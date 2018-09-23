@@ -4,7 +4,7 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-const LineByLineReader = require('line-by-line');
+const LineByLineReader = require("line-by-line");
 const fs = require("fs");
 const path = require("path");
 const utils = require(CONSTANTS.LIBDIR+"/utils.js");
@@ -19,8 +19,6 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
     
     if (message.env[routeName].lr) message.env[routeName].lr.resume(); 
     else {
-        message.env[routeName].linesRead = 0;
-
         let csvlines = [];
         let linesRead = 0;
         message.env[routeName].lr = new LineByLineReader(message.env.path);
@@ -35,10 +33,10 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
         });
 
         message.env[routeName].lr.on("line", line => {
-            linesRead++;
+            linesRead++; 
             if ((linesRead == 1) && (csvfilereader.skip_first_row)) return;
             
-            csvlines.push(line);
+            csvlines.push(line); 
             if (csvlines.length == csvfilereader.rowsPerParse) {
                 message.env[routeName].lr.pause();
                 injectMessages(csvlines, routeName, messageContainer);
@@ -68,5 +66,6 @@ function injectMessages(lines, routeName, messageContainer) {
         message.content = line;
         message.addRouteDone(routeName);
         messageContainer.add(message);
+        LOG.debug(`[CSVFILEREADER] Injected new message with timestamp ${message.timestamp}`);
     });
 }
