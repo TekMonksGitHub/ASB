@@ -65,6 +65,8 @@ in
 done
 out
 processing
+custom
+!custom/README
 
 # Sensitive flows
 flows/pipeline_payments.json
