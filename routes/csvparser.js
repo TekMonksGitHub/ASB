@@ -20,6 +20,13 @@ exports.start = (routeName, csvparser, _messageContainer, message) => {
     }
 
     let values = results.data[0];
+
+    if (values.length != csvparser.csv_headers.length) {
+        LOG.error("[CSVPARSER] Bad CSV, values don't match headers provided. Length mismatch.");
+        message.addRouteError(routeName);
+        return;
+    }
+
     let jsonObj = {};
     csvparser.csv_headers.forEach((header, index) => {jsonObj[header] = csvparser.trimValues?values[index].trim():values[index];});
 

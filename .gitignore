@@ -70,3 +70,4 @@ custom
 
 # Sensitive flows
 flows/pipeline_payments.json
+flows/pipeline_charges.json
