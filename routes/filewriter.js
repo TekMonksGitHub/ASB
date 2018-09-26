@@ -24,6 +24,8 @@ exports.start = (routeName, filewriter, _messageContainer, message) => {
 
     let output = (message.content instanceof Object ? JSON.stringify(message.content, null, filewriter.prettyJSON) :
         message.content);
+    if (message.content instanceof Object && filewriter.write_ndjson) output += "\n";   // ndjson format
+    
     let writer = (filewriter.append ? fs.appendFile : fs.writeFile);
     writer(filewriter.path, output, handleWriteResult);
 }
