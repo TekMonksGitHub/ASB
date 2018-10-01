@@ -1,31 +1,37 @@
 /* 
- * filewriter.js - Write the message to a file
+ * filewriter.js - Write the message to a file. Can append or overwrite. 
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-const fs = require("fs");
+const FileWriter = require(`${CONSTANTS.LIBDIR}/FileWriter.js`)
 
 exports.start = (routeName, filewriter, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
     if (!message.env[routeName]) message.env[routeName] = {}; message.env[routeName].isBeingProcessed = true;
     message.setGCEligible(false);
 
-    let handleError = e => {
-        LOG.error(`[FILEWRITER] ${e}`); message.addRouteError(routeName); message.setGCEligible(true); return;}
-
-    let handleWriteResult = e => {
-        if (e) handleError(`Write error: ${e}`); else {
-            message.addRouteDone(routeName);
-            delete message.env[routeName].isBeingProcessed; // clean our garbage
-            message.setGCEligible(true);
-        }
-    }
-
     let output = (message.content instanceof Object ? JSON.stringify(message.content, null, filewriter.prettyJSON) :
         message.content);
     if (message.content instanceof Object && filewriter.write_ndjson) output += "\n";   // ndjson format
+
+    let fw; let flow = filewriter.flow;
+    if (flow.env[routeName] && flow.env[routeName][filewriter.path]) fw = flow.env[routeName][filewriter.path];
+    else {
+        if (!flow.env[routeName]) flow.env[routeName] = {};
+
+        if (!filewriter.writeCloseTimeout) filewriter.writeCloseTimeout = 5000; 
+        if (!filewriter.encoding) filewriter.encoding = "utf8";
+        fw = FileWriter.createFileWriter(filewriter.path, filewriter.writeCloseTimeout, filewriter.encoding);
+        
+        flow.env[routeName][filewriter.path] = fw;
+    }
     
-    let writer = (filewriter.append ? fs.appendFile : fs.writeFile);
-    writer(filewriter.path, output, handleWriteResult);
+    fw.writeFile(output, e => {
+        let routeFlagger = "addRouteDone";
+        if (e) {Log.error(`[FILEWRITER] Write error: ${e}`); routeFlagger = "addRouteError"}
+        delete message.env[routeName];      // clean up our stuff
+        message[routeFlagger](routeName);   // done or error
+        message.setGCEligible(true);        // can collect it now
+    });
 }

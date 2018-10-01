@@ -24,6 +24,7 @@
         "dependencies":"route1",
 		"path":"c:/test/Test.json",
 		"prettyJSON": 4,
-		"append":false
+		"append": false,
+		"writeCloseTimeout": 5000
 	}
 }

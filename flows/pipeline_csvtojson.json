@@ -1,7 +1,7 @@
 {
 	"flow":{
 		"name":"CSV to JSON",
-		"disabled":true
+		"disabled":false
 	},
 	"listener": {
 		"type":"file", 
@@ -12,7 +12,7 @@
 	"route0":{
 		"type": "csvfilereader",
 		"dependencies":["listener"],
-		"rowsPerParse": 1000,
+		"rowsPerParse": 10000,
 		"skip_first_row":true,
         "donePath":"c:/test/done"
 	},
@@ -26,8 +26,9 @@
 		"type": "filewriter",
         "dependencies":"route1",
 		"path":"c:/test/^GSPC.json",
-		"prettyJSON": 4,
 		"write_ndjson": true,
-		"append":true
+		"append": true,
+		"writeCloseTimeout": 5000,
+		"encoding": "utf8"
 	}
 }
