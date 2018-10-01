@@ -22,7 +22,8 @@ exports.start = (routeName, filewriter, _messageContainer, message) => {
 
         if (!filewriter.writeCloseTimeout) filewriter.writeCloseTimeout = 5000; 
         if (!filewriter.encoding) filewriter.encoding = "utf8";
-        fw = FileWriter.createFileWriter(filewriter.path, filewriter.writeCloseTimeout, filewriter.encoding);
+        fw = FileWriter.createFileWriter(filewriter.path, filewriter.writeCloseTimeout, 
+            filewriter.encoding, !filewriter.append);
         
         flow.env[routeName][filewriter.path] = fw;
     }
