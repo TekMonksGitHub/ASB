@@ -21,9 +21,11 @@ exports.start = (routeName, aiinsights_push, _messageContainer, message) => {
 
         // if caching for bulk, setTimeout so if messages stop before bulk post limit is reached, 
         // we still post the last incomplete batch, when the timeout fires
-        if (!aiinsights_push.flow.env[routeName].messageStack.length)
-            aiinsights_push.flow.env[routeName].timeout = 
-                setTimeout(createDocuments, aiinsights_push.bulk_timeout, aiinsights_push, routeName, handleBulkResult);
+        if (aiinsights_push.flow.env[routeName].timeout) clearTimeout(aiinsights_push.flow.env[routeName].timeout);
+        aiinsights_push.flow.env[routeName].timeout = setTimeout(_ => {
+            delete aiinsights_push.flow.env[routeName].timeout;
+            createDocuments(aiinsights_push, routeName, handleBulkResult);
+        }, aiinsights_push.bulk_timeout);
 
         aiinsights_push.flow.env[routeName].messageStack.push(message);     // batch it for bulk
         
@@ -40,18 +42,28 @@ exports.start = (routeName, aiinsights_push, _messageContainer, message) => {
         }
     }
 
-    if (!aiinsights_push.flow.env[routeName] || !aiinsights_push.flow.env[routeName].previouslyCalled) {
+    if (!aiinsights_push.flow.env[routeName] || 
+        (!aiinsights_push.flow.env[routeName].searchIndexBeingCreated && 
+            !aiinsights_push.flow.env[routeName].searchIndexCreated)) {
+
         if (!aiinsights_push.flow.env[routeName]) {
             aiinsights_push.flow.env[routeName] = {};
-            aiinsights_push.flow.env[routeName].previouslyCalled = true; 
-            aiinsights_push.flow.env[routeName].searchIndexBeingCreated = true;
+            aiinsights_push.flow.env[routeName].searchIndexBeingCreated = false;
             aiinsights_push.flow.env[routeName].messageStack = [];
+            aiinsights_push.flow.env[routeName].searchIndexCreated = false;
         }
         
+        aiinsights_push.flow.env[routeName].searchIndexBeingCreated = true;
         createSearchIndex(aiinsights_push, message, err => {
             delete aiinsights_push.flow.env[routeName].searchIndexBeingCreated; 
-            if (err) handleError(message, routeName, err); 
-            else postMessage();
+            if (err) {
+                handleError([message], routeName, `Index creation failed: ${err}`); 
+                delete aiinsights_push.flow.env[routeName].searchIndexCreated;
+            }
+            else {
+                aiinsights_push.flow.env[routeName].searchIndexCreated = true;
+                postMessage();
+            }
         });
     } else postMessage();
 }
@@ -101,7 +113,13 @@ function createSearchIndex(aiinsights_push, message, cb) {
 
                 if (aiinsights_push.fieldformats && Object.keys(aiinsights_push.fieldformats).includes(key))
                     elasticIndex.mappings[type].properties[key].format = aiinsights_push.fieldformats[key];
+
+                if (aiinsights_push.all_fields && aiinsights_push.all_fields.includes(key))
+                    elasticIndex.mappings[type].properties[key].copy_to = aiinsights_push.all_field_name;
             });
+
+            if (aiinsights_push.all_field_name) 
+                elasticIndex.mappings[type].properties[aiinsights_push.all_field_name] = {"type":"text"};
 
             let putter = aiinsights_push.host_secure?rest.putHttps:rest.put;
             putter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, {}, elasticIndex, (err, _, status) => {
