@@ -1,0 +1,20 @@
+{
+	"flow":{
+		"name":"Timer Test",
+		"disabled":false
+	},
+	"listener": {
+		"type":"timer", 
+		"isMessageGenerator": true,
+		"cron": "* * * * * *"
+	},
+	"route0":{
+		"type": "js",
+		"dependencies":"listener",
+		"js":"message.content = 'You will see this message every second!';"
+	},
+	"output":{
+		"type": "console",
+		"dependencies":"route0"
+	}
+}

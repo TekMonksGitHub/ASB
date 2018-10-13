@@ -1,7 +1,7 @@
 {
 	"flow":{
 		"name":"CSV to JSON",
-		"disabled":false
+		"disabled":true
 	},
 	"listener": {
 		"type":"file", 

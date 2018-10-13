@@ -6,6 +6,6 @@
 
 const csvwriter_real = require(`${CONSTANTS.ROOTDIR}/routes/csvwriter.js`);
 
-exports.start = (routeName, csvwriter, _messageContainer, message) => {
-    csvwriter_real.start(routeName, csvwriter, _messageContainer, message);
+exports.start = (routeName, csvwriter, messageContainer, message) => {
+    csvwriter_real.start(routeName, csvwriter, messageContainer, message);
 }

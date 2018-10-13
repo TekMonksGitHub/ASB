@@ -6,6 +6,6 @@
 
 const filewriter_real = require(`${CONSTANTS.ROOTDIR}/routes/filewriter.js`);
 
-exports.start = (routeName, filewriter, _messageContainer, message) => {
-    filewriter_real.start(routeName, filewriter, _messageContainer, message);
+exports.start = (routeName, filewriter, messageContainer, message) => {
+    filewriter_real.start(routeName, filewriter, messageContainer, message);
 }

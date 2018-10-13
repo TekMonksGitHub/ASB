@@ -13,4 +13,7 @@ The following are needed for the CSV route nodes
 The following are needed for the XML route nodes
 - fast-xml-parser
 
+The following are needed for the timer listener nodes
+- cron
+
 License: GNU Affero General Public License v3.0. For commercial license please contact TekMonks.com
