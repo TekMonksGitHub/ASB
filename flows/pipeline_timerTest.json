@@ -11,7 +11,7 @@
 	"route0":{
 		"type": "js",
 		"dependencies":"listener",
-		"js":"message.content = 'You will see this message every second!';"
+		"js":"message.content = 'You will see this message every second!\\n';"
 	},
 	"output":{
 		"type": "console",

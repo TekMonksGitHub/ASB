@@ -12,7 +12,9 @@ exports.start = (routeName, timer, messageContainer, _message) => {
 
     LOG.debug(`[CRONLISTENER] Cron pattern: ${timer.cron}`);
     
-    new CronJob(timer.cron, _ => {
+    let cronJob = new CronJob(timer.cron, _ => {
+        if (timer.flow.fatalError) {cronJob.stop(); return;}  // disabled
+
         let message = MESSAGE_FACTORY.newMessage();
         message.addRouteDone(routeName);
         messageContainer.add(message);
