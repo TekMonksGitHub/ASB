@@ -1,0 +1,25 @@
+{
+	"flow":{
+		"name":"AS/400 Poller",
+		"disabled":true
+	},
+	"listener": {
+		"type":"timer", 
+		"isMessageGenerator": true,
+		"cron": "*/30 * * * * *"
+	},
+	"route0":{
+		"type": "rest",
+		"dependencies":"listener",
+        "host":"127.0.0.1",
+        "port":3800,
+		"isSecure": false,
+		"method":"post",
+		"path": "webhookRESTStuffer",
+		"headers":["USER-AGENT: JSON_ESB", "ACCEPT: application/json"]
+	},
+	"output":{
+		"type": "console",
+		"dependencies":"route0"
+	}
+}

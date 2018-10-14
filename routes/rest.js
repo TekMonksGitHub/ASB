@@ -23,6 +23,8 @@ exports.start = (routeName, rest, _messageContainer, message) => {
         headers[key] = value;
     });
 
+    if (!rest.path.startsWith("/")) rest.path = `/${rest.path.trim()}`;
+
     restClient[rest.method](rest.host, rest.port, rest.path, headers, message.content, (error, data) =>{
         if (error) {
             LOG.error(`[REST] Call failed with error: ${error}`);
