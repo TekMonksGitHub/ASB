@@ -97,37 +97,37 @@ function createSearchIndex(aiinsights_push, message, cb) {
 
         if (status == 404) {
             let type = aiinsights_push.index_type;
-            let elasticIndex = {}; elasticIndex.mappings = {}; elasticIndex.mappings[type] = {}; 
-            elasticIndex.mappings[type].properties = {}; elasticIndex.settings = {};
+            let analyticsIndex = {}; analyticsIndex.mappings = {}; analyticsIndex.mappings[type] = {}; 
+            analyticsIndex.mappings[type].properties = {}; analyticsIndex.settings = {};
 
-            if (aiinsights_push.shards) elasticIndex.settings.number_of_shards = aiinsights_push.shards;
-            if (aiinsights_push.replicas) elasticIndex.settings.number_of_replicas = aiinsights_push.replicas;
+            if (aiinsights_push.shards) analyticsIndex.settings.number_of_shards = aiinsights_push.shards;
+            if (aiinsights_push.replicas) analyticsIndex.settings.number_of_replicas = aiinsights_push.replicas;
 
             Object.keys(message.content).forEach(key => {
-                elasticIndex.mappings[type].properties[key]={};
+                analyticsIndex.mappings[type].properties[key]={};
     
                 if (aiinsights_push.fieldtypes && Object.keys(aiinsights_push.fieldtypes).includes(key))
-                    elasticIndex.mappings[type].properties[key].type = aiinsights_push.fieldtypes[key];
+                    analyticsIndex.mappings[type].properties[key].type = aiinsights_push.fieldtypes[key];
                 else
-                    elasticIndex.mappings[type].properties[key].type = "keyword";
+                    analyticsIndex.mappings[type].properties[key].type = "keyword";
 
                 if (aiinsights_push.fieldformats && Object.keys(aiinsights_push.fieldformats).includes(key))
-                    elasticIndex.mappings[type].properties[key].format = aiinsights_push.fieldformats[key];
+                    analyticsIndex.mappings[type].properties[key].format = aiinsights_push.fieldformats[key];
 
                 if (aiinsights_push.all_fields && aiinsights_push.all_fields.includes(key))
-                    elasticIndex.mappings[type].properties[key].copy_to = aiinsights_push.all_field_name;
+                    analyticsIndex.mappings[type].properties[key].copy_to = aiinsights_push.all_field_name;
             });
 
             if (aiinsights_push.all_field_name) 
-                elasticIndex.mappings[type].properties[aiinsights_push.all_field_name] = {"type":"text"};
+                analyticsIndex.mappings[type].properties[aiinsights_push.all_field_name] = {"type":"text"};
 
             let putter = aiinsights_push.host_secure?rest.putHttps:rest.put;
-            putter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, {}, elasticIndex, (err, _, status) => {
+            putter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, {}, analyticsIndex, (err, _, status) => {
                 if (err) cb(err);
-                else if (status != 200) cb(`Error: Unable to create Elastic index. Error code: ${status}`);
+                else if (status != 200) cb(`Error: Unable to create Analytics index. Error code: ${status}`);
                 else cb();
             });
-        } else if (status == 200) cb(); else cb(`Error: Elastic error: ${status}`);
+        } else if (status == 200) cb(); else cb(`Error: Analytics error: ${status}`);
     });
 }
 
