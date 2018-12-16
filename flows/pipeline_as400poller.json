@@ -1,7 +1,7 @@
 {
 	"flow":{
 		"name":"AS/400 Poller",
-		"disabled":false
+		"disabled":true
 	},
 	"listener": {
 		"type":"timer", 

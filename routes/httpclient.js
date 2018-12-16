@@ -25,7 +25,9 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
         headers[key] = value;
     });
 
-    http[httpclient.method](httpclient.host, httpclient.port, httpclient.path, headers, message.content, (error, data) =>{
+    http[httpclient.method](httpclient.host, httpclient.port, httpclient.path, headers, message.content, 
+            httpclient.timeout, (error, data) => {
+
         if (error) {
             LOG.error(`[HTTP] Call failed with error: ${error}`);
             message.addRouteError(routeName);

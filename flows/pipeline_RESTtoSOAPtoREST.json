@@ -26,6 +26,7 @@
 		"isSecure": true,
 		"method":"get",
 		"path": "",
+		"timeout": 180000,
 		"headers":["USER-AGENT: JSON_ESB", "ACCEPT: text/html,application/xhtml+xml,application/xml"]
     },
     "route2": {
