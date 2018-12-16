@@ -18,13 +18,10 @@ exports.start = (routeName, filewriter, _messageContainer, message) => {
     let fw; let flow = filewriter.flow;
     if (flow.env[routeName] && flow.env[routeName][filewriter.path]) fw = flow.env[routeName][filewriter.path];
     else {
-        if (!flow.env[routeName]) flow.env[routeName] = {};
-
-        if (!filewriter.writeCloseTimeout) filewriter.writeCloseTimeout = 5000; 
-        if (!filewriter.encoding) filewriter.encoding = "utf8";
-        fw = FileWriter.createFileWriter(filewriter.path, filewriter.writeCloseTimeout, 
-            filewriter.encoding, !filewriter.append);
+        fw = FileWriter.createFileWriter(filewriter.path, filewriter.writeCloseTimeout || 5000, 
+            filewriter.encoding || "utf8", !filewriter.append);
         
+        if (!flow.env[routeName]) flow.env[routeName] = {};
         flow.env[routeName][filewriter.path] = fw;
     }
     
