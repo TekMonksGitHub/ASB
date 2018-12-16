@@ -19,7 +19,7 @@ exports.start = (routeName, listener, messageContainer, _message) => {
                 if (err) {LOG.error(`[FILELISTENER] Error moving: ${err}`); return;}
 
                 let message = MESSAGE_FACTORY.newMessage();
-                message.env.path = newPath;
+                message.env.filepath = newPath;
                 message.addRouteDone(routeName);
                 messageContainer.add(message);
                 LOG.info(`[FILELISTENER] Injected message with timestamp: ${message.timestamp}`); 

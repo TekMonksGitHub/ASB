@@ -6,6 +6,7 @@
 
 const fs = require("fs");
 const papa = require("papaparse"); 
+const filewriter = require(`${CONSTANTS.LIBDIR}/FileWriter.js`);
 
 exports.start = (routeName, csvwriter, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
@@ -28,6 +29,12 @@ exports.start = (routeName, csvwriter, _messageContainer, message) => {
     let valuesCSV = papa.unparse([values]);
     
     // write it out
+    if (!csvwriter.flow.env[routeName]) csvwriter.flow.env[routeName] = {};
+    if (!csvwriter.flow.env[routeName][`filewriter_${csvwriter.path}`])
+        csvwriter.flow.env[routeName][`filewriter_${csvwriter.path}`] = 
+            filewriter.createFileWriter(csvwriter.path, csvwriter.timeout || 5000, csvwriter.encoding || "utf8");
+    let fwriter = csvwriter.flow.env[routeName][`filewriter_${csvwriter.path}`];
+
     fs.access(csvwriter.path, fs.constants.F_OK, error => {
         let handleWriteResult = e => {
             if (e) handleError(`Write error: ${e}`); else {
@@ -37,7 +44,7 @@ exports.start = (routeName, csvwriter, _messageContainer, message) => {
             }
         }
 
-        if (!error) fs.appendFile(csvwriter.path, `${valuesCSV}\n`, handleWriteResult);
-        else fs.writeFile(csvwriter.path, `${headersCSV}\n${valuesCSV}\n`, handleWriteResult);
+        if (!error) fwriter.writeFile(`${valuesCSV}\n`, handleWriteResult);
+        else fwriter.writeFile(`${headersCSV}\n${valuesCSV}\n`, handleWriteResult);
     });
 }

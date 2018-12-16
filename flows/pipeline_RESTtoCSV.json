@@ -17,7 +17,9 @@
 		"type": "csvwriter",
 		"dependencies":["listener"],
 		"headers":["firstname", "lastname"],
-        "path":"c:/test/json2csv.csv"
+		"path":"c:/test/json2csv.csv",
+		"encoding":"utf8",
+		"timeout":5000
 	},
 	"route1": {
 		"type":"js",

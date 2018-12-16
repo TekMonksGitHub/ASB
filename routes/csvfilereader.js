@@ -15,16 +15,16 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
     message.env[routeName].ignorecall = true;           // we are reading the file now
     message.setGCEligible(false);                       // we are not done
 
-    LOG.info(`[CSVFILEREADER] Processing CSV file: ${message.env.path}`);
+    LOG.info(`[CSVFILEREADER] Processing CSV file: ${message.env.filepath}`);
     
     if (message.env[routeName].lr) message.env[routeName].lr.resume(); 
     else {
         let csvlines = [];
         let linesRead = 0;
-        message.env[routeName].lr = new LineByLineReader(message.env.path);
+        message.env[routeName].lr = new LineByLineReader(message.env.filepath);
 
         message.env[routeName].lr.on("error", err => {
-            LOG.error(`[CSVFILEREADER] Giving up, error processing file ${message.env.path}: ${err}`);
+            LOG.error(`[CSVFILEREADER] Giving up, error processing file ${message.env.filepath}: ${err}`);
             LOG.error(`[CSVFILEREADER] Lines read before error = ${linesRead}`);
             message.env[routeName].lr.close();
             message.env[routeName].lr.end();
@@ -46,23 +46,24 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
         });
 
         message.env[routeName].lr.on("end", _ => {
-            injectMessages(csvlines, routeName, messageContainer);   // the leftover lines
-            LOG.info(`[CSVFILEREADER] Done processing file ${message.env.path}, lines read = ${linesRead}`);
+            injectMessages(csvlines, message.env.filepath, routeName, messageContainer);   // the leftover lines
+            LOG.info(`[CSVFILEREADER] Done processing file ${message.env.filepath}, lines read = ${linesRead}`);
             message.addRouteDone(routeName);
             message.setGCEligible(true);
 
             if (csvfilereader.donePath) try {
-                let newPath = `${csvfilereader.donePath}/${path.basename(message.env.path)}.${utils.getTimeStamp()}`;
-                fs.rename(message.env.path, newPath, err => {if (err) LOG.error(`[CSVFILEREADER] Error moving: ${err}`)});
+                let newPath = `${csvfilereader.donePath}/${path.basename(message.env.filepath)}.${utils.getTimeStamp()}`;
+                fs.rename(message.env.filepath, newPath, err => {if (err) LOG.error(`[CSVFILEREADER] Error moving: ${err}`)});
             } catch (e) {LOG.error(`[CSVFILEREADER] Error moving: ${err}`);}
         });
     }
 }
 
-function injectMessages(lines, routeName, messageContainer) {
+function injectMessages(lines, filepath, routeName, messageContainer) {
     LOG.info(`[CSVFILEREADER] Injecting ${lines.length} new messages`);
     lines.forEach(line => {
         let message = MESSAGE_FACTORY.newMessage();
+        message.env.filepath = filepath;
         message.content = line;
         message.addRouteDone(routeName);
         messageContainer.add(message);

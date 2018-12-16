@@ -8,11 +8,11 @@ const urlMod = require("url");
 const httpServerFactory = require(`${CONSTANTS.LIBDIR}/httpServerFactory.js`);
 
 exports.start = (routeName, listener, messageContainer) => {
-    if (listener.flow.env.server) return; // already listening
+    if (listener.flow.env[routeName] && listener.flow.env[routeName].server) return; // already listening
 
-    listener.flow.env.server = httpServerFactory.createHTTPServer(listener);
+    listener.flow.env[routeName] = {"server":httpServerFactory.createHTTPServer(listener)};
 
-    listener.flow.env.server.on("request", (req, res) => {
+    listener.flow.env[routeName].server.on("request", (req, res) => {
         let endPoint = urlMod.parse(req.url, true).pathname;
         if (endPoint != listener.url) return;   // not ours to handle
 
