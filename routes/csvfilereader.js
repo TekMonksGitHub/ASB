@@ -39,7 +39,7 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
             csvlines.push(line); 
             if (csvlines.length == csvfilereader.rowsPerParse) {
                 message.env[routeName].lr.pause();
-                injectMessages(csvlines, routeName, messageContainer);
+                injectMessages(csvlines, message.env.filepath, routeName, messageContainer);
                 csvlines = [];
                 message.env[routeName].ignorecall = false;           // read next chunk on next call
             }

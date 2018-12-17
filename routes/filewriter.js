@@ -6,10 +6,13 @@
 
 const FileWriter = require(`${CONSTANTS.LIBDIR}/FileWriter.js`)
 
-exports.start = (routeName, filewriter, _messageContainer, message) => {
+exports.start = (routeName, filewriter, messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
     if (!message.env[routeName]) message.env[routeName] = {}; message.env[routeName].isBeingProcessed = true;
     message.setGCEligible(false);
+
+    if (filewriter.interceptor_module) require(filewriter.interceptor_module).start(routeName, filewriter, messageContainer, message);
+    if (filewriter.interceptor_js) eval(filewriter.interceptor_js);
 
     let output = (message.content instanceof Object ? JSON.stringify(message.content, null, filewriter.prettyJSON) :
         message.content);
@@ -25,6 +28,7 @@ exports.start = (routeName, filewriter, _messageContainer, message) => {
         flow.env[routeName][filewriter.path] = fw;
     }
     
+    LOG.debug(`[FILEWRITER] Writing to file: ${fw.path}, record is: ${output}`);
     fw.writeFile(output, e => {
         let routeFlagger = "addRouteDone";
         if (e) {Log.error(`[FILEWRITER] Write error: ${e}`); routeFlagger = "addRouteError"}

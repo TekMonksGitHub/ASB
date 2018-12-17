@@ -1,0 +1,35 @@
+{
+	"flow":{
+		"name":"Multiple CSVs to JSONs",
+		"disabled":false
+	},
+	"listener": {
+		"type":"file", 
+		"isMessageGenerator": true,
+		"path":"c:/test/in/*^GSPC.csv",
+		"donePath":"c:/test/processing"
+	},
+	"route0":{
+		"type": "csvfilereader",
+		"dependencies":["listener"],
+		"rowsPerParse": 10000,
+		"skip_first_row":true,
+        "donePath":"c:/test/done"
+	},
+	"route1": {
+		"type":"csvparser",
+		"dependencies":["route0","!listener"],
+		"csv_headers":["Date","Open","High","Low","Close","Adj Close","Volume"],
+		"trimValues": true
+	},
+	"output": {
+		"type": "filewriter",
+		"dependencies":"route1",
+		"interceptor_module":"c:/users/rohit kapoor/source/json_esb/custom/multipath_interceptor.js",
+		"interceptor_js":"",
+		"write_ndjson": true,
+		"append": true,
+		"writeCloseTimeout": 5000,
+		"encoding": "utf8"
+	}
+}
