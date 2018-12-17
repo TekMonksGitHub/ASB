@@ -61,12 +61,13 @@ typings/
 .next
 
 # EBS work directories
+!custom/README
+!custom/multipath_interceptor.js
 in
 done
 out
 processing
 custom
-!custom/README
 
 # Sensitive flows
 flows/pipeline_payments.json
