@@ -76,7 +76,7 @@ function createDocuments(aiinsights_push, routeName, cb) {
     let poster = aiinsights_push.host_secure ? http.postHttps : http.post;
     poster(aiinsights_push.host, aiinsights_push.port, `/_bulk`, 
             {"Content-Type":"application/x-ndjson"}, postRequest, undefined,
-            (err, result) => cb(msgStack, routeName, err, result.response, result.status));
+            (err, result) => cb(msgStack, routeName, err, result?result.response:null, result?result.status:null));
 }
 
 function getBulkCreateRequest(messages, index, doctype) {
