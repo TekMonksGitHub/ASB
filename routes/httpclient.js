@@ -26,7 +26,7 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
     });
 
     http[httpclient.method](httpclient.host, httpclient.port, httpclient.path, headers, message.content, 
-            httpclient.timeout, (error, data) => {
+            httpclient.timeout, (error, result) => {
 
         if (error) {
             LOG.error(`[HTTP] Call failed with error: ${error}`);
@@ -37,9 +37,9 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
             message.addRouteDone(`${routeName}`);
             delete message.env[routeName];  // clean up our mess
             message.setGCEligible(true);
-            message.content = data;
+            message.content = result.response;
             LOG.info(`[HTTP] Response received for message with timestamp: ${message.timestamp}`);
-            LOG.debug(`[HTTP] Response data is: ${data}`);
+            LOG.debug(`[HTTP] Response data is: ${result.response}`);
         }
     });
 }
