@@ -1,7 +1,7 @@
 {
 	"flow":{
 		"name":"Multiple CSVs to JSONs",
-		"disabled":false
+		"disabled":true
 	},
 	"listener": {
 		"type":"file", 
