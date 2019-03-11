@@ -4,7 +4,7 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-exports.start = (routeName, listener, messageContainer, _message) => {
+exports.start = (routeName, listener, messageContainer, message) => {
     if (listener.module) {require(listener.module).start(routeName, output, messageContainer, message);} else {
         try {
             eval(listener.js);
