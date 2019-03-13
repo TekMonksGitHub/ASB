@@ -30,5 +30,5 @@ exports.start = (routeName, filereader, _messageContainer, message) => {
         }
     }
 
-    fs.readFile(message.env.filepath, filereader.encoding?filereader.encoding:null, handleReadResult);
+    fs.readFile(message.env.filepath||filereader.filepath, filereader.encoding?filereader.encoding:null, handleReadResult);
 }
