@@ -1,5 +1,5 @@
 /* 
- * simple_aggregator.js, Aggregates messages, very simople, just merges content keys
+ * simple_aggregator.js, Aggregates messages, very simple, just merges content keys
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
