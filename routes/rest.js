@@ -5,6 +5,7 @@
  */
 
 const restClient = require(`${CONSTANTS.LIBDIR}/rest.js`);
+const url = require('url');
 
 exports.start = (routeName, rest, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isProcessing) return;
@@ -17,6 +18,7 @@ exports.start = (routeName, rest, _messageContainer, message) => {
     if (rest.method == "delete") rest.method = "deleteHttp";        // delete is a reserved word in JS
 
     let headers = {};                                               // handle headers
+    if(rest.authorization) headers['Authorization'] = `Basic ${new Buffer(`${rest.username}:${rest.password}`).toString('base64')}`;
     if (rest.headers) rest.headers.forEach(v => {
         let pair = v.split(":"); pair.forEach((v, i) => pair[i] = v.trim());
         let key = pair[0]; pair.splice(0,1); let value = pair.join("");
@@ -24,6 +26,8 @@ exports.start = (routeName, rest, _messageContainer, message) => {
     });
 
     if (!rest.path.startsWith("/")) rest.path = `/${rest.path.trim()}`;
+
+    if(rest.query) message.content = url.parse("$filter=(Code eq '1234')").path;
 
     restClient[rest.method](rest.host, rest.port, rest.path, headers, message.content, (error, data) =>{
         if (error) {

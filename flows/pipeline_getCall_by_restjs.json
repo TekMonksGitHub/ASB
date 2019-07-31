@@ -1,0 +1,28 @@
+{
+    "flow": {
+        "name": "Rest API",
+        "disabled": true
+    },
+    "listener": {
+        "type": "timer",
+        "isMessageGenerator": true,
+		"cron": "*/1 * * * *"
+    },
+	"route0":{
+		"type": "rest",
+		"dependencies":"listener",
+        "host":"preprod-eu.intelex.com",
+        "port":443,
+		"isSecure": true,
+        "method":"get",
+        "authorization":true,
+        "username":"APIUser-EN",
+        "password":"bX9JRGdV",
+        "path": "/Login/KerryDev/api/v2/object/CustComplaints_CustomerObject",
+		"headers":["USER-AGENT: JSON_ESB", "ACCEPT: application/json"]
+	},
+	"output":{
+		"type": "console",
+		"dependencies":"route0"
+	}
+}
