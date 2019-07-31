@@ -1,0 +1,29 @@
+{
+    "flow": {
+        "name": "FTP Client route",
+        "disabled": true
+    },
+    "listener": {
+        "type": "timer",
+        "isMessageGenerator": true,
+        "cron": "*/2 * * * *"
+    },
+    "route0":{
+        "type": "js",
+        "dependencies": ["listener"],
+        "js": "js.flow.env.logFileName = 'ftp.log.ndjson'"
+    },
+    "route1": {
+        "type": "ftp",
+        "dependencies": ["route0"],
+        "host": "127.0.0.1",
+        "port": "21",
+        "username": "FTPdemo",
+        "password": "Kapil123",
+        "ftpFilePath": "ftp/files/",
+        "ftpFolder": ["customer", "notification", "product"],
+        "ftpProcessingPath": "processing/",
+        "ftpDonePath": "done/",
+        "asbDownloadPath": "/home/dlt/Documents/ASBFTP/"
+    }
+}
