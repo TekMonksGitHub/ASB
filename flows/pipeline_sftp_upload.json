@@ -1,0 +1,28 @@
+{
+    "flow": {
+        "name": "SFTP Upload",
+        "disabled": true
+    },
+    "listener": {
+		"type":"file", 
+		"isMessageGenerator": true,
+		"path":"/home/dlt/Documents/ASB-master/processing/log.json",
+		"donePath":"/home/dlt/Documents/ASB-master/processing"
+	},
+	"route0":{
+		"type": "filereader",
+		"dependencies":["listener"],
+        "donePath":"/home/dlt/Documents/ASB-master/done",
+        "encoding":"utf8"
+	},
+    "route1": {
+        "type": "sftpUpload",
+        "dependencies": ["route0"],
+        "host": "195.33.100.20",
+        "port": "22",
+        "username": "ftpIntelex-Ext",
+        "password": "qqxCPa7QTTxW",
+        "sftpFilePath": "/users/ftpintelex-ext/FTPIntelEx/customers/",
+        "localPath": "/home/dlt/Documents/ASB-master/tmp/"
+    }
+}
