@@ -12,6 +12,7 @@ exports.start = (routeName, csvwriter, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
     if (!message.env[routeName]) message.env[routeName] = {}; message.env[routeName].isBeingProcessed = true;
     message.setGCEligible(false);
+    LOG.debug(`[CSVWRITER] Processing message with timestamp: ${message.timestamp}`);
 
     let handleError = e => {
         LOG.error(`[CSVWRITER] ${e}`); message.addRouteError(routeName); message.setGCEligible(true); return;}
