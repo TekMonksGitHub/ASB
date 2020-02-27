@@ -13,7 +13,7 @@ exports.start = (routeName, listener, messageContainer) => {
     listener.flow.env.server = httpServerFactory.createHTTPServer(listener);
 
     listener.flow.env.server.on("request", (req, res) => {
-        let endPoint = urlMod.parse(req.url, true).pathname;
+        const endPoint = urlMod.parse(req.url, true).pathname;
         if (endPoint != listener.url) return;   // not ours to handle
 
         let data = "";

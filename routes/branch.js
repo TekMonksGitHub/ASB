@@ -8,7 +8,7 @@ exports.start = (routeName, branch, messageContainer, message) => {
     message.addRouteDone(routeName);
 
     branch.outputs.forEach(output => {
-        let clone = message.clone();
+        const clone = message.clone();
         clone.addRouteDone(output);
 
         messageContainer.add(clone);

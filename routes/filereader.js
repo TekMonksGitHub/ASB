@@ -24,9 +24,9 @@ exports.start = (routeName, filereader, _messageContainer, message) => {
             delete message.env[routeName].isBeingProcessed; // clean our garbage
 
             if (filereader.donePath) try {
-                let newPath = `${filereader.donePath}/${path.basename(message.env.path)}.${utils.getTimeStamp()}`;
-                fs.rename(message.env.path, newPath, err => {if (err) LOG.error(`[FILEREADER] Error moving: ${err}`)});
-            } catch (e) {LOG.error(`[FILEREADER] Error moving: ${err}`);}
+                let newPath = `${filereader.donePath}/${path.basename(message.env.filepath)}.${utils.getTimeStamp()}`;
+                fs.rename(message.env.filepath, newPath, err => {if (err) LOG.error(`[FILEREADER] Error moving: ${err}`)});
+            } catch (e) {LOG.error(`[FILEREADER] Error moving: ${e}`);}
         }
     }
 

@@ -19,7 +19,7 @@ exports.start = (routeName, csvparser, _messageContainer, message) => {
         return;
     }
 
-    let values = results.data[0];
+    const values = results.data[0];
 
     if (values.length != csvparser.csv_headers.length) {
         LOG.error("[CSVPARSER] Bad CSV, values don't match headers provided. Length mismatch.");

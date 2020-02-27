@@ -19,7 +19,7 @@ exports.start = (routeName, rest, _messageContainer, message) => {
     let headers = {};                                               // handle headers
     if (rest.headers) rest.headers.forEach(v => {
         let pair = v.split(":"); pair.forEach((v, i) => pair[i] = v.trim());
-        let key = pair[0]; pair.splice(0,1); let value = pair.join("");
+        const key = pair[0]; pair.splice(0,1); const value = pair.join("");
         headers[key] = value;
     });
 

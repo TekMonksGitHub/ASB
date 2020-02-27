@@ -9,7 +9,7 @@ exports.start = (routeName, js, messageContainer, message) => {
 
     if (js.module) {require(js.module).start(routeName, js, messageContainer, message);} else {
         try {
-            let flow = js.flow; // allows JS code below to call the flow.
+            const flow = js.flow; // allows JS code below to call the flow.
             eval(js.js);
             if (!js.isAsync) message.addRouteDone(routeName);
         } catch (e) {

@@ -17,7 +17,7 @@ exports.start = (routeName, csvwriter, _messageContainer, message) => {
     let handleError = e => {
         LOG.error(`[CSVWRITER] ${e}`); message.addRouteError(routeName); message.setGCEligible(true); return;}
 
-    let keys = Object.keys(message.content);
+    const keys = Object.keys(message.content);
 
     // sanity tests
     if (!message.content) {handleError("No content. Skipping."); return;}
@@ -26,18 +26,18 @@ exports.start = (routeName, csvwriter, _messageContainer, message) => {
 
     // let convert...
     let values = []; keys.forEach(k => values.push(message.content[k]));
-    let headersCSV = (csvwriter.headers?papa.unparse([csvwriter.headers]):papa.unparse([keys]));
-    let valuesCSV = papa.unparse([values]);
+    const headersCSV = (csvwriter.headers?papa.unparse([csvwriter.headers]):papa.unparse([keys]));
+    const valuesCSV = papa.unparse([values]);
     
     // write it out
     if (!csvwriter.flow.env[routeName]) csvwriter.flow.env[routeName] = {};
     if (!csvwriter.flow.env[routeName][`filewriter_${csvwriter.path}`])
         csvwriter.flow.env[routeName][`filewriter_${csvwriter.path}`] = 
             filewriter.createFileWriter(csvwriter.path, csvwriter.timeout || 5000, csvwriter.encoding || "utf8");
-    let fwriter = csvwriter.flow.env[routeName][`filewriter_${csvwriter.path}`];
+    const fwriter = csvwriter.flow.env[routeName][`filewriter_${csvwriter.path}`];
 
     fs.access(csvwriter.path, fs.constants.F_OK, error => {
-        let handleWriteResult = e => {
+        const handleWriteResult = e => {
             if (e) handleError(`Write error: ${e}`); else {
                 message.addRouteDone(routeName);
                 message.setGCEligible(true);

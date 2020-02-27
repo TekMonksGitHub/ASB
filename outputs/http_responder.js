@@ -9,7 +9,7 @@ const httpServerFactory = require(`${CONSTANTS.LIBDIR}/httpServerFactory.js`);
 exports.start = (routeName, http_responder, _messageContainer, message) => {
     LOG.info(`[HTTP_RESPONDER] Sending response, message with timestamp: ${message.timestamp}`);
 
-    let response = message.env.http_listener.res;
+    const response = message.env.http_listener.res;
 
     httpServerFactory.send200Reply(response, message.content, http_responder.content_type, 
         message.env.http_listener.listener.allow_origin);

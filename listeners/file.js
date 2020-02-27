@@ -33,7 +33,7 @@ function convertFSWildcardsToJSRegEx(path) {
 
 function processFile(file, routeName, listener, messageContainer, cb) {
     LOG.info(`[FILELISTENER] Detected: ${file}`); 
-    let newPath = `${listener.donePath}/${path.basename(file)}.${utils.getTimeStamp()}`;
+    const newPath = `${listener.donePath}/${path.basename(file)}.${utils.getTimeStamp()}`;
 
     fs.rename(file, newPath, err => {
         if (err) {LOG.error(`[FILELISTENER] Error moving: ${err}`); cb(); return;}

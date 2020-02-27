@@ -29,6 +29,7 @@ exports.start = (routeName, csvfilereader, messageContainer, message) => {
             message.env[routeName].lr.close();
             message.env[routeName].lr.end();
             message.addRouteError(routeName);
+            delete message.env[routeName].ignorecall;   // cleanup
             message.setGCEligible(true);
         });
 
