@@ -16,4 +16,4 @@ The following are needed for the XML route nodes
 The following are needed for the timer listener nodes
 - cron
 
-License: GNU Affero General Public License v3.0. For commercial license please contact TekMonks.com
+License: GNU Affero General Public License v3.0. For commercial license please contact TekMonks.com. Existing TekMonks Clients must purchase Commercial Support and can't use this version free of charge.
