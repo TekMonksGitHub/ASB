@@ -1,18 +1,19 @@
 {
 	"flow":{
 		"name":"XML to JSON",
-		"disabled":true
+		"disabled":false
 	},
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path":"c:/test/in/Test.xml",
-		"donePath":"c:/test/processing"
+		"path":"/home/dlt/Documents/ASB-master/in/*.xml",
+		"donePath":"/home/dlt/Documents/ASB-master/processing"
 	},
 	"route0":{
 		"type": "filereader",
 		"dependencies":["listener"],
-        "donePath":"c:/test/done",
+		"maxFileOpens":1000,
+        "donePath":"/home/dlt/Documents/ASB-master/done",
         "encoding":"utf8"
 	},
 	"route1": {
@@ -21,10 +22,13 @@
 	},
 	"output": {
 		"type": "filewriter",
-        "dependencies":"route1",
-		"path":"c:/test/Test.json",
-		"prettyJSON": 4,
-		"append": false,
-		"writeCloseTimeout": 5000
+		"dependencies":"route1",
+		"interceptor_module":"/home/dlt/Documents/ASB-master/custom/multipath_interceptor.js",
+		"interceptor_js":"",
+		"outputPath":"/home/dlt/Documents/ASBTEST/",
+		"write_ndjson": true,
+		"append": true,
+		"writeCloseTimeout": 5000,
+		"encoding": "utf8"
 	}
 }
