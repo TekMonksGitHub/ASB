@@ -1,0 +1,34 @@
+{
+    "flow": {
+        "name": "FTP Upload output",
+        "cpuInterval":100,
+        "disabled": false
+    },
+    "listener": {
+		"type":"file", 
+		"isMessageGenerator": true,
+		"path":"/home/kapil/Documents/ASB/FTP/Upload/Output/in/*.txt",
+		"donePath":"/home/kapil/Documents/ASB/FTP/Upload/Output/processing"
+	},
+	"route":{
+		"type": "filereader",
+		"dependencies":["listener"],
+        "maxFileOpens":1000,
+        "totalMax": 1000,
+        "donePath":"/home/kapil/Documents/ASB/FTP/Upload/Output/done",
+        "encoding":"utf8"
+	},
+    "output0": {
+        "type": "ftp",
+        "dependencies": ["route"],
+        "host": "139.59.87.70",
+        "port": "21",
+        "username": "kapil",
+        "password": "DLTGATEWAY@123#",
+        "fileFormat":"txt",
+        "ftpFilePath": "FTP/Upload/",
+        "ftpFolder": "Output",
+        "ftpProcessingPath": "processing/",
+        "ftpDonePath": "done/"
+    }
+}
