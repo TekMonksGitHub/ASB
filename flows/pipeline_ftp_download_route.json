@@ -1,0 +1,26 @@
+{
+    "flow": {
+        "name": "FTP Download route",
+        "disabled": false
+    },
+    "listener": {
+        "type": "timer",
+        "isMessageGenerator": true,
+        "cron": "*/5 * * * *"
+    },
+    "route": {
+        "type": "ftp",
+        "dependencies": ["listener"],
+        "host": "139.59.87.70",
+        "port": 21,
+        "username": "kapil",
+        "password": "DLTGATEWAY@123#",
+        "task":"download",
+        "logFileName":"ftpDownloadRouteLog.csv",
+        "ftpFilePath": "FTP/Download/",
+        "ftpFolder": ["Route"],
+        "ftpProcessingPath": "processing",
+        "ftpDonePath": "done",
+        "asbDownloadPath": "/home/kapil/Documents/ASB/FTP/Download/Route/in"
+    }
+}

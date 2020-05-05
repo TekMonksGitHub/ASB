@@ -1,0 +1,25 @@
+{
+    "flow": {
+        "name": "FTP listener",
+        "disabled": false
+    },
+    "listener0": {
+        "type": "timer",
+        "isMessageGenerator": true,
+        "cron": "*/5 * * * *"
+    },
+    "listener1": {
+        "type": "ftp",
+        "dependencies": ["listener0"],
+        "host": "139.59.87.70",
+        "port": 21,
+        "username": "kapil",
+        "password": "DLTGATEWAY@123#",
+        "logFileName":"ftpListenerLog.csv",
+        "ftpFilePath": "FTP/Download/",
+        "ftpFolder": ["Listener"],
+        "ftpProcessingPath": "processing",
+        "ftpDonePath": "done",
+        "asbDownloadPath": "/home/kapil/Documents/ASB/FTP/Download/Listener/in"
+    }
+}
