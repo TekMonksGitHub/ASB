@@ -1,0 +1,21 @@
+{
+    "flow": {
+        "name": "SFTP Listener",
+        "disabled": false
+    },
+	"listener0": {
+		"type":"timer", 
+		"isMessageGenerator": true,
+		"cron": "*/5 * * * *"
+	},
+    "listener1": {
+        "type": "sftp",
+        "dependencies": ["listener0"],
+        "host": "139.59.8.233",
+        "port": "22",
+        "username": "kapil",
+        "password":"DLTgateway@123#",
+        "path":"SFTP/Download/Listener/in/*.txt",
+        "asbDownloadPath": "/home/kapil/Documents/ASB/SFTP/Download/Listener/in/"
+    }
+}

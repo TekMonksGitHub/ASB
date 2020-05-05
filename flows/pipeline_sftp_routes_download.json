@@ -1,0 +1,22 @@
+{
+    "flow": {
+        "name": "SFTP Route Download",
+        "disabled": false
+    },
+    "listener": {
+        "type": "timer",
+        "isMessageGenerator": true,
+        "cron": "*/5 * * * *"
+    },
+    "route": {
+        "type": "sftp",
+        "dependencies": ["listener"],
+        "host": "139.59.8.233",
+        "port": "22",
+        "username": "kapil",
+        "password": "DLTgateway@123#",
+        "task":"download",
+        "path":"SFTP/Download/Route/in/*.txt",
+        "asbDownloadPath": "/home/kapil/Documents/ASB/SFTP/Download/Route/in/"
+    }
+}
