@@ -1,0 +1,30 @@
+{
+    "flow": {
+        "name": "SFTP Output",
+        "cpuInterval":100,
+        "disabled": false
+    },
+    "listener": {
+        "type":"file", 
+        "isMessageGenerator": true,
+		"path":"/home/kapil/Documents/ASB/SFTP/Upload/Output/in/*.txt",
+		"donePath":"/home/kapil/Documents/ASB/SFTP/Upload/Output/processing"
+	},
+	"route":{
+		"type": "filereader",
+		"dependencies":["listener"],
+        "maxFileOpens":1000,
+        "totalMax": 1000,        
+        "donePath":"/home/kapil/Documents/ASB/SFTP/Upload/Output/done",
+        "encoding":"utf8"
+	},
+    "output0": {
+        "type": "sftp",
+        "dependencies": ["route"],
+        "host": "139.59.8.233",
+        "port": "22",
+        "username": "kapil",
+        "password": "DLTgateway@123#",
+        "sftpFilePath": "SFTP/Upload/Output/in/"
+    }
+}
