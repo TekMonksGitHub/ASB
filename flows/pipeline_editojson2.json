@@ -1,0 +1,43 @@
+{
+	"flow":{
+		"name":"EDI to JSON Flow2",
+		"disabled":false
+	},
+	"listener": {
+		"type":"file", 
+		"isMessageGenerator": true,
+		"path":"c:/test/in/210invoice.x12",
+		"donePath":"c:/test/processing"
+	},
+	"route0":{
+		"type": "filereader",
+		"dependencies":["listener"],
+        "donePath":"c:/test/done",
+        "encoding":"utf8"
+    },
+    "route1":{
+		"type": "branch",
+		"dependencies":"route0",
+		"outputs":["route1.1", "route1.2"]
+	},
+	"route2": {
+		"type":"ediparser",
+		"dependencies":["route1.1"],
+		"java":"c:/Users/Rohit Kapoor/source/jdk8/bin/java.exe"
+	},
+	"route3": {
+		"type":"filewriter",
+		"dependencies":["route1.2"],
+		"path":"c:/test/210invoice_copy.edi",
+		"append": false,
+		"writeCloseTimeout": 5000
+	},
+	"output": {
+		"type": "filewriter",
+        "dependencies":"route2",
+		"path":"c:/test/210invoice.json",
+		"prettyJSON": 4,
+		"append": false,
+		"writeCloseTimeout": 5000
+	}
+}
