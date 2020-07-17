@@ -21,8 +21,7 @@ exports.start = (routeName, listener, messageContainer) => {
 		
 		req.on("end", _ => {
             let content;
-            try {
-                content = JSON.parse(data);} catch (err) {
+            try {content = JSON.parse(data);} catch (err) {
                 LOG.error("[REST_LISTENER] Bad incoming request, dropping.");
                 res.writeHead(500, {"Content-Type": "text/plain"});
                 res.write("Bad request.\n");
@@ -30,7 +29,7 @@ exports.start = (routeName, listener, messageContainer) => {
                 return;
             }
 
-            let message = MESSAGE_FACTORY.newMessage();
+            const message = MESSAGE_FACTORY.newMessage();
             message.env.http_listener = {listener, req, res};
             message.content = content;
             message.addRouteDone(routeName);

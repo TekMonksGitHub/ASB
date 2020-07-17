@@ -12,10 +12,10 @@ exports.start = (routeName, timer, messageContainer, _message) => {
 
     LOG.debug(`[CRONLISTENER] Cron pattern: ${timer.cron}`);
     
-    let cronJob = new CronJob(timer.cron, _ => {
+    const cronJob = new CronJob(timer.cron, _ => {
         if (timer.flow.fatalError) {cronJob.stop(); return;}  // disabled
 
-        let message = MESSAGE_FACTORY.newMessage();
+        const message = MESSAGE_FACTORY.newMessage();
         message.addRouteDone(routeName);
         messageContainer.add(message);
         LOG.info(`[CRONLISTENER] Injected message with timestamp: ${message.timestamp}`);

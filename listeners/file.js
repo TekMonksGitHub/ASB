@@ -38,7 +38,7 @@ function processFile(file, routeName, listener, messageContainer, cb) {
     fs.rename(file, newPath, err => {
         if (err) {LOG.error(`[FILELISTENER] Error moving: ${err}`); cb(); return;}
 
-        let message = MESSAGE_FACTORY.newMessage();
+        const message = MESSAGE_FACTORY.newMessage();
         message.env.filepath = newPath;
         message.addRouteDone(routeName);
         messageContainer.add(message);
