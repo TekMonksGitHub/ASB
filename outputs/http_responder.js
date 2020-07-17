@@ -11,8 +11,11 @@ exports.start = (routeName, http_responder, _messageContainer, message) => {
 
     const response = message.env.http_listener.res;
 
-    httpServerFactory.send200Reply(response, message.content, http_responder.content_type, 
-        message.env.http_listener.listener.allow_origin);
+    if (!http_responder.code || http_responder.code == 200) httpServerFactory.send200Reply(response, message.content, 
+        http_responder.content_type, message.env.http_listener.listener.allow_origin);
+    
+    if (http_responder.code == 500) httpServerFactory.send500Reply(response, message.content, 
+        http_responder.content_type, message.env.http_listener.listener.allow_origin);
 
     message.addRouteDone(routeName);
 }
