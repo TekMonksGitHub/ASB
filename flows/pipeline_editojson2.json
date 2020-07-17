@@ -1,7 +1,7 @@
 {
 	"flow":{
 		"name":"EDI to JSON Flow2",
-		"disabled":false
+		"disabled":true
 	},
 	"listener": {
 		"type":"file", 
