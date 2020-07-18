@@ -1,0 +1,48 @@
+{
+	"flow": {
+		"name": "SAP WS endpoint to write to a local JSON file",
+		"disabled": false
+	},
+	"listener": {
+		"type": "http_listener", 
+		"isMessageGenerator": true,
+		"host": "127.0.0.1",
+		"port": 9090,
+		"url": "/sapin",
+		"allow_origin": "*",
+		"timeout": 120000
+    },
+	"route0": {
+		"type": "xmlparser",
+		"dependencies": ["listener"]
+	},
+	"route1": {
+		"type": "filewriter",
+		"dependencies": "route0",
+        "path": "c:/test/sapIn.json",
+        "prettyJSON": 4,
+		"append": false,
+		"writeCloseTimeout": 5000
+    },
+    "route2": {
+        "type":"js",
+        "dependencies": "route1",
+        "js": "message.content='<?xml version=\"1.0\"?><soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><soap:Body><code>200</code></soap:Body></soap:Envelope>'"
+    },
+	"route.error": {
+		"type": "js",
+		"dependencies": [["listener.error"],["route0.error"],["route1.error"],["route2.error"]],
+		"js": "delete message.content;"
+	},
+    "output.ok": {
+        "type": "http_responder",
+        "content_type": "application/soap+xml",
+        "code": 200,
+		"dependencies": "route2"
+    },
+    "output.error": {
+        "type": "http_responder",
+        "code": 500,
+		"dependencies": "route.error"
+	}
+}

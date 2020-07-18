@@ -60,13 +60,9 @@ typings/
 # next.js build output
 .next
 
-# EBS work directories
+# ESB work directories
 !custom/README
 !custom/multipath_interceptor.js
-in
-done
-out
-processing
 custom
 
 # Sensitive flows
