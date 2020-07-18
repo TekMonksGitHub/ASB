@@ -11,7 +11,7 @@ const utils = require(CONSTANTS.LIBDIR+"/utils.js");
 exports.start = (routeName, listener, messageContainer, _message) => {
     if (listener.flow.env[routeName] && listener.flow.env[routeName].busy) return;  // we are busy processing
     
-    LOG.debug(`[FILELISTENER] Watching file/s: ${listener.path}`);
+    LOG.debug(`[FILE_LISTENER] Watching file/s: ${listener.path}`);
 
     fs.readdir(path.dirname(listener.path), (err, files) => {
         if (!err) files.forEach(fileThis => {
@@ -32,17 +32,18 @@ function convertFSWildcardsToJSRegEx(path) {
 }
 
 function processFile(file, routeName, listener, messageContainer, cb) {
-    LOG.info(`[FILELISTENER] Detected: ${file}`); 
+    LOG.info(`[FILE_LISTENER] Detected: ${file}`); 
     const newPath = `${listener.donePath}/${path.basename(file)}.${utils.getTimeStamp()}`;
 
+    const message = MESSAGE_FACTORY.newMessageAllocSafe();
+    if (!message) {LOG.error("[FILE_LISTENER] Message creation error, throttling listener."); return;}
     fs.rename(file, newPath, err => {
-        if (err) {LOG.error(`[FILELISTENER] Error moving: ${err}`); cb(); return;}
+        if (err) {LOG.error(`[FILE_LISTENER] Error moving: ${err}`); cb(); return;}
 
-        const message = MESSAGE_FACTORY.newMessage();
         message.env.filepath = newPath;
         message.addRouteDone(routeName);
         messageContainer.add(message);
-        LOG.info(`[FILELISTENER] Injected message with timestamp: ${message.timestamp}`); 
+        LOG.info(`[FILE_LISTENER] Injected message with timestamp: ${message.timestamp}`); 
         cb();
     });
 }

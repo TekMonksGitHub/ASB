@@ -20,13 +20,20 @@ exports.start = (routeName, listener, messageContainer) => {
         req.on("data", chunk => data += chunk);
 		
 		req.on("end", _ => {
-            const message = MESSAGE_FACTORY.newMessage();
-            message.env.http_listener = {listener, req, res};
-            message.content = data;
-            message.addRouteDone(routeName);
-            messageContainer.add(message);
-            LOG.info(`[HTTP_LISTENER] Injected new message with timestamp: ${message.timestamp}`);
-            LOG.debug(`[HTTP_LISTENER] Incoming request: ${data}`);
+            const message = MESSAGE_FACTORY.newMessageAllocSafe();
+            if (!message) {
+                LOG.error("[HTTP_LISTENER] Message creation error, throttling listener."); 
+                res.writeHead(429, {"Content-Type": "text/plain"});
+                res.write("Throttled.\n");
+                res.end();
+            } else {
+                message.env.http_listener = {listener, req, res};
+                message.content = data;
+                message.addRouteDone(routeName);
+                messageContainer.add(message);
+                LOG.info(`[HTTP_LISTENER] Injected new message with timestamp: ${message.timestamp}`);
+                LOG.debug(`[HTTP_LISTENER] Incoming request: ${data}`);
+            }
         });
     });
 }

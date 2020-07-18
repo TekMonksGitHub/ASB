@@ -4,15 +4,14 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-exports.start = (routeName, listener, messageContainer, message) => {
-    if (listener.module) {require(listener.module).start(routeName, output, messageContainer, message);} else {
-        try {
-            eval(listener.js);
-            if (!js.isAsync) message.addRouteDone(routeName);
-        } catch (e) {
-            LOG.error(`[LISTENER_JS] Error in computing: ${e}, dropping this message`);
-            LOG.error(`[LISTENER_JS] Dropping: ${JSON.stringify(message)}`);
-            message.addRouteError(routeName);
-        }
-    }
+exports.start = (routeName, listener, messageContainer) => {
+    const message = MESSAGE_FACTORY.newMessageAllocSafe();
+    if (!message) {LOG.error("[JS_LISTENER] Message creation error, throttling listener."); return;}
+
+    if (listener.module) {message.content = require(listener.module).start(routeName, output, messageContainer);} 
+    else {message.content = new Function(listener.js)();}
+
+    message.addRouteDone(routeName);
+    messageContainer.add(message);
+    LOG.info(`[FILELISTENER] Injected message with timestamp: ${message.timestamp}`); 
 }
