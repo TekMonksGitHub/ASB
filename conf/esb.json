@@ -1,3 +1,4 @@
 {
-    "cpuInterval":10
+    "cpuInterval":10,
+    "maxHeap": 2147483648
 }
