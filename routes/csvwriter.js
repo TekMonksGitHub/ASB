@@ -36,16 +36,14 @@ exports.start = (routeName, csvwriter, _messageContainer, message) => {
             filewriter.createFileWriter(csvwriter.path, csvwriter.timeout || 5000, csvwriter.encoding || "utf8");
     const fwriter = csvwriter.flow.env[routeName][`filewriter_${csvwriter.path}`];
 
-    fs.access(csvwriter.path, fs.constants.F_OK, error => {
-        const handleWriteResult = e => {
-            if (e) handleError(`Write error: ${e}`); else {
-                message.addRouteDone(routeName);
-                message.setGCEligible(true);
-                delete message.env[routeName].isBeingProcessed; // clean our garbage
-            }
-        }
-
+    const handleWriteResult = e => { if (e) handleError(`Write error: ${e}`); else {
+        message.addRouteDone(routeName);
+        message.setGCEligible(true);
+        delete message.env[routeName].isBeingProcessed; // clean our garbage
+    } }
+    if (!csvwriter.flow.env[routeName].headersWritten) fs.access(csvwriter.path, fs.constants.F_OK, error => {
         if (!error) fwriter.writeFile(`${valuesCSV}\n`, handleWriteResult);
-        else fwriter.writeFile(`${headersCSV}\n${valuesCSV}\n`, handleWriteResult);
-    });
+        else if (!csvwriter.flow.env[routeName].headersWritten) fwriter.writeFile(`${headersCSV}\n${valuesCSV}\n`, handleWriteResult);
+        csvwriter.flow.env[routeName].headersWritten = true;
+    }); else fwriter.writeFile(`${headersCSV}\n${valuesCSV}\n`, handleWriteResult);
 }
