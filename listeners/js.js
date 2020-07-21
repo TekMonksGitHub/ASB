@@ -13,5 +13,5 @@ exports.start = (routeName, listener, messageContainer) => {
 
     message.addRouteDone(routeName);
     messageContainer.add(message);
-    LOG.info(`[FILELISTENER] Injected message with timestamp: ${message.timestamp}`); 
+    LOG.info(`[JS_LISTENER] Injected message with timestamp: ${message.timestamp}`); 
 }
