@@ -1,7 +1,7 @@
 {
 	"flow": {
 		"name": "SAP WS endpoint to write to a local JSON file",
-		"disabled": false
+		"disabled": true
 	},
 	"listener": {
 		"type": "http_listener", 

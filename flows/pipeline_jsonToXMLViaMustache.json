@@ -1,0 +1,31 @@
+{
+	"flow":{
+		"name": "JSON to XML using Mustache",
+		"disabled": true
+	},
+	"listener": {
+		"type":"file", 
+		"isMessageGenerator": true,
+		"path": "c:/test/in/json2xml.json",
+		"donePath": "c:/test/processing"
+	},
+	"route0":{
+		"type": "filereader",
+		"dependencies": "listener",
+        "donePath": "c:/test/done",
+        "encoding": "utf8"
+	},
+	"route1": {
+		"type": "mustache",
+        "dependencies": "route0",
+        "template": "c:/test/json2xml.xml"
+	},
+	"output": {
+		"type": "filewriter",
+        "dependencies": "route1",
+		"path": "c:/test/json2xml_out.xml",
+		"append": false,
+		"writeCloseTimeout": 5000,
+		"encoding": "utf8"
+	}
+}

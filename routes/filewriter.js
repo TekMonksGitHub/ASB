@@ -11,6 +11,8 @@ exports.start = (routeName, filewriter, messageContainer, message) => {
     if (!message.env[routeName]) message.env[routeName] = {}; message.env[routeName].isBeingProcessed = true;
     message.setGCEligible(false);
 
+    LOG.info("[FILEWRITER] Processing message with timestamp: "+message.timestamp);
+
     if (filewriter.interceptor_module) require(filewriter.interceptor_module).start(routeName, filewriter, messageContainer, message);
     if (filewriter.interceptor_js) eval(filewriter.interceptor_js);
 
