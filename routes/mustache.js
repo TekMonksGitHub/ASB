@@ -11,8 +11,9 @@ const hairyone = require("mustache");
 
 exports.start = (routeName, mustache, _messageContainer, message) => {
     if (mustache.flow.env.mustache && mustache.flow.env.mustache[mustache.template] && mustache.flow.env.mustache[mustache.template].ignorecall) return;
-    if (!mustache.flow.env.mustache || !mustache.flow.env.mustache[mustache.template]) {    // template not read yet
-        mustache.flow.env.mustache = {}; mustache.flow.env.mustache[mustache.template] = {ignorecall: true};    // we are reading the template now
+    if (!mustache.flow.env.mustache) mustache.flow.env.mustache = {};
+    if (!mustache.flow.env.mustache[mustache.template]) {    // requested template not read yet
+        mustache.flow.env.mustache[mustache.template] = {ignorecall: true};    // we are reading the template now
         message.setGCEligible(false);                       // we are not done
         fs.readFile(mustache.template, {encoding: "utf-8"}, (err, data) => {
             if (err) {
