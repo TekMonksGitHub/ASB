@@ -4,7 +4,7 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-const FileWriter = require(`${CONSTANTS.LIBDIR}/FileWriter.js`)
+const FastFileWriter = require(`${CONSTANTS.LIBDIR}/FileWriter.js`)
 
 exports.start = (routeName, filewriter, messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.
@@ -23,7 +23,7 @@ exports.start = (routeName, filewriter, messageContainer, message) => {
     let fw; let flow = filewriter.flow;
     if (flow.env[routeName] && flow.env[routeName][filewriter.path]) fw = flow.env[routeName][filewriter.path];
     else {
-        fw = FileWriter.createFileWriter(filewriter.path, filewriter.writeCloseTimeout || 5000, 
+        fw = FastFileWriter.createFileWriter(filewriter.path, filewriter.writeCloseTimeout || 5000, 
             filewriter.encoding || "utf8", !filewriter.append);
         
         if (!flow.env[routeName]) flow.env[routeName] = {};
