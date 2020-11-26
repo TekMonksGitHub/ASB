@@ -1,9 +1,12 @@
 # ASB - API Service Bus
-JSON based, parallel and high performance, enterprise ESB.
+JSON based, parallel and high performance, enterprise next generation ESB.
 
 Fully asynchronous, very high performance, very easy to use.
 
-Uses JSON and not XML as the native datatype and common sense to keep things easy.
+* Message driven not flow driven
+* Prereq allow complicated message flows
+* Can process millions of messages a second
+* Uses JSON and not XML as the native datatype and common sense to keep things easy.
 
 ###### NPM Modules Needed
 The following are needed for the CSV route nodes
