@@ -1,5 +1,5 @@
 /* 
- * esb.js, Main cluster manager for the ESB
+ * asb.js, Main cluster manager for the ASB
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
