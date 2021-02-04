@@ -92,7 +92,7 @@ function createSearchIndex(aiinsights_push, message, cb) {
     LOG.info("[AIINSIGHTS_PUSH] Connecting to AI Insights Search...");
 
     let getter = aiinsights_push.host_secure?rest.getHttps:rest.get;
-    getter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, {}, null, (err, _, status)=>{
+    getter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, {}, null, aiinsights_push.sslObj, (err, _, status)=>{
         if (err) {cb(err); return;}
 
         if (status == 404) {
@@ -122,7 +122,7 @@ function createSearchIndex(aiinsights_push, message, cb) {
                 analyticsIndex.mappings[type].properties[aiinsights_push.all_field_name] = {"type":"text"};
 
             let putter = aiinsights_push.host_secure?rest.putHttps:rest.put;
-            putter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, {}, analyticsIndex, (err, _, status) => {
+            putter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, {}, analyticsIndex, aiinsights_push.sslObj, (err, _, status) => {
                 if (err) cb(err);
                 else if (status != 200) cb(`Error: Unable to create Analytics index. Error code: ${status}`);
                 else cb();
