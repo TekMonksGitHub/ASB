@@ -25,7 +25,7 @@ exports.start = (routeName, rest, _messageContainer, message) => {
 
     if (!rest.path.startsWith("/")) rest.path = `/${rest.path.trim()}`;
 
-    restClient[rest.method](rest.host, rest.port, rest.path, headers, message.content, (error, data) =>{
+    restClient[rest.method](rest.host, rest.port, rest.path, headers, message.content, rest.sslObj, (error, data) =>{
         if (error) {
             LOG.error(`[REST] Call failed with error: ${error}`);
             message.addRouteError(routeName);
