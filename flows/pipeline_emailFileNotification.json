@@ -1,0 +1,31 @@
+{
+	"flow":{
+		"name":"Email file notification",
+		"disabled":false
+	},
+	"listener": {
+		"type":"file", 
+		"isMessageGenerator": true,
+		"path":"C:/test/in/*",
+		"donePath":"C:/test/done"
+	},
+	"route0":{
+		"type": "js",
+		"dependencies":"listener",
+		"module":"{{ESB_DIR}}/custom/email_custom.js"
+	},
+	"output": {
+		"type": "email",
+        "dependencies":"route0",
+		"host":"smtp.mailgun.org",
+		"port": 465,
+		"secure": true,
+		"user": "noreply@teleworkr.com",
+		"password": "<encrypted password goes here>",
+		"to": "rvkapoor@tekmonks.com",
+		"from": "noreply@tekmonks.com",
+		"title": "New request was submitted",
+		"text": "New file has been submitted for processing.",
+		"html": "<p>New file has been submitted for processing.</p>"
+	}
+}

@@ -23,7 +23,7 @@
 	"route2": {
 		"type":"ediparser",
 		"dependencies":["route1.1"],
-		"java":"c:/Users/Rohit Kapoor/source/jdk8/bin/java.exe"
+		"java":"{{process.env.JAVA_HOME}}/bin/java.exe"
 	},
 	"route3": {
 		"type":"filewriter",

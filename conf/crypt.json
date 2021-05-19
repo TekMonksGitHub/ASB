@@ -1,3 +1,4 @@
 {
-    "key":"C77AE67918DAF5A819EE6EF2E9930554W2"
+    "key":"C77AE67918DAF5A819EE6EF2E9930554W2",
+    "crypt_algo":"aes-256-ctr"
 }

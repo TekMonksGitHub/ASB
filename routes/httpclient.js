@@ -29,12 +29,12 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
             httpclient.timeout, (error, result) => {
 
         if (error) {
-            LOG.error(`[HTTP] Call failed with error: ${error}`);
+            LOG.error(`[HTTP] Call failed with error: ${error}, for message with timestamp: ${message.timestamp}`);
             message.addRouteError(routeName);
             delete message.env[routeName];  // clean up our mess
             message.setGCEligible(true);
         } else {
-            message.addRouteDone(`${routeName}`);
+            message.addRouteDone(routeName);
             delete message.env[routeName];  // clean up our mess
             message.setGCEligible(true);
             message.content = result.response;

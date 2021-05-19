@@ -14,7 +14,8 @@
             "type": "node",
             "request": "launch",
             "name": "Launch ESB Clustered",
-            "program": "${workspaceFolder}/esb.js"
+            "program": "${workspaceFolder}/esb.js", 
+            "env": {"JAVA_HOME":"${workspaceFolder}/../../Programs/jdk-16.0.1"}
         }
     ]
 }
