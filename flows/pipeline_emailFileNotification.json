@@ -1,7 +1,7 @@
 {
 	"flow":{
 		"name":"Email file notification",
-		"disabled":false
+		"disabled":true
 	},
 	"listener": {
 		"type":"file", 
