@@ -2,7 +2,7 @@
 	"flow": {
 		"name":"Expose SOAP API as REST",
 		"description": "Exposes NOAA Weather SOAP Web Service as a REST API. Uses URLs. Input LAT and LON with west as negative and south as negative, and using only two decimal places.",
-		"disabled": false,
+		"disabled": true,
 		"autoGC": false
 	},
 	"listener": {
