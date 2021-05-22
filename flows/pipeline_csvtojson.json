@@ -6,7 +6,7 @@
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path":"c:/test/in/^GSPC.csv",
+		"path":"c:/test/in/*.csv",
 		"donePath":"c:/test/processing"
 	},
 	"route0":{
@@ -25,7 +25,7 @@
 	"output": {
 		"type": "filewriter",
         "dependencies":"route1",
-		"path":"c:/test/^GSPC.json",
+		"path":"c:/test/VOO.ndjson",
 		"write_ndjson": true,
 		"append": true,
 		"writeCloseTimeout": 5000,

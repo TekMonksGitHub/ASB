@@ -13,14 +13,19 @@ exports.start = (routeName, listener, messageContainer, _message) => {
     
     LOG.debug(`[FILE_LISTENER] Watching file/s: ${listener.path}`);
 
+    const countFilesProcessed = (count, totalToProcess) => {
+        count++; 
+        if (count == totalToProcess) listener.flow.env[routeName] = {"busy":true};
+        return count;
+    }
+
+    listener.flow.env[routeName] = {"busy":true}; let filesProcessed = 0;
     fs.readdir(path.dirname(listener.path), (err, files) => {
-        if (!err) files.forEach(fileThis => {
-            if (fileThis.match(convertFSWildcardsToJSRegEx(path.basename(listener.path)))) {
-                listener.flow.env[routeName] = {"busy":true};
-                processFile(`${path.dirname(listener.path)}/${fileThis}`, routeName, listener, messageContainer,
-                    _ => listener.flow.env[routeName] = {"busy":false});
-            }
-        })
+        if (!err && files.length) for (const fileThis of files) if (fileThis.match(convertFSWildcardsToJSRegEx(path.basename(listener.path)))) 
+            processFile(`${path.dirname(listener.path)}/${fileThis}`, routeName, listener, messageContainer,
+                _ => filesProcessed = countFilesProcessed(filesProcessed, files.length) );
+            else filesProcessed = countFilesProcessed(filesProcessed, files.length);
+        else { if (err) LOG.error(`File listener error: ${err}`); listener.flow.env[routeName] = {"busy":false}; }
     });
 }
 
