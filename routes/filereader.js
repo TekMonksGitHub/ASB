@@ -13,10 +13,12 @@ exports.start = (routeName, filereader, _messageContainer, message) => {
     if (!message.env[routeName]) message.env[routeName] = {}; message.env[routeName].isBeingProcessed = true;
     message.setGCEligible(false);
 
-    let handleError = e => {
+    const handleError = e => {
         LOG.error(`[FILEREADER] ${e}`); message.addRouteError(routeName); message.setGCEligible(true); return;}
 
-    let handleReadResult = (e, data) => {
+    const filepath = filereader.path||message.env.filepath;
+
+    const handleReadResult = (e, data) => {
         if (e) handleError(`Read error: ${e}`); else {
             try{message.content = JSON.parse(data);} catch(e){message.content = data;}
             message.addRouteDone(routeName);
@@ -24,11 +26,11 @@ exports.start = (routeName, filereader, _messageContainer, message) => {
             delete message.env[routeName].isBeingProcessed; // clean our garbage
 
             if (filereader.donePath) try {
-                let newPath = `${filereader.donePath}/${path.basename(message.env.filepath)}.${utils.getTimeStamp()}`;
-                fs.rename(message.env.filepath, newPath, err => {if (err) LOG.error(`[FILEREADER] Error moving: ${err}`)});
+                const newPath = `${filereader.donePath}/${path.basename(filepath)}.${utils.getTimeStamp()}`;
+                fs.rename(filepath, newPath, err => {if (err) LOG.error(`[FILEREADER] Error moving: ${err}`)});
             } catch (e) {LOG.error(`[FILEREADER] Error moving: ${e}`);}
         }
     }
 
-    fs.readFile(message.env.filepath||filereader.path, filereader.encoding?filereader.encoding:null, handleReadResult);
+    fs.readFile(filepath, filereader.encoding?filereader.encoding:null, handleReadResult);
 }

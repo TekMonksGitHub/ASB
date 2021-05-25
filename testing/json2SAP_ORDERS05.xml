@@ -1,0 +1,81 @@
+<ORDERS05>
+	<IDOC BEGIN="1">
+		<EDI_DC40 SEGMENT="1">
+			<TABNAM>EDI_DC40</TABNAM>
+			<MANDT>100</MANDT>
+			<DOCNUM>{{OrderNumber}}</DOCNUM>
+			<DOCREL>740</DOCREL>
+			<STATUS>30</STATUS>
+			<DIRECT>1</DIRECT>
+			<OUTMOD>2</OUTMOD>
+			<IDOCTYP>ORDERS05</IDOCTYP>
+			<MESTYP>ORDERS</MESTYP>
+			<STDMES>ORDERS</STDMES>
+			<SNDPOR>SENDER</SNDPOR>
+			<SNDPRT>LS</SNDPRT>
+			<SNDPRN>{{Sender}}</SNDPRN>
+			<RCVPOR>SAPXI</RCVPOR>
+			<RCVPRT>LS</RCVPRT>
+			<RCVPFC>RECEIVER</RCVPFC>
+			<CREDAT>{{OrderDate}}</CREDAT>
+		</EDI_DC40>
+		<E1EDK01 SEGMENT="1">
+			<KZABS>X</KZABS>
+			<CURCY>{{Currency}}</CURCY>
+			<HWAER>{{Currency}}</HWAER>
+			<WKURS>1.00000</WKURS>
+			<ZTERM>Z008</ZTERM>
+			<BSART>Z100</BSART>
+			<BELNR>{{OrderNumber}}</BELNR>
+			<RECIPNT_NO>0000059029</RECIPNT_NO>
+		</E1EDK01>
+		<E1EDK14 SEGMENT="1">
+			<QUALF>014</QUALF>
+			<ORGID>1000</ORGID>
+		</E1EDK14>
+		<E1EDK03 SEGMENT="1">
+			<IDDAT>012</IDDAT>
+			<DATUM>{{OrderDate}}</DATUM>
+		</E1EDK03>
+		<E1EDKA1 SEGMENT="1">
+			<PARVW>AG</PARVW>
+			<PARTN>{{SoldToPartnerNumber}}</PARTN>
+		</E1EDKA1>
+		<E1EDKA1 SEGMENT="1">
+			<PARVW>LF</PARVW>
+			<PARTN>{{SupplierPartnerNumber}}</PARTN>
+		</E1EDKA1>
+		<E1EDKA1 SEGMENT="1">
+			<PARVW>WE</PARVW>
+			<PARTN>{{SoldToPartnerNumber}}</PARTN>
+		</E1EDKA1>
+		<E1EDK02 SEGMENT="1">
+			<QUALF>001</QUALF>
+			<BELNR>{{EndClientPONumber}}</BELNR>
+			<DATUM>{{OrderDate}}</DATUM>
+		</E1EDK02>
+		{{#ItemsOrdered}}
+		<E1EDP01 SEGMENT="1">
+			<POSEX>{{ItemNumber}}</POSEX>
+			<ACTION>001</ACTION>
+			<PSTYP>0</PSTYP>
+			<KZABS>X</KZABS>
+			<MENGE>{{Quantity}}</MENGE>
+			<MENEE>{{UnitOfMeasure}}</MENEE>
+			<BMNG2>{{Quantity}}</BMNG2>
+			<PMENE>{{UnitOfMeasure}}</PMENE>
+			<E1EDP20 SEGMENT="1">
+				<WMENG>{{Quantity}}</WMENG>
+				<EDATU>{{DeliveryDate}}</EDATU>
+			</E1EDP20>
+			{{#Materials}}
+			<E1EDP19 SEGMENT="1">
+				<QUALF>{{CustomerMaterialNumber}}</QUALF>
+				<IDTNR>{{MaterialID}}</IDTNR>
+				<KTEXT>{{MaterialShortDescription}}</KTEXT>
+			</E1EDP19>
+			{{/Materials}}
+		</E1EDP01>
+		{{/ItemsOrdered}}
+	</IDOC>
+</ORDERS05>

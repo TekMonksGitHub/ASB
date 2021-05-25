@@ -1,0 +1,34 @@
+{
+    "OrderNumber": "32940292042",
+    "Sender": "Tekmonks Corp",
+    "OrderDate": "20210521",
+    "Currency": "EUR",
+    "SoldToPartnerNumber": "TKMASB01",
+    "SupplierPartnerNumber": "ASB",
+    "EndClientPONumber": "TKM4828429",
+    "ItemsOrdered": [
+        {"ItemNumber": "24424242",
+        "Quantity": 2,
+        "UnitOfMeasure": "Instance",
+        "DeliveryDate": "20210523",
+        "Materials":[
+        {"CustomerMaterialNumber": "ESB01",
+        "MaterialID": "ESB",
+        "MaterialShortDescription": "ESB Bus"}
+        ]
+        },
+        {"ItemNumber": "24424243",
+        "Quantity": 2,
+        "UnitOfMeasure": "Instance",
+        "DeliveryDate": "20210523",
+        "Materials":[
+        {"CustomerMaterialNumber": "APIGW01",
+        "MaterialID": "APIGW",
+        "MaterialShortDescription": "API Gateway"},
+        {"CustomerMaterialNumber": "APISGW01",
+            "MaterialID": "APISGW",
+            "MaterialShortDescription": "API Security Gateway"}
+        ]
+        }
+    ]
+}

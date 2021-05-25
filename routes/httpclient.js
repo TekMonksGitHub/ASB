@@ -3,8 +3,6 @@
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
-
-const utils = require(`${CONSTANTS.LIBDIR}/utils.js`);
 const http = require(`${CONSTANTS.LIBDIR}/httpclient.js`);
 
 exports.start = (routeName, httpclient, _messageContainer, message) => {
@@ -13,7 +11,7 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
     message.setGCEligible(false);
 
     if (httpclient.url) {   // parse URLs here and prioritize them first, support parsed properties for URLs
-        const urlToCall = new URL(utils.expandProperty(httpclient.url, httpclient.flow, message));
+        const urlToCall = new URL(httpclient.url, httpclient.flow, message);
         httpclient.port = urlToCall.port; httpclient.isSecure = urlToCall.protocol == "https:";
         httpclient.host = urlToCall.hostname; httpclient.path = urlToCall.pathname + urlToCall.search;
         if (!httpclient.method) httpclient.method = "get";

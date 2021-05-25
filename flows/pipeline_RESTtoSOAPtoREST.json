@@ -2,7 +2,8 @@
 	"flow": {
 		"name":"Expose SOAP API as REST",
 		"disabled": true,
-		"autoGC": false
+		"autoGC": false,
+		"expandRouteProperties": true
 	},
 	"listener": {
 		"type":"rest_listener", 

@@ -1,5 +1,5 @@
 {
-    "debug": false,
+    "debug": true,
     "max_log_mb": 100 ,
     "closeTimeOut": 30000,
     "disabled": false

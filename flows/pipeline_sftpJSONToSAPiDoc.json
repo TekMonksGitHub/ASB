@@ -1,0 +1,42 @@
+{
+	"flow":{
+		"name": "sftp JSON to SAP ORDRSP iDoc",
+		"disabled": false,
+		"expandRouteProperties": true,
+		"cpuInterval": 1000
+	},
+	"listener": {
+		"type":"sftp", 
+		"isMessageGenerator": true,
+		"path": "/home/tekmonks/in/*.json",
+		"donePath": "{{ESB_DIR}}/testing/processing",
+		"remoteDonePath": "/home/tekmonks/done",
+		"host": "157.230.12.111",
+		"user": "tekmonks",
+		"password": "bc60d50e98b3696387802e7e9e551ae4651bbe20",
+		"port": 22
+	},
+	"route0":{
+		"type": "filereader",
+		"dependencies": "listener",
+        "donePath": "{{ESB_DIR}}/testing/done",
+        "encoding": "utf8",
+		"path": "{{{message.env.filepath}}}"
+	},
+	"route1": {
+		"type": "mustache",
+        "dependencies": "route0",
+        "template": "{{ESB_DIR}}/testing/json2SAP_ORDERS05.xml"
+	},
+	"output": {
+		"type": "sftpupload",
+        "dependencies": "route1",
+		"remotepath": "/home/tekmonks/out/json2xml_out_sap_orders05.xml",
+		"host": "157.230.12.111",
+		"user": "tekmonks",
+		"password": "bc60d50e98b3696387802e7e9e551ae4651bbe20",
+		"port": 22,
+		"leaveTempFiles": true,
+		"rawoutput": true
+	}
+}

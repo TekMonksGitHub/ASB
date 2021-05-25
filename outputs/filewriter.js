@@ -3,9 +3,4 @@
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
-
-const filewriter_real = require(`${CONSTANTS.ROOTDIR}/routes/filewriter.js`);
-
-exports.start = (routeName, filewriter, messageContainer, message) => {
-    filewriter_real.start(routeName, filewriter, messageContainer, message);
-}
+exports.start = require(`${CONSTANTS.ROOTDIR}/routes/filewriter.js`).start;

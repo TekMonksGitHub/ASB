@@ -12,7 +12,7 @@ exports.start = (routeName, rest, _messageContainer, message) => {
     message.setGCEligible(false);
 
     if (rest.url) {   // parse URLs here and prioritize them first, support parsed properties for URLs
-        const urlToCall = new URL(utils.expandProperty(rest.url));
+        const urlToCall = new URL(rest.url);
         rest.port = urlToCall.port; rest.isSecure = urlToCall.protocol == "https:";
         rest.host = urlToCall.hostname; rest.path = urlToCall.pathname + urlToCall.search;
         if (!rest.method) rest.method = "get";
