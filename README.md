@@ -1,4 +1,4 @@
-# ASB - API Service Bus
+# ASB - AI Service Bus
 JSON based, parallel and high performance, enterprise next generation ESB.
 
 Fully asynchronous, very high performance, very easy to use.
