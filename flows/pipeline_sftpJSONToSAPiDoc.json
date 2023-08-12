@@ -1,7 +1,7 @@
 {
 	"flow":{
 		"name": "sftp JSON to SAP ORDRSP iDoc",
-		"disabled": false,
+		"disabled": true,
 		"expandRouteProperties": true,
 		"cpuInterval": 1000
 	},

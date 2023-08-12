@@ -1,18 +1,19 @@
 {
 	"flow":{
 		"name":"EDI to JSON",
-		"disabled":true
+		"disabled":true,
+		"expandRouteProperties": true
 	},
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path":"c:/test/in/210invoice.x12",
-		"donePath":"c:/test/processing"
+		"path":"{{ESB_DIR}}/in/210invoice.x12",
+		"donePath":"{{ESB_DIR}}/processing"
 	},
 	"route0":{
 		"type": "filereader",
 		"dependencies":["listener"],
-        "donePath":"c:/test/done",
+        "donePath":"{{ESB_DIR}}/done",
         "encoding":"utf8"
 	},
 	"route1": {
@@ -23,7 +24,7 @@
 	"output": {
 		"type": "filewriter",
         "dependencies":"route1",
-		"path":"c:/test/210invoice.json",
+		"path":"{{ESB_DIR}}/210invoice.json",
 		"prettyJSON": 4,
 		"append": false,
 		"writeCloseTimeout": 5000

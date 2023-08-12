@@ -1,7 +1,8 @@
 {
 	"flow": {
 		"name": "SAP WS endpoint to write to a local JSON file",
-		"disabled": true
+		"disabled": true,
+		"expandRouteProperties": true
 	},
 	"listener": {
 		"type": "http_listener", 
@@ -19,7 +20,7 @@
 	"route1": {
 		"type": "filewriter",
 		"dependencies": "route0",
-        "path": "c:/test/sapIn.json",
+        "path": "{{ESB_DIR}}/sapIn.json",
         "prettyJSON": 4,
 		"append": false,
 		"writeCloseTimeout": 5000

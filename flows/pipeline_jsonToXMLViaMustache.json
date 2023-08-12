@@ -1,29 +1,30 @@
 {
 	"flow":{
 		"name": "JSON to XML using Mustache",
-		"disabled": true
+		"disabled": true,
+		"expandRouteProperties": true
 	},
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path": "c:/test/in/json2xml.json",
-		"donePath": "c:/test/processing"
+		"path": "{{ESB_DIR}}/testing/in/json2SAP_ORDERS05.json",
+		"donePath": "{{ESB_DIR}}/testing/processing"
 	},
 	"route0":{
 		"type": "filereader",
 		"dependencies": "listener",
-        "donePath": "c:/test/done",
+        "donePath": "{{ESB_DIR}}/testing/done",
         "encoding": "utf8"
 	},
 	"route1": {
 		"type": "mustache",
         "dependencies": "route0",
-        "template": "c:/test/json2xml.xml"
+        "template": "{{ESB_DIR}}/testing/json2SAP_ORDERS05.xml"
 	},
 	"output": {
 		"type": "filewriter",
         "dependencies": "route1",
-		"path": "c:/test/json2xml_out.xml",
+		"path": "{{ESB_DIR}}/testing/json2xml_out_SAP_ORDERS05.xml",
 		"append": false,
 		"writeCloseTimeout": 5000,
 		"encoding": "utf8"

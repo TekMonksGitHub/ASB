@@ -1,0 +1,36 @@
+{
+	"flow":{
+		"name": "JSON to TSV using Mustache and sftp",
+		"disabled": true,
+		"expandRouteProperties": true
+	},
+	"listener": {
+		"type":"file", 
+		"isMessageGenerator": true,
+		"path": "{{ESB_DIR}}/testing/in/json2tsv.tsv",
+		"donePath": "{{ESB_DIR}}/testing/done"
+	},
+    "route1":{
+		"type": "sftpdownload",
+		"dependencies": "route0",
+		"remotepath": "/home/tekmonks/in/json2tsv.json",
+		"host": "157.230.12.111",
+		"user": "tekmonks",
+		"password": "bc60d50e98b3696387802e7e9e551ae4651bbe20",
+		"port": 22,
+		"rawoutput": true
+	},
+	"route2": {
+		"type": "mustache",
+        "dependencies": "route0",
+        "template": "{{ESB_DIR}}/testing/done/json2tsv.tsv"
+	},
+	"output": {
+		"type": "filewriter",
+        "dependencies": "route2",
+		"path": "{{ESB_DIR}}/testing/out/json2tsv.tsv",
+		"append": false,
+		"writeCloseTimeout": 5000,
+		"encoding": "utf8"
+	}
+}

@@ -1,20 +1,21 @@
 {
 	"flow":{
 		"name":"Multiple CSVs to JSONs",
-		"disabled":true
+		"disabled":true,
+		"expandRouteProperties": true
 	},
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path":"c:/test/in/*^GSPC.csv",
-		"donePath":"c:/test/processing"
+		"path":"{{ESB_DIR}}/in/*^GSPC.csv",
+		"donePath":"{{ESB_DIR}}/processing"
 	},
 	"route0":{
 		"type": "csvfilereader",
 		"dependencies":["listener"],
 		"rowsPerParse": 10000,
 		"skip_first_row":true,
-        "donePath":"c:/test/done"
+        "donePath":"{{ESB_DIR}}/done"
 	},
 	"route1": {
 		"type":"csvparser",
@@ -25,7 +26,7 @@
 	"output": {
 		"type": "filewriter",
 		"dependencies":"route1",
-		"interceptor_module":"c:/users/rohit kapoor/source/json_esb/custom/multipath_interceptor.js",
+		"interceptor_module":"{{ESB_DIR}}/custom/multipath_interceptor.js",
 		"interceptor_js":"",
 		"write_ndjson": true,
 		"append": true,

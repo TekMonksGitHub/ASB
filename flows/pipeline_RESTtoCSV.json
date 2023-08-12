@@ -2,7 +2,8 @@
 	"flow": {
 		"name":"REST API to write to a local CSV file",
 		"disabled":true,
-		"autoGC":false
+		"autoGC":false,
+		"expandRouteProperties": true
 	},
 	"listener": {
 		"type":"rest_listener", 
@@ -17,7 +18,7 @@
 		"type": "csvwriter",
 		"dependencies":["listener"],
 		"headers":["firstname", "lastname"],
-		"path":"c:/test/json2csv.csv",
+		"path":"{{ESB_DIR}}/json2csv.csv",
 		"encoding":"utf8",
 		"timeout":5000
 	},

@@ -1,0 +1,26 @@
+{
+	"flow":{
+		"name": "Email to File via IMAP listener",
+		"disabled": false,
+		"expandRouteProperties": true,
+		"cpuInterval": 1000
+	},
+	"listener": {
+		"type":"imap", 
+		"isMessageGenerator": true,
+		"mailbox":"INBOX",
+		"user": "testemail.imap2023@gmail.com",
+		"password": "gjklcnagedlrqnuw",
+		"host": "imap.gmail.com",
+		"port": 993,
+		"tls": true
+	},
+	"output": {
+		"type": "filewriter",
+        "dependencies":"listener",
+		"path":"{{ESB_DIR}}/email.json",
+		"prettyJSON": 4,
+		"append": false,
+		"writeCloseTimeout": 5000
+	}
+}
