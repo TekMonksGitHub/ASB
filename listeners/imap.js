@@ -29,12 +29,10 @@ exports.start = async (routeName, imapnode, messageContainer, _message) => {
         await imapClient.connect(); isConnected = true;
         imap_mailbox_lock = await imapClient.getMailboxLock(imapnode.mailbox || "INBOX");
 
-        const email = await imapClient.fetchOne(imapClient.mailbox.exists, { source: true });
-        LOG.info(email.source.toString());
-        for await (const emailThis of imapClient.fetch('1:*', { envelope: true }))    // log subjects of all emails in the inbox
-            LOG.info(`${emailThis.uid}: ${emailThis.envelope.subject}`);
+        const email = await imapClient.fetchOne(imapClient.mailbox.exists, { envelope: true });
+        LOG.info(email.envelope.subject);
             
-        message.content = email;
+        message.content = email.envelope.subject;
         message.addRouteDone(routeName);
         messageContainer.add(message);
         LOG.info(`[IMAP_LISTENER] Injected message with timestamp: ${message.timestamp}`); 

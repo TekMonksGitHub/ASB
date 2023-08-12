@@ -11,9 +11,9 @@
 		"path": "/home/tekmonks/in/*.json",
 		"donePath": "{{ESB_DIR}}/testing/processing",
 		"remoteDonePath": "/home/tekmonks/done",
-		"host": "157.230.12.111",
-		"user": "tekmonks",
-		"password": "bc60d50e98b3696387802e7e9e551ae4651bbe20",
+		"host": "[add ip here]",
+		"user": "[add user here]",
+		"password": "[add password here]",
 		"port": 22
 	},
 	"route0":{

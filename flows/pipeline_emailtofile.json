@@ -9,8 +9,8 @@
 		"type":"imap", 
 		"isMessageGenerator": true,
 		"mailbox":"INBOX",
-		"user": "testemail.imap2023@gmail.com",
-		"password": "gjklcnagedlrqnuw",
+		"user": "[add email here]",
+		"password": "[add password here]",
 		"host": "imap.gmail.com",
 		"port": 993,
 		"tls": true
