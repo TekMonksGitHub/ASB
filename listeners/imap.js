@@ -54,7 +54,8 @@ exports.start = async (routeName, imapnode, messageContainer, _message) => {
                         message.content.texts = [part.content.toString('utf8'), ...(message.content.texts||[])];
                 } else if (imapnode.partsToInject.includes("attachments")) {    // extract email attachments
                     const attachmentThisPart = {contentType: part.meta.contentType, filename: part.meta.filename, 
-                        data: Buffer.from(part.content), _imap_part_size: partsToDownload[key].size};
+                        data: Buffer.from(part.content).toString("base64"), 
+                        _imap_part_size: partsToDownload[key].size, encoding: "base64"};
                     message.content.attachments = [attachmentThisPart, ...(message.content.attachments||[])];
                 }
             }
