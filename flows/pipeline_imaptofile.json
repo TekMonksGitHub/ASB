@@ -9,11 +9,14 @@
 		"type":"imap", 
 		"isMessageGenerator": true,
 		"mailbox":"INBOX",
-		"user": "[add email here]",
-		"password": "[add password here]",
+		"user": "[full email address here, usually]",
+		"password": "[password here]",
 		"host": "imap.gmail.com",
 		"port": 993,
-		"tls": true
+		"tls": true,
+		"maxmessages": 10,
+		"maxEmailSize": 20971520,
+		"partsToInject": ["envelope", "text", "html", "attachments"]
 	},
 	"output": {
 		"type": "filewriter",
