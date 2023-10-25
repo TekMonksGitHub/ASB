@@ -8,7 +8,7 @@ exports.start = (routeName, listener, messageContainer) => {
     const message = MESSAGE_FACTORY.newMessageAllocSafe();
     if (!message) {LOG.error("[JS_LISTENER] Message creation error, throttling listener."); return;}
 
-    if (listener.module) {message.content = require(listener.module).start(routeName, output, messageContainer);} 
+    if (listener.module) {message.content = require(listener.module).start(routeName, listener, messageContainer);} 
     else {message.content = new Function(listener.js)();}
 
     message.addRouteDone(routeName);
