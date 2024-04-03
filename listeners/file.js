@@ -15,7 +15,7 @@ exports.start = (routeName, listener, messageContainer, _message) => {
 
     const countFilesProcessed = (count, totalToProcess) => {
         count++; 
-        if (count == totalToProcess) listener.flow.env[routeName] = {"busy":true};
+        if (count == totalToProcess) listener.flow.env[routeName] = {"busy":false};
         return count;
     }
 

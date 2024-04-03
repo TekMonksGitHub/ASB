@@ -7,13 +7,13 @@
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path":"{{ESB_DIR}}/in/Test.xml",
-		"donePath":"{{ESB_DIR}}/processing"
+		"path":"{{{ESB_DIR}}}/testing/in/*.xml",
+		"donePath":"{{{ESB_DIR}}}/testing/processing"
 	},
 	"route0":{
 		"type": "filereader",
 		"dependencies":["listener"],
-        "donePath":"{{ESB_DIR}}/done",
+        "donePath":"{{{ESB_DIR}}}/testing/done",
         "encoding":"utf8"
 	},
 	"route1": {
@@ -23,7 +23,7 @@
 	"output": {
 		"type": "filewriter",
         "dependencies":"route1",
-		"path":"{{ESB_DIR}}/Test.json",
+		"interceptor_js": "filewriter.path='{{{ESB_DIR}}}/testing/out/'+require('path').parse(message.env.filepath).name+'.json';",
 		"prettyJSON": 4,
 		"append": false,
 		"writeCloseTimeout": 5000

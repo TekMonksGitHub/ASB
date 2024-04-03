@@ -10,7 +10,7 @@ exports.start = (routeName, _xmlparser, _messageContainer, message) => {
     LOG.debug("[XMLPARSER] Called for XML message: "+message.content);
 
     try {
-        const results = fast_xml.parse(message.content);
+        const results = (new fast_xml.XMLParser()).parse(message.content);
         message.content = results;
         message.addRouteDone(routeName);
 

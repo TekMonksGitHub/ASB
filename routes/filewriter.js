@@ -14,7 +14,8 @@ exports.start = (routeName, filewriter, messageContainer, message) => {
     LOG.info("[FILEWRITER] Processing message with timestamp: "+message.timestamp);
 
     if (filewriter.interceptor_module) require(filewriter.interceptor_module).start(routeName, filewriter, messageContainer, message);
-    if (filewriter.interceptor_js) eval(filewriter.interceptor_js);
+    if (filewriter.interceptor_js) new Function(["require", "routeName", "filewriter", "messageContainer", "message"], 
+        filewriter.interceptor_js)(require, routeName, filewriter, messageContainer, message);
 
     let output = (message.content instanceof Object ? JSON.stringify(message.content, null, filewriter.prettyJSON) :
         message.content);
