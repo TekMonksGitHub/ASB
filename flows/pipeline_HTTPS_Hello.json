@@ -1,14 +1,14 @@
 {
 	"flow": {
-		"name":"Hello world REST API",
+		"name":"Hello world HTTPS API",
 		"disabled": true,
         "expandRouteProperties": true
 	},
 	"listener": {
-		"type":"rest_listener", 
+		"type":"https_listener", 
 		"isMessageGenerator": true,
 		"host": "127.0.0.1",
-		"port":9090,
+		"port": 443,
 		"url":"/hello",
 		"allow_origin": "*",
 		"timeout": 120000
@@ -20,7 +20,7 @@
 		"js":"message.content.response = `Hello ${message.content.name}`; delete message.content.name;"
 	},
 	"output": {
-		"type":"rest_responder",
+		"type":"https_responder",
 		"dependencies":["listener", "route0"]
 	}
 }
