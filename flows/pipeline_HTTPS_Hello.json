@@ -1,17 +1,20 @@
 {
 	"flow": {
-		"name":"Hello world REST API",
+		"name":"Hello world HTTPS API",
 		"disabled": true,
         "expandRouteProperties": true
 	},
 	"listener": {
-		"type":"rest_listener", 
+		"type":"http_listener", 
 		"isMessageGenerator": true,
 		"host": "127.0.0.1",
-		"port":9090,
+		"port": 443,
 		"url":"/hello",
 		"allow_origin": "*",
-		"timeout": 120000
+		"timeout": 120000,
+		"ssl": true,
+		"sslKeyFile": "example/path/keyFile",
+    	"sslCertFile": "example/path/CertFile" 
 	},
 	"route0":{
 		"type": "js",
@@ -20,7 +23,7 @@
 		"js":"message.content.response = `Hello ${message.content.name}`; delete message.content.name;"
 	},
 	"output": {
-		"type":"rest_responder",
+		"type":"http_responder",
 		"dependencies":["listener", "route0"]
 	}
 }
