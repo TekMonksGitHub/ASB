@@ -34,7 +34,10 @@ exports.start = (routeName, rest, _messageContainer, message) => {
 
     rest.path = rest.path.trim(); if (!rest.path.startsWith("/")) rest.path = `/${rest.path}`;
 
-    restClient[rest.method](rest.host, rest.port, rest.path, headers, message.content, rest.timeout, rest.sslObj, (error, data) =>{
+    const params = [rest.host, rest.port, rest.path, headers, message.content, rest.timeout];
+    if(rest.isSecure) params.push(rest.sslObj);
+
+    restClient[rest.method](...params, (error, data) =>{
         if (error) {
             LOG.error(`[REST] Call failed with error: ${error}`);
             message.addRouteError(routeName);

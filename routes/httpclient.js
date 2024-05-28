@@ -32,10 +32,11 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
     }
 
     httpclient.path = httpclient.path.trim(); if (!httpclient.path.startsWith("/")) httpclient.path = `/${httpclient.path}`;
+    
+    const params = [httpclient.host, httpclient.port, httpclient.path, headers, message.content, httpclient.timeout];
+    if(httpclient.isSecure) params.push(httpclient.sslObj);
 
-    http[httpclient.method](httpclient.host, httpclient.port, httpclient.path, headers, message.content, 
-            httpclient.timeout, httpclient.sslObj, (error, data) => {
-
+    http[httpclient.method](...params, (error, data) => {
         if (error) {
             LOG.error(`[HTTP] Call failed with error: ${error}, for message with timestamp: ${message.timestamp}`);
             message.addRouteError(routeName);
