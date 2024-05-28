@@ -3,7 +3,6 @@
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
-
 const restClient = require(`${CONSTANTS.LIBDIR}/rest.js`);
 
 exports.start = (routeName, rest, _messageContainer, message) => {
@@ -33,8 +32,7 @@ exports.start = (routeName, rest, _messageContainer, message) => {
     }
 
     rest.path = rest.path.trim(); if (!rest.path.startsWith("/")) rest.path = `/${rest.path}`;
-
-    restClient[rest.method](rest.host, rest.port, rest.path, headers, message.content, rest.timeout, rest.sslObj, (error, data) =>{
+    const callback = (error, data) => {
         if (error) {
             LOG.error(`[REST] Call failed with error: ${error}`);
             message.addRouteError(routeName);
@@ -48,5 +46,10 @@ exports.start = (routeName, rest, _messageContainer, message) => {
             LOG.info(`[REST] Response received for message with timestamp: ${message.timestamp}`);
             LOG.debug(`[REST] Response data is: ${JSON.stringify(data)}`);
         }
-    });
+    }
+    
+    if(!rest.isSecure) restClient[rest.method](rest.host, rest.port, rest.path, headers, 
+        message.content, rest.timeout, callback );
+    else restClient[rest.method](rest.host, rest.port, rest.path, headers, 
+        message.content, rest.timeout, rest.sslObj, callback );
 }

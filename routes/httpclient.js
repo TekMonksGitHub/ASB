@@ -11,7 +11,7 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
     message.setGCEligible(false);
 
     if (httpclient.url) {   // parse URLs here and prioritize them first, support parsed properties for URLs
-        const urlToCall = new URL(httpclient.url, httpclient.flow, message);
+        const urlToCall = new URL(httpclient.url);
         httpclient.port = urlToCall.port; httpclient.isSecure = urlToCall.protocol == "https:";
         httpclient.host = urlToCall.hostname; httpclient.path = urlToCall.pathname + urlToCall.search;
         if (!httpclient.method) httpclient.method = "get";
@@ -32,10 +32,7 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
     }
 
     httpclient.path = httpclient.path.trim(); if (!httpclient.path.startsWith("/")) httpclient.path = `/${httpclient.path}`;
-
-    http[httpclient.method](httpclient.host, httpclient.port, httpclient.path, headers, message.content, 
-            httpclient.timeout, httpclient.sslObj, (error, data) => {
-
+    const callback = (error, data) => {
         if (error) {
             LOG.error(`[HTTP] Call failed with error: ${error}, for message with timestamp: ${message.timestamp}`);
             message.addRouteError(routeName);
@@ -49,5 +46,10 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
             LOG.info(`[HTTP] Response received for message with timestamp: ${message.timestamp}`);
             LOG.debug(`[HTTP] Response data is: ${message.content}`);
         }
-    });
+    }
+
+    if(!httpclient.isSecure) http[httpclient.method](httpclient.host, httpclient.port, httpclient.path, headers, 
+        message.content, httpclient.timeout, callback);
+    else http[httpclient.method](httpclient.host, httpclient.port, httpclient.path, headers, 
+        message.content, httpclient.timeout, httpclient.sslObj, callback);
 }
