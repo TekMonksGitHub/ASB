@@ -45,7 +45,7 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
             message.addRouteDone(routeName);
             delete message.env[routeName];  // clean up our mess
             message.setGCEligible(true);
-            message.content = httpclient.isBinary?data:data.toString("utf8");
+            message.content = httpclient.isBinary?data:data.toString(httpclient.encoding||"utf8");
             LOG.info(`[HTTP] Response received for message with timestamp: ${message.timestamp}`);
             LOG.debug(`[HTTP] Response data is: ${message.content}`);
         }

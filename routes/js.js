@@ -8,7 +8,10 @@ const utils = require(`${CONSTANTS.LIBDIR}/utils.js`);
 exports.start = (routeName, js, messageContainer, message) => {
     LOG.info(`[ROUTE_JS] Processing message with timestamp: ${message.timestamp}`);
 
-    if (js.module) {require(utils.expandProperty(js.module, js.flow, message)).start(routeName, js, messageContainer, message);} else {
+    if (js.module) {
+        const jsModule = require(utils.expandProperty(js.module, js.flow, message));
+        jsModule.start(routeName, js, messageContainer, message);
+    } else {
         try {
             const flow = js.flow; // allows JS code below to call the flow.
             eval(js.js);

@@ -8,14 +8,17 @@
             "type": "node",
             "request": "launch",
             "name": "Launch ESB",
-            "program": "${workspaceFolder}/lib/main.js"
+            "program": "${workspaceFolder}/lib/main.js",
+            "runtimeArgs": ["--preserve-symlinks"],
+            "env": {"NODE_TLS_REJECT_UNAUTHORIZED": "0", "JAVA_HOME":"${workspaceFolder}/../../Programs/jdk-16.0.1"}
         },
         {
             "type": "node",
             "request": "launch",
             "name": "Launch ESB Clustered",
             "program": "${workspaceFolder}/esb.js", 
-            "env": {"JAVA_HOME":"${workspaceFolder}/../../Programs/jdk-16.0.1"}
+            "runtimeArgs": ["--preserve-symlinks"],
+            "env": {"NODE_TLS_REJECT_UNAUTHORIZED": "0", "JAVA_HOME":"${workspaceFolder}/../../Programs/jdk-16.0.1"}
         }
     ]
 }
