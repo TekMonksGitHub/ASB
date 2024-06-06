@@ -10,8 +10,10 @@ const utils = require(CONSTANTS.LIBDIR+"/utils.js");
 
 exports.start = (routeName, listener, messageContainer, _message) => {
     if (listener.flow.env[routeName] && listener.flow.env[routeName].busy) return;  // we are busy processing
-    
-    LOG.debug(`[FILE_LISTENER] Watching file/s: ${listener.path}`);
+    if (!listener.flow.env[routeName]) {
+        listener.flow.env[routeName] = {initialized: true};
+        LOG.debug(`[FILE_LISTENER] Watching file/s: ${listener.path}`); // logging once is enough
+    }
 
     const countFilesProcessed = (count, totalToProcess) => {
         count++; 
@@ -19,13 +21,13 @@ exports.start = (routeName, listener, messageContainer, _message) => {
         return count;
     }
 
-    listener.flow.env[routeName] = {"busy":true}; let filesProcessed = 0;
+    listener.flow.env[routeName].busy = true; let filesProcessed = 0;
     fs.readdir(path.dirname(listener.path), (err, files) => {
         if (!err && files.length) for (const fileThis of files) if (fileThis.match(convertFSWildcardsToJSRegEx(path.basename(listener.path)))) 
             processFile(`${path.dirname(listener.path)}/${fileThis}`, routeName, listener, messageContainer,
                 _ => filesProcessed = countFilesProcessed(filesProcessed, files.length) );
             else filesProcessed = countFilesProcessed(filesProcessed, files.length);
-        else { if (err) LOG.error(`File listener error: ${err}`); listener.flow.env[routeName] = {"busy":false}; }
+        else { if (err) LOG.error(`File listener error: ${err}`); listener.flow.env[routeName].busy = false; }
     });
 }
 
