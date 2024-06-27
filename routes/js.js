@@ -1,11 +1,13 @@
 /* 
  * js.js - Runs native JS code
  * 
- * (C) 2018 TekMonks. All rights reserved.
+ * (C) 2024 TekMonks. All rights reserved.
  */
 const utils = require(`${CONSTANTS.LIBDIR}/utils.js`);
 
 exports.start = (routeName, js, messageContainer, message) => {
+    if (message.env[routeName]?.isProcessing) return;
+    if (!message.env[routeName]) message.env[routeName] = {isProcessing: true};
     LOG.info(`[ROUTE_JS] Processing message with timestamp: ${message.timestamp}`);
 
     if (js.module) {
