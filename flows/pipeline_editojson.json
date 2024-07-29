@@ -7,24 +7,24 @@
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path":"{{ESB_DIR}}/in/210invoice.x12",
-		"donePath":"{{ESB_DIR}}/processing"
+		"path":"{{{ESB_DIR}}}/testing/in/210invoice.x12",
+		"donePath":"{{{ESB_DIR}}}/testing/processing"
 	},
 	"route0":{
 		"type": "filereader",
 		"dependencies":["listener"],
-        "donePath":"{{ESB_DIR}}/done",
+        "donePath":"{{{ESB_DIR}}}/testing/done",
         "encoding":"utf8"
 	},
 	"route1": {
 		"type":"ediparser",
 		"dependencies":["route0"],
-		"java":"{{process.env.JAVA_HOME}}/bin/java.exe"
+		"java":"{{{process.env.JAVA_HOME}}}/bin/java.exe"
 	},
 	"output": {
 		"type": "filewriter",
         "dependencies":"route1",
-		"path":"{{ESB_DIR}}/210invoice.json",
+		"path":"{{{ESB_DIR}}}/210invoice.json",
 		"prettyJSON": 4,
 		"append": false,
 		"writeCloseTimeout": 5000

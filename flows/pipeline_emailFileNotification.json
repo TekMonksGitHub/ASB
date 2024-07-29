@@ -7,13 +7,13 @@
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path":"{{ESB_DIR}}/in/*",
-		"donePath":"{{ESB_DIR}}/done"
+		"path":"{{{ESB_DIR}}}/testing/in/*",
+		"donePath":"{{{ESB_DIR}}}/testing/done"
 	},
 	"route0":{
 		"type": "js",
 		"dependencies":"listener",
-		"module":"{{ESB_DIR}}/custom/email_custom.js"
+		"module":"{{{ESB_DIR}}}/custom/email_custom.js"
 	},
 	"output": {
 		"type": "email",

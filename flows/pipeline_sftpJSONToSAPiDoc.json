@@ -9,7 +9,7 @@
 		"type":"sftp", 
 		"isMessageGenerator": true,
 		"path": "/home/tekmonks/in/*.json",
-		"donePath": "{{ESB_DIR}}/testing/processing",
+		"donePath": "{{{ESB_DIR}}}/testing/processing",
 		"remoteDonePath": "/home/tekmonks/done",
 		"host": "[add ip here]",
 		"user": "[add user here]",
@@ -19,14 +19,14 @@
 	"route0":{
 		"type": "filereader",
 		"dependencies": "listener",
-        "donePath": "{{ESB_DIR}}/testing/done",
+        "donePath": "{{{ESB_DIR}}}/testing/done",
         "encoding": "utf8",
 		"path": "{{{message.env.filepath}}}"
 	},
 	"route1": {
 		"type": "mustache",
         "dependencies": "route0",
-        "template": "{{ESB_DIR}}/testing/json2SAP_ORDERS05.xml"
+        "template": "{{{ESB_DIR}}}/testing/json2SAP_ORDERS05.xml"
 	},
 	"output": {
 		"type": "sftpupload",
