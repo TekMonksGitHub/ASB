@@ -18,7 +18,7 @@
 		"type": "csvwriter",
 		"dependencies":["listener"],
 		"headers":["firstname", "lastname"],
-		"path":"{{ESB_DIR}}/json2csv.csv",
+		"path":"{{{ESB_DIR}}}/json2csv.csv",
 		"encoding":"utf8",
 		"timeout":5000
 	},

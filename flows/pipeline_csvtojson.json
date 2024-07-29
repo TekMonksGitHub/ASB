@@ -7,15 +7,15 @@
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path":"{{ESB_DIR}}/in/*.csv",
-		"donePath":"{{ESB_DIR}}/processing"
+		"path":"{{{ESB_DIR}}}/testing/in/*.csv",
+		"donePath":"{{{ESB_DIR}}}/testing/processing"
 	},
 	"route0":{
 		"type": "csvfilereader",
 		"dependencies":["listener"],
 		"rowsPerParse": 10000,
 		"skip_first_row":true,
-        "donePath":"{{ESB_DIR}}/done"
+        "donePath":"{{{ESB_DIR}}}/testing/done"
 	},
 	"route1": {
 		"type":"csvparser",
@@ -26,7 +26,7 @@
 	"output": {
 		"type": "filewriter",
         "dependencies":"route1",
-		"path":"{{ESB_DIR}}/VOO.ndjson",
+		"path":"{{{ESB_DIR}}}/VOO.ndjson",
 		"write_ndjson": true,
 		"append": true,
 		"writeCloseTimeout": 5000,

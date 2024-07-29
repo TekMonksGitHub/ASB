@@ -7,24 +7,24 @@
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path": "{{ESB_DIR}}/testing/in/json2SAP_ORDERS05.json",
-		"donePath": "{{ESB_DIR}}/testing/processing"
+		"path": "{{{ESB_DIR}}}/testing/in/json2SAP_ORDERS05.json",
+		"donePath": "{{{ESB_DIR}}}/testing/processing"
 	},
 	"route0":{
 		"type": "filereader",
 		"dependencies": "listener",
-        "donePath": "{{ESB_DIR}}/testing/done",
+        "donePath": "{{{ESB_DIR}}}/testing/done",
         "encoding": "utf8"
 	},
 	"route1": {
 		"type": "mustache",
         "dependencies": "route0",
-        "template": "{{ESB_DIR}}/testing/json2SAP_ORDERS05.xml"
+        "template": "{{{ESB_DIR}}}/testing/json2SAP_ORDERS05.xml"
 	},
 	"output": {
 		"type": "filewriter",
         "dependencies": "route1",
-		"path": "{{ESB_DIR}}/testing/json2xml_out_SAP_ORDERS05.xml",
+		"path": "{{{ESB_DIR}}}/testing/json2xml_out_SAP_ORDERS05.xml",
 		"append": false,
 		"writeCloseTimeout": 5000,
 		"encoding": "utf8"

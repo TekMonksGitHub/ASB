@@ -7,8 +7,8 @@
 	"listener": {
 		"type":"file", 
 		"isMessageGenerator": true,
-		"path": "{{ESB_DIR}}/testing/in/json2tsv.tsv",
-		"donePath": "{{ESB_DIR}}/testing/done"
+		"path": "{{{ESB_DIR}}}/testing/in/json2tsv.tsv",
+		"donePath": "{{{ESB_DIR}}}/testing/done"
 	},
     "route1":{
 		"type": "sftpdownload",
@@ -23,12 +23,12 @@
 	"route2": {
 		"type": "mustache",
         "dependencies": "route0",
-        "template": "{{ESB_DIR}}/testing/done/json2tsv.tsv"
+        "template": "{{{ESB_DIR}}}/testing/done/json2tsv.tsv"
 	},
 	"output": {
 		"type": "filewriter",
         "dependencies": "route2",
-		"path": "{{ESB_DIR}}/testing/out/json2tsv.tsv",
+		"path": "{{{ESB_DIR}}}/testing/out/json2tsv.tsv",
 		"append": false,
 		"writeCloseTimeout": 5000,
 		"encoding": "utf8"

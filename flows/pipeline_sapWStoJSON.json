@@ -20,7 +20,7 @@
 	"route1": {
 		"type": "filewriter",
 		"dependencies": "route0",
-        "path": "{{ESB_DIR}}/sapIn.json",
+        "path": "{{{ESB_DIR}}}/sapIn.json",
         "prettyJSON": 4,
 		"append": false,
 		"writeCloseTimeout": 5000
