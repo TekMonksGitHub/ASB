@@ -1,0 +1,5 @@
+{
+    "logfile": "asb.log.ndjson",
+    "accesslog": "asb.log.ndjson",
+    "debug_mode": true
+}
