@@ -1,0 +1,39 @@
+{
+	"flow":{
+		"name": "File KTL to Knowledge Lake",
+		"disabled": false,
+		"expandRouteProperties": true
+	},
+	"listener": {
+		"type":"file", 
+		"isMessageGenerator": true,
+		"path": "{{{ESB_DIR}}}/../testing/in/*",
+		"donePath": "{{{ESB_DIR}}}/../testing/processing"
+	},
+	"route0":{
+		"type": "filereader",
+		"dependencies": "listener",
+        "donePath": "{{{ESB_DIR}}}/../testing/done"
+	},
+	"route1":{
+		"type": "js",
+		"dependencies": ["route0"],
+        "module": "{{{ESB_DIR}}}/custom/filektl/messagektl.js",
+		"id": "kwltest@tekmonks.com",
+        "org": "tekmonks",
+        "kwl_island": "tkmaiapp"
+	},
+	"output": {
+		"type": "rest",
+		"dependencies":["route1"],
+		"host":"100.64.1.42",
+		"port":9090,
+		"isSecure": true,
+		"method":"post",
+		"path": "/apps/neuranet/indexdoc",
+		"timeout": 180000,
+		"sslObj": {"rejectUnauthorized": false},
+		"headers":["USER-AGENT: JSON_ESB", "ACCEPT: application/json", 
+			"X-API-KEY: fheiwu98237hjief8923ydewjidw834284hwqdnejwr79389"]
+	}
+}

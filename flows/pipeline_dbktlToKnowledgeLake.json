@@ -1,0 +1,44 @@
+{
+	"flow":{
+		"name":"DB KTL To Knowledge Lake",
+		"disabled":false,
+		"expandRouteProperties": true
+	},
+	"listener": {
+		"type":"timer", 
+		"isMessageGenerator": true,
+		"cron": "*/5 * * * * *"
+	},
+	"route0":{
+		"type": "js",
+		"dependencies": ["listener"],
+        "module": "{{{ESB_DIR}}}/custom/dbktl/dbktl.js",
+		"database_id": "demo.db",
+        "table": "sales",
+		"ktl_templates": [
+			"The sales of {{product}} for {{date}} day of the month {{month}} of {{year}} were ${{revenue}}"
+		],
+		"driver": "sqlite",
+		"db_connection_info": "{{{ESB_DIR}}}/../testing/db/demo.db",
+		"query": {"cmd":"select * from sales where timestamp>? limit 50", "params": ["{{{timestamp}}}"]},
+		"initial_timestamp": 0,
+		"timestamp_column": "timestamp",
+		"id": "kwltest@tekmonks.com",
+        "org": "tekmonks",
+        "kwl_island": "tkmaiapp",
+		"metadata": {"tag": "sales"}
+	},
+	"output": {
+		"type": "rest",
+		"dependencies":["route0"],
+		"host":"100.64.1.42",
+		"port":9090,
+		"isSecure": true,
+		"method":"post",
+		"path": "/apps/neuranet/indexdoc",
+		"timeout": 180000,
+		"sslObj": {"rejectUnauthorized": false},
+		"headers":["USER-AGENT: JSON_ESB", "ACCEPT: application/json", 
+			"X-API-KEY: fheiwu98237hjief8923ydewjidw834284hwqdnejwr79389"]
+	}
+}
