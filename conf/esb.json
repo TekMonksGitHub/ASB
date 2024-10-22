@@ -1,4 +1,5 @@
 {
     "cpuInterval":10,
-    "maxHeap": 2147483648
+    "maxHeap": 2147483648,
+    "env": {"NODE_TLS_REJECT_UNAUTHORIZED": 0}
 }
