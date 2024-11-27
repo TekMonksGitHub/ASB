@@ -1,1 +1,1 @@
-@node "%~dp0\asb.js" %*
+@node --ignore-certificate-errors "%~dp0\asb.js" %*
