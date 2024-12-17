@@ -1,0 +1,40 @@
+{
+	"flow":{
+		"name":"Crawl To Knowledge Lake",
+		"disabled":true,
+		"expandRouteProperties": true
+	},
+	"listener": {
+		"type":"file", 
+		"isMessageGenerator": true,
+		"path":"{{{ESB_DIR}}}/../testing/in/*.crawl",
+		"donePath":"{{{ESB_DIR}}}/../testing/processing"
+	},
+	"route0":{
+		"type": "filereader",
+		"dependencies":["listener"],
+        "donePath":"{{{ESB_DIR}}}/../testing/done",
+        "encoding":"utf8"
+	},
+	"route1": {
+		"type":"js",
+		"dependencies":["route0"],
+        "id": "kwltest@tekmonks.com",
+        "org": "tekmonks",
+        "kwl_island": "tkmaiapp",
+		"module":"{{{ESB_DIR}}}/custom/webspider/webspider.js"
+	},
+	"output": {
+		"type": "rest",
+		"dependencies":["route1"],
+		"host":"100.64.1.42",
+		"port":9090,
+		"isSecure": true,
+		"method":"post",
+		"path": "/apps/neuranet/indexdoc",
+		"timeout": 180000,
+		"sslObj": {"rejectUnauthorized": false},
+		"headers":["USER-AGENT: JSON_ESB", "ACCEPT: application/json", 
+			"X-API-KEY: fheiwu98237hjief8923ydewjidw834284hwqdnejwr79389"]
+	}
+}
