@@ -1,7 +1,7 @@
 {
 	"flow":{
 		"name":"DB KTL To Knowledge Lake",
-		"disabled":false,
+		"disabled":true,
 		"expandRouteProperties": true
 	},
 	"listener": {
