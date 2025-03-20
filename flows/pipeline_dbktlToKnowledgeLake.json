@@ -31,7 +31,7 @@
 	"output": {
 		"type": "rest",
 		"dependencies":["route0"],
-		"host":"192.168.0.51",
+		"host":"testhost1.app",
 		"port":9090,
 		"isSecure": true,
 		"method":"post",
