@@ -4,8 +4,8 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-const rest = require(CONSTANTS.LIBDIR+"/rest.js");
-const http = require(CONSTANTS.LIBDIR+"/httpclient.js");
+const rest = require(ASB_CONSTANTS.LIBDIR+"/rest.js");
+const http = require(ASB_CONSTANTS.LIBDIR+"/httpclient.js");
 
 exports.start = (routeName, aiinsights_push, _messageContainer, message) => {
     message.setGCEligible(false);       // re-route all to us, if we process it we will set it to GC eligible anyway

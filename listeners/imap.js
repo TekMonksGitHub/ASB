@@ -7,7 +7,7 @@
  */
 
 const {ImapFlow} = require("imapflow");
-const asbutils = require(`${CONSTANTS.LIBDIR}/utils.js`);
+const asbutils = require(`${ASB_CONSTANTS.LIBDIR}/utils.js`);
 
 const DEFAULT_MAX_MESSAGES_TO_FETCH = 10, DEFAULT_MAX_EMAIL_SIZE = 30*1024*1024;   // 30 MB max email size by default
 

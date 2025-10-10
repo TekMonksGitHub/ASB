@@ -3,7 +3,7 @@
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
-const utils = require(`${CONSTANTS.LIBDIR}/utils.js`);
+const utils = require(`${ASB_CONSTANTS.LIBDIR}/utils.js`);
 
 exports.start = (routeName, js, messageContainer, message) => {
     if (message.env[routeName]?.isProcessing) return;

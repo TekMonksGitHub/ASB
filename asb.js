@@ -3,12 +3,12 @@
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
-global.CONSTANTS = require(__dirname + "/lib/constants.js");
+global.ASB_CONSTANTS = require(__dirname + "/lib/constants.js");
 
 const cluster = require("cluster");
 
 if (cluster.isMaster) {
-	const conf = require(CONSTANTS.CONFDIR + "/cluster.json");
+	const conf = require(ASB_CONSTANTS.CONFDIR + "/cluster.json");
 
 	// Figure out number of workers.
 	let numWorkers = conf.workers;
@@ -27,4 +27,4 @@ if (cluster.isMaster) {
 		console.log("Forking a new process to compensate.");
 		cluster.fork();
 	});
-} else require(CONSTANTS.LIBDIR + "/main.js").bootstrap();
+} else require(ASB_CONSTANTS.LIBDIR + "/main.js").bootstrap();

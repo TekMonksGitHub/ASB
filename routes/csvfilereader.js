@@ -7,7 +7,7 @@
 const LineByLineReader = require("line-by-line");
 const fs = require("fs");
 const path = require("path");
-const utils = require(CONSTANTS.LIBDIR+"/utils.js");
+const utils = require(ASB_CONSTANTS.LIBDIR+"/utils.js");
 
 exports.start = (routeName, csvfilereader, messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].ignorecall) return;

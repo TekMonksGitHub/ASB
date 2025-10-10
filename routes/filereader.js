@@ -6,7 +6,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const utils = require(CONSTANTS.LIBDIR+"/utils.js");
+const utils = require(ASB_CONSTANTS.LIBDIR+"/utils.js");
 
 exports.start = (routeName, filereader, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.

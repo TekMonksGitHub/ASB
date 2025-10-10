@@ -3,7 +3,7 @@
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
-const http = require(`${CONSTANTS.LIBDIR}/httpclient.js`);
+const http = require(`${ASB_CONSTANTS.LIBDIR}/httpclient.js`);
 
 exports.start = (routeName, httpclient, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isProcessing) return;

@@ -4,7 +4,7 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-const FastFileWriter = require(`${CONSTANTS.LIBDIR}/FileWriter.js`)
+const FastFileWriter = require(`${ASB_CONSTANTS.LIBDIR}/FileWriter.js`)
 
 exports.start = (routeName, filewriter, messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isBeingProcessed) return;    // already working on it.

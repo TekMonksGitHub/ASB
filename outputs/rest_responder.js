@@ -4,7 +4,7 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-const httpServerFactory = require(`${CONSTANTS.LIBDIR}/httpServerFactory.js`);
+const httpServerFactory = require(`${ASB_CONSTANTS.LIBDIR}/httpServerFactory.js`);
 
 exports.start = (routeName, _output, _messageContainer, message) => {
     LOG.info(`[REST_RESPONDER] Sending response, message with timestamp: ${message.timestamp}`);

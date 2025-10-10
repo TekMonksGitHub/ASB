@@ -3,4 +3,4 @@
  * 
  * (C) 2024 TekMonks. All rights reserved.
  */
-exports.start = require(`${CONSTANTS.ROOTDIR}/routes/rest.js`).start;
+exports.start = require(`${ASB_CONSTANTS.ROOTDIR}/routes/rest.js`).start;

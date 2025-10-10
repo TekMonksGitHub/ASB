@@ -3,8 +3,8 @@
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
-const crypt = require(`${CONSTANTS.LIBDIR}/crypt.js`);
-const mailer = require(`${CONSTANTS.LIBDIR}/mailer.js`);
+const crypt = require(`${ASB_CONSTANTS.LIBDIR}/crypt.js`);
+const mailer = require(`${ASB_CONSTANTS.LIBDIR}/mailer.js`);
 
 exports.start = async (routeName, email, _messageContainer, message) => {
     if (message.env[routeName]?.isProcessing) return;

@@ -31,9 +31,9 @@ async function createAndMoveFile() {
     try {
         const csvContent = `Date;Open;High;Low;Close;Adj Close;Volume
 12;yes;11;3;12;11;77`;
-        const csvFilePath = `${CONSTANTS.ROOTDIR}/test.csv`;
-        const newCsvFilePath = `${CONSTANTS.ROOTDIR}/testing/in/test.csv`;
-        const jsonFilePath = `${CONSTANTS.ROOTDIR}/VOO.ndjson`;
+        const csvFilePath = `${ASB_CONSTANTS.ROOTDIR}/test.csv`;
+        const newCsvFilePath = `${ASB_CONSTANTS.ROOTDIR}/testing/in/test.csv`;
+        const jsonFilePath = `${ASB_CONSTANTS.ROOTDIR}/VOO.ndjson`;
         fs.writeFileSync(csvFilePath, csvContent);
         fs.mkdirSync(path.dirname(newCsvFilePath), { recursive: true });    
         fs.renameSync(csvFilePath, newCsvFilePath);              
