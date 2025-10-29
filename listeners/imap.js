@@ -14,7 +14,7 @@ const DEFAULT_MAX_MESSAGES_TO_FETCH = 10, DEFAULT_MAX_EMAIL_SIZE = 30*1024*1024;
 exports.start = async (routeName, imapnode, messageContainer, _message) => {
     if (imapnode.flow.env[routeName] && imapnode.flow.env[routeName].busy) return;  // we are busy processing
 
-    LOG.debug(`[IMAP_LISTENER] Watching mailbox ${imapnode.mailbox||"INBOX"} for the user ${imapnode.user}.`);
+    ASBLOG.debug(`[IMAP_LISTENER] Watching mailbox ${imapnode.mailbox||"INBOX"} for the user ${imapnode.user}.`);
 
     imapnode.flow.env[routeName] = {"busy":true};
 
@@ -28,14 +28,14 @@ exports.start = async (routeName, imapnode, messageContainer, _message) => {
         const emailsUnread = []; for await (const emailUnread of imapClient.fetch({seen: false}, 
                 {envelope: true, uid: true, size: true, headers: true, bodyStructure: true})) {
             emailsUnread.push(emailUnread);
-            LOG.info(`[IMAP_LISTENER] Found unread email - ${JSON.stringify(emailUnread.envelope)}`);
+            ASBLOG.info(`[IMAP_LISTENER] Found unread email - ${JSON.stringify(emailUnread.envelope)}`);
         }
-        if (!emailsUnread.length) LOG.info(`[IMAP_LISTENER] Found no unread emails for mailbox ${imapnode.mailbox||"INBOX"} for the user ${imapnode.user}.`)
+        if (!emailsUnread.length) ASBLOG.info(`[IMAP_LISTENER] Found no unread emails for mailbox ${imapnode.mailbox||"INBOX"} for the user ${imapnode.user}.`)
 
         const emailsToFetch = []; for (const [i, emailUnread] of emailsUnread.entries()) {
             if (i >= (imapnode.maxmessages||DEFAULT_MAX_MESSAGES_TO_FETCH)) break;
             if (emailUnread.size <= (imapnode.maxEmailSize||DEFAULT_MAX_EMAIL_SIZE)) emailsToFetch.push(emailUnread);
-            LOG.info(`"[IMAP_LISTENER] Email matching filtering criteria - ${JSON.stringify(emailUnread.envelope)}`);
+            ASBLOG.info(`"[IMAP_LISTENER] Email matching filtering criteria - ${JSON.stringify(emailUnread.envelope)}`);
         } 
 
         for (const emailToInject of emailsToFetch) {
@@ -62,10 +62,10 @@ exports.start = async (routeName, imapnode, messageContainer, _message) => {
             message.addRouteDone(routeName);
             messageContainer.add(message);
             await imapClient.messageFlagsAdd(emailToInject.seq, ["\\Seen"]);
-            LOG.info(`[IMAP_LISTENER] Injected message with timestamp: ${message.timestamp}`); 
+            ASBLOG.info(`[IMAP_LISTENER] Injected message with timestamp: ${message.timestamp}`); 
         }
     } catch (err) {
-        LOG.error(`[IMAP_LISTENER] IMAP server error for node ${routeName}, the error is ${JSON.stringify(err)}`)
+        ASBLOG.error(`[IMAP_LISTENER] IMAP server error for node ${routeName}, the error is ${JSON.stringify(err)}`)
     } finally { if (imap_mailbox_lock) imap_mailbox_lock.release(); if (isConnected && imapClient) await imapClient.logout();}
 
     imapnode.flow.env[routeName] = {"busy":false};

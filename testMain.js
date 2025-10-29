@@ -46,12 +46,12 @@ async function runTestsAsync(argv, report) {
 				
 			} catch (err) {
 				const error = `Testcase ${fileEntry} failed with error ${err}\n\n`;
-				LOG.error(error);
-				LOG.info(error);
+				ASBLOG.error(error);
+				ASBLOG.info(error);
 			}
 		else {
 			const errorMsg = `Skipping ${fileEntry} as it is not a proper test case module.\n\n`;
-			LOG.warn(errorMsg); LOG.info(errorMsg);
+			ASBLOG.warn(errorMsg); ASBLOG.info(errorMsg);
 		}
 	}
 }
@@ -61,18 +61,18 @@ function setupServerEnvironmentForTesting() {
 	console.log("creating server for testing ..");
 	/* Init the logs */
 	console.log("Initializing the logs.");
-	require(CONSTANTS.LIBDIR + "/log.js").initGlobalLoggerSync(`${CONSTANTS.LOGDIR}/${conf.logfile}`);
-	LOG.overrideConsole();
+	require(CONSTANTS.LIBDIR + "/ASBLOG.js").initGlobalLoggerSync(`${CONSTANTS.LOGDIR}/${conf.logfile}`);
+	ASBLOG.overrideConsole();
 	/* Warn if in debug mode */
 	if (conf.debug_mode) {
-		LOG.info("**** Server is in debug mode, expect severe performance degradation.\n");
+		ASBLOG.info("**** Server is in debug mode, expect severe performance degradation.\n");
 	}
 	asbProcess = spawn('node', [CONSTANTS.ROOTDIR + "/asb.js"], {
 		stdio: ['inherit']  // This will capture the stdout and stderr
 	});
 	return new Promise((resolve, reject) => {
 		asbProcess.on('error', (err) => {
-			LOG.error(`Failed to start server: ${err}`);
+			ASBLOG.error(`Failed to start server: ${err}`);
 			reject(err);
 		});
 		asbProcess.on('exit', (code) => {
@@ -82,7 +82,7 @@ function setupServerEnvironmentForTesting() {
 		});
 		asbProcess.stdout.on('data', (data) => {
 			const message = data.toString();
-			LOG.info(`stdout: ${message}`);
+			ASBLOG.info(`stdout: ${message}`);
 			if (message.includes('Running...')) { // Adjust this condition based on the actual readiness message
 				resolve();
 			}
@@ -104,7 +104,7 @@ async function main(argv) {
 		let report = await initiateReport();
 		await runTestsAsync(argv, report); // run the tests
 	} catch (error) {
-		LOG.error(`Error during setup or testing: ${error.message}`);
+		ASBLOG.error(`Error during setup or testing: ${error.message}`);
 		process.exit(1);
 	}
 	shouldExit = true; // exit

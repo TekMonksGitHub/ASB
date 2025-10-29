@@ -17,7 +17,7 @@ exports.start = (routeName, aiinsights_push, _messageContainer, message) => {
     message.env[routeName].isBeingWorkedOn = true; 
 
     let postMessage = _ => {
-        LOG.debug(`[AIINSIGHTS_PUSH] Posting message with timestamp ${message.timestamp}`);
+        ASBLOG.debug(`[AIINSIGHTS_PUSH] Posting message with timestamp ${message.timestamp}`);
 
         // if caching for bulk, setTimeout so if messages stop before bulk post limit is reached, 
         // we still post the last incomplete batch, when the timeout fires
@@ -89,7 +89,7 @@ function getBulkCreateRequest(messages, index, doctype) {
 }
 
 function createSearchIndex(aiinsights_push, message, cb) {
-    LOG.info("[AIINSIGHTS_PUSH] Connecting to AI Insights Search...");
+    ASBLOG.info("[AIINSIGHTS_PUSH] Connecting to AI Insights Search...");
 
     let getter = aiinsights_push.host_secure?rest.getHttps:rest.get;
     getter(aiinsights_push.host, aiinsights_push.port, aiinsights_push.index, {}, null, aiinsights_push.sslObj, (err, _, status)=>{
@@ -132,7 +132,7 @@ function createSearchIndex(aiinsights_push, message, cb) {
 }
 
 function handleBulkResult(msgStack, routeName, err, result, status) {
-    LOG.debug(`[AIINSIGHTS_PUSH] Result of posting messages: ${result}`);
+    ASBLOG.debug(`[AIINSIGHTS_PUSH] Result of posting messages: ${result}`);
     if (err) handleError(msgStack, routeName, err);
     if (status == 200 || status == 201) handleSuccess(msgStack, routeName);
     else handleError(msgStack, routeName, `Return status = ${status}`);
@@ -140,7 +140,7 @@ function handleBulkResult(msgStack, routeName, err, result, status) {
 
 function handleError(messages, routeName, e) {
     messages.forEach(message => {
-        LOG.error(`[AIINSIGHTS_PUSH] error: ${e}, giving up`); 
+        ASBLOG.error(`[AIINSIGHTS_PUSH] error: ${e}, giving up`); 
         message.addRouteError(routeName);
         delete message.env[routeName];  // clean up
         message.setGCEligible(true);    // we are done, GC it 
@@ -149,7 +149,7 @@ function handleError(messages, routeName, e) {
 
 function handleSuccess(messages, routeName) {
     messages.forEach(message => {
-        LOG.info(`[AIINSIGHTS_PUSH] Created document for message with timestamp, ${message.timestamp}`); 
+        ASBLOG.info(`[AIINSIGHTS_PUSH] Created document for message with timestamp, ${message.timestamp}`); 
         message.addRouteDone(routeName);
         delete message.env[routeName];  // clean up
         message.setGCEligible(true);    // we are done, GC it 

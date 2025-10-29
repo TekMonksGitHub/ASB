@@ -16,7 +16,7 @@ exports.start = async (routeName, email, _messageContainer, message) => {
     email.title = message.content.title || email.title; email.html = message.content.html; email.text = message.content.text;
     email.attachments = email.attachments || []; if (message.content.attachments) for (const attachment of message.content.attachments) email.attachments.push(attachment);
 
-    LOG.info(`[EMAIL] Emailing ${email.to}, from ${email.from} with incoming message with timestamp: ${message.timestamp}`);
+    ASBLOG.info(`[EMAIL] Emailing ${email.to}, from ${email.from} with incoming message with timestamp: ${message.timestamp}`);
 
     if (!email.port) email.port = (email.secure?587:25);           // handle ports
 
@@ -29,10 +29,10 @@ exports.start = async (routeName, email, _messageContainer, message) => {
         delete message.env[routeName];  // clean up our mess
         message.setGCEligible(true);
         message.content = result.response;
-        LOG.info(`[EMAIL] Email sent for message with timestamp: ${message.timestamp}`);
-        LOG.debug(`[EMAIL] Response data is: ${result.response}`);
+        ASBLOG.info(`[EMAIL] Email sent for message with timestamp: ${message.timestamp}`);
+        ASBLOG.debug(`[EMAIL] Response data is: ${result.response}`);
     } else {
-        LOG.error(`[EMAIL] Email failed with error: ${result.error}, for message with timestamp: ${message.timestamp}`);
+        ASBLOG.error(`[EMAIL] Email failed with error: ${result.error}, for message with timestamp: ${message.timestamp}`);
         message.addRouteError(routeName);
         delete message.env[routeName];  // clean up our mess
         message.setGCEligible(true);

@@ -7,7 +7,7 @@
 const httpServerFactory = require(`${CONSTANTS.LIBDIR}/httpServerFactory.js`);
 
 exports.start = (routeName, http_responder, _messageContainer, message) => {
-    LOG.info(`[HTTP_RESPONDER] Sending response, message with timestamp: ${message.timestamp}`);
+    ASBLOG.info(`[HTTP_RESPONDER] Sending response, message with timestamp: ${message.timestamp}`);
 
     const response = message.env.http_listener.res;
 

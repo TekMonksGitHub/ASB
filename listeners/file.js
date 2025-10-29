@@ -12,7 +12,7 @@ exports.start = (routeName, listener, messageContainer, _message) => {
     if (listener.flow.env[routeName] && listener.flow.env[routeName].busy) return;  // we are busy processing
     if (!listener.flow.env[routeName]) {
         listener.flow.env[routeName] = {initialized: true};
-        LOG.debug(`[FILE_LISTENER] Watching file/s: ${listener.path}`); // logging once is enough
+        ASBLOG.debug(`[FILE_LISTENER] Watching file/s: ${listener.path}`); // logging once is enough
     }
 
     const countFilesProcessed = (count, totalToProcess) => {
@@ -27,7 +27,7 @@ exports.start = (routeName, listener, messageContainer, _message) => {
             processFile(`${path.dirname(listener.path)}/${fileThis}`, routeName, listener, messageContainer,
                 _ => filesProcessed = countFilesProcessed(filesProcessed, files.length) );
             else filesProcessed = countFilesProcessed(filesProcessed, files.length);
-        else { if (err) LOG.error(`File listener error: ${err}`); listener.flow.env[routeName].busy = false; }
+        else { if (err) ASBLOG.error(`File listener error: ${err}`); listener.flow.env[routeName].busy = false; }
     });
 }
 
@@ -39,18 +39,18 @@ function convertFSWildcardsToJSRegEx(path) {
 }
 
 function processFile(file, routeName, listener, messageContainer, cb) {
-    LOG.info(`[FILE_LISTENER] Detected: ${file}`); 
+    ASBLOG.info(`[FILE_LISTENER] Detected: ${file}`); 
     const newPath = `${listener.donePath}/${path.basename(file)}.${utils.getTimeStamp()}`;
 
     const message = MESSAGE_FACTORY.newMessageAllocSafe();
-    if (!message) {LOG.error("[FILE_LISTENER] Message creation error, throttling listener."); return;}
+    if (!message) {ASBLOG.error("[FILE_LISTENER] Message creation error, throttling listener."); return;}
     fs.rename(file, newPath, err => {
-        if (err) {LOG.error(`[FILE_LISTENER] Error moving: ${err}`); cb(); return;}
+        if (err) {ASBLOG.error(`[FILE_LISTENER] Error moving: ${err}`); cb(); return;}
 
         message.env.filepath = newPath;
         message.addRouteDone(routeName);
         messageContainer.add(message);
-        LOG.info(`[FILE_LISTENER] Injected message with timestamp: ${message.timestamp}`); 
+        ASBLOG.info(`[FILE_LISTENER] Injected message with timestamp: ${message.timestamp}`); 
         cb();
     });
 }

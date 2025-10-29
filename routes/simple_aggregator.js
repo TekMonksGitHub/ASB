@@ -5,7 +5,7 @@
  */
 
 exports.start = (routeName, simple_aggregator, messageContainer, message) => {
-    LOG.info(`[SIMPLE_AGGREGATOR] Called with message timestamp: ${message.timestamp}`);
+    ASBLOG.info(`[SIMPLE_AGGREGATOR] Called with message timestamp: ${message.timestamp}`);
 
     if (!simple_aggregator.flow.env[routeName]) simple_aggregator.flow.env[routeName] = {};
     let env = simple_aggregator.flow.env[routeName];    // define our working environment
@@ -21,7 +21,7 @@ exports.start = (routeName, simple_aggregator, messageContainer, message) => {
     message.addRouteDone(routeName);       // we've aggregated it
 
     if (env.aggregator_count == simple_aggregator.dependencies.length) {
-        LOG.info("[SIMPLE_AGGREGATOR] Done aggregating.");
+        ASBLOG.info("[SIMPLE_AGGREGATOR] Done aggregating.");
         env.out.addRouteDone(routeName);
         messageContainer.add(env.out);
         

@@ -6,12 +6,12 @@
 
 exports.start = (routeName, listener, messageContainer) => {
     const message = MESSAGE_FACTORY.newMessageAllocSafe();
-    if (!message) {LOG.error("[JS_LISTENER] Message creation error, throttling listener."); return;}
+    if (!message) {ASBLOG.error("[JS_LISTENER] Message creation error, throttling listener."); return;}
 
     if (listener.module) {message.content = require(listener.module).start(routeName, listener, messageContainer);} 
     else {message.content = new Function(listener.js)();}
 
     message.addRouteDone(routeName);
     messageContainer.add(message);
-    LOG.info(`[JS_LISTENER] Injected message with timestamp: ${message.timestamp}`); 
+    ASBLOG.info(`[JS_LISTENER] Injected message with timestamp: ${message.timestamp}`); 
 }

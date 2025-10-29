@@ -16,7 +16,7 @@ exports.start = (routeName, listener, messageContainer) => {
 
     httpServerFactory.createHTTPServer(listener, (err, server) => {
         if (err) {
-            LOG.error(`[HTTP_LISTENER] Unable to create server due to ${err}, disabling the flow`);
+            ASBLOG.error(`[HTTP_LISTENER] Unable to create server due to ${err}, disabling the flow`);
             delete listener.flow.env[routeName].creatingServer; throw (err);
         }
 
@@ -33,7 +33,7 @@ exports.start = (routeName, listener, messageContainer) => {
             req.on("end", _ => {
                 const message = MESSAGE_FACTORY.newMessageAllocSafe();
                 if (!message) {
-                    LOG.error("[HTTP_LISTENER] Message creation error, throttling listener.");
+                    ASBLOG.error("[HTTP_LISTENER] Message creation error, throttling listener.");
                     res.writeHead(429, {"Content-Type": "text/plain"});
                     res.write("Throttled.\n");
                     res.end();
@@ -44,11 +44,11 @@ exports.start = (routeName, listener, messageContainer) => {
                         : Buffer.concat(data).toString("utf8");
                     message.addRouteDone(routeName);
                     messageContainer.add(message);
-                    LOG.info(`[HTTP_LISTENER] Injected new message with timestamp: ${message.timestamp}`);
+                    ASBLOG.info(`[HTTP_LISTENER] Injected new message with timestamp: ${message.timestamp}`);
                     if (listener.contentType?.toLowerCase() === "binary") {
-                        LOG.debug(`[HTTP_LISTENER] Incoming request contains binary data.`);
+                        ASBLOG.debug(`[HTTP_LISTENER] Incoming request contains binary data.`);
                     } else {
-                        LOG.debug(`[HTTP_LISTENER] Incoming request: ${message.content}`);
+                        ASBLOG.debug(`[HTTP_LISTENER] Incoming request: ${message.content}`);
                     }
                 }
             });

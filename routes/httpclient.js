@@ -17,7 +17,7 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
         if (!httpclient.method) httpclient.method = "get";
     }
 
-    LOG.info(`[HTTP] HTTP call to ${httpclient.host}:${httpclient.port} with incoming message with timestamp: ${message.timestamp}`);
+    ASBLOG.info(`[HTTP] HTTP call to ${httpclient.host}:${httpclient.port} with incoming message with timestamp: ${message.timestamp}`);
 
     if (!httpclient.port) httpclient.port = (httpclient.isSecure?443:80);           // handle ports
 
@@ -37,7 +37,7 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
             httpclient.timeout, httpclient.sslObj, (error, data) => {
 
         if (error) {
-            LOG.error(`[HTTP] Call failed with error: ${error}, for message with timestamp: ${message.timestamp}`);
+            ASBLOG.error(`[HTTP] Call failed with error: ${error}, for message with timestamp: ${message.timestamp}`);
             message.addRouteError(routeName);
             delete message.env[routeName];  // clean up our mess
             message.setGCEligible(true);
@@ -46,8 +46,8 @@ exports.start = (routeName, httpclient, _messageContainer, message) => {
             delete message.env[routeName];  // clean up our mess
             message.setGCEligible(true);
             message.content = httpclient.isBinary?data:data.toString(httpclient.encoding||"utf8");
-            LOG.info(`[HTTP] Response received for message with timestamp: ${message.timestamp}`);
-            LOG.debug(`[HTTP] Response data is: ${message.content}`);
+            ASBLOG.info(`[HTTP] Response received for message with timestamp: ${message.timestamp}`);
+            ASBLOG.debug(`[HTTP] Response data is: ${message.content}`);
         }
     });
 }

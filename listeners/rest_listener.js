@@ -16,7 +16,7 @@ exports.start = (routeName, listener, messageContainer) => {
 
     httpServerFactory.createHTTPServer(listener, (err, server) => {
         if (err) { 
-            LOG.error(`[REST_LISTENER] Unable to create server due to ${err}, disabling the flow`);
+            ASBLOG.error(`[REST_LISTENER] Unable to create server due to ${err}, disabling the flow`);
             delete listener.flow.env[routeName].creatingServer; throw (err);
         }
 
@@ -33,7 +33,7 @@ exports.start = (routeName, listener, messageContainer) => {
             req.on("end", _ => {
                 let content;
                 try {content = JSON.parse(data);} catch (err) {
-                    LOG.error("[REST_LISTENER] Bad incoming request, dropping.");
+                    ASBLOG.error("[REST_LISTENER] Bad incoming request, dropping.");
                     res.writeHead(500, {"Content-Type": "text/plain"});
                     res.write("Bad request.\n");
                     res.end();
@@ -42,7 +42,7 @@ exports.start = (routeName, listener, messageContainer) => {
     
                 const message = MESSAGE_FACTORY.newMessageAllocSafe();
                 if (!message) {
-                    LOG.error("[REST_LISTENER] Message creation error, throttling listener."); 
+                    ASBLOG.error("[REST_LISTENER] Message creation error, throttling listener."); 
                     res.writeHead(429, {"Content-Type": "text/plain"});
                     res.write("Throttled.\n");
                     res.end();
@@ -51,8 +51,8 @@ exports.start = (routeName, listener, messageContainer) => {
                     message.content = content;
                     message.addRouteDone(routeName);
                     messageContainer.add(message);
-                    LOG.info(`[REST_LISTENER] Injected new message with timestamp: ${message.timestamp}`);
-                    LOG.debug(`[REST_LISTENER] Incoming request: ${data}`);
+                    ASBLOG.info(`[REST_LISTENER] Injected new message with timestamp: ${message.timestamp}`);
+                    ASBLOG.debug(`[REST_LISTENER] Incoming request: ${data}`);
                 }
             });
         });

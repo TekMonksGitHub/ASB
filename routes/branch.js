@@ -12,13 +12,13 @@ exports.start = (routeName, branch, messageContainer, message) => {
             clone.addRouteDone(output);
             clones.push(clone);
         } catch (err) {
-            LOG.error(`[BRANCH] Clone error, ${err}`);
-            LOG.error("[BRANCH] Message creation error, throttling."); 
+            ASBLOG.error(`[BRANCH] Clone error, ${err}`);
+            ASBLOG.error("[BRANCH] Message creation error, throttling."); 
             return;
         }
     };
 
     for (const clone of clones) messageContainer.add(clone);
     message.addRouteDone(routeName);
-    LOG.info(`[BRANCH] Created outputs ${branch.outputs}`);
+    ASBLOG.info(`[BRANCH] Created outputs ${branch.outputs}`);
 }

@@ -12,7 +12,7 @@ exports.start = (routeName, ediparser, _messageContainer, message) => {
     message.env[routeName].ignorecall = true;           // we are parsing the message now
     message.setGCEligible(false);                       // we are not done
 
-    LOG.debug(`[EDIPARSER] Called for EDI message: ${message.content}`);
+    ASBLOG.debug(`[EDIPARSER] Called for EDI message: ${message.content}`);
 
     const extediparser = spawn(ediparser.java, ["-jar", `${CONSTANTS.LIBDIR}/3p/ediconv.jar`]);
     let results = ""; let error = ""; hadError = false;
@@ -22,7 +22,7 @@ exports.start = (routeName, ediparser, _messageContainer, message) => {
     extediparser.on("close", _code => {
         if (!hadError) try {results = JSON.parse(results);} catch (err) {hadError = true; error = err};
         if (!hadError) {message.content = results; message.addRouteDone(routeName);}
-        else {LOG.error(`[EDIPARSER] Failed to parse incoming message: ${error}`); message.addRouteError(routeName);}
+        else {ASBLOG.error(`[EDIPARSER] Failed to parse incoming message: ${error}`); message.addRouteError(routeName);}
 
         delete message.env[routeName].ignorecall;   // cleanup
         message.setGCEligible(true);

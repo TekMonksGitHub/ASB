@@ -5,5 +5,5 @@
  */
 
 exports.start = (_routeName, _simple, _messageContainer, message) => {
-    LOG.info(`[GC_SIMPLE] Trashed message with timestamp: ${message.timestamp}`);
+    ASBLOG.info(`[GC_SIMPLE] Trashed message with timestamp: ${message.timestamp}`);
 }

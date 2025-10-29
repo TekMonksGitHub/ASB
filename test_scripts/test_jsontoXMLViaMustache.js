@@ -4,7 +4,7 @@ const path=require("path")
 
 exports.runTestsAsync = async function (argv) {
     if ((argv[0]) && (argv[0].toLowerCase() != "jsontoxml")) {
-        LOG.info("Skipping jsontoxml flow, not called.\n")
+        ASBLOG.info("Skipping jsontoxml flow, not called.\n")
         return 'skipped';
     }
     try {
@@ -12,18 +12,18 @@ exports.runTestsAsync = async function (argv) {
         let output = await createAndMoveFile();
         if (output === true) {
             result = true;
-            LOG.info("XML file created and content matches.");
+            ASBLOG.info("XML file created and content matches.");
         } else if (output === false) {
             result = {}
             result.message = "XML file created but content does not match.";
         } else {
             result = {}
-            LOG.info({ result: false, err: "[test_jsontoxml] error in that flow.", error: result });
+            ASBLOG.info({ result: false, err: "[test_jsontoxml] error in that flow.", error: result });
             result.message = output.message;
         }
         return result;
     } catch (err) {
-        LOG.info({ result: false, err: "[test_jsontoxml] error in that flow.", error: err });
+        ASBLOG.info({ result: false, err: "[test_jsontoxml] error in that flow.", error: err });
         return err;
     }
 }

@@ -4,7 +4,7 @@ const path=require("path")
 
 exports.runTestsAsync = async function (argv) {
     if ((argv[0]) && (argv[0].toLowerCase() != "csvtojson")) {
-        LOG.info("Skipping csvtojson flow, not called.\n")
+        ASBLOG.info("Skipping csvtojson flow, not called.\n")
         return 'skipped';
     }
     try {
@@ -12,18 +12,18 @@ exports.runTestsAsync = async function (argv) {
         let output = await createAndMoveFile();
         if (output === true) {
             result = true;
-            LOG.info("JSON file created and content matches.");
+            ASBLOG.info("JSON file created and content matches.");
         } else if (output === false) {
             result = {}
             result.message = "JSON file created but content does not match.";
         } else {
             result = {}
-            LOG.info({ result: false, err: "[test_CSVtojson] error in that flow.", error: result });
+            ASBLOG.info({ result: false, err: "[test_CSVtojson] error in that flow.", error: result });
             result.message = output.message;
         }
         return result;
     } catch (err) {
-        LOG.info({ result: false, err: "[test_CSVtojson] error in that flow.", error: err });
+        ASBLOG.info({ result: false, err: "[test_CSVtojson] error in that flow.", error: err });
         return err;
     }
 }
@@ -45,18 +45,18 @@ async function createAndMoveFile() {
             const expectedJsonData = await csv({ delimiter: ';' }).fromString(csvContent);   
             const isDataMatching = JSON.stringify(jsonData) === JSON.stringify(expectedJsonData);
             if (isDataMatching) {
-                LOG.info('[test_CSVtojson] JSON file content matches the CSV content.');
+                ASBLOG.info('[test_CSVtojson] JSON file content matches the CSV content.');
                 return true;
             } else {
-                LOG.info('[test_CSVtojson] JSON file content does not match the CSV content.');
+                ASBLOG.info('[test_CSVtojson] JSON file content does not match the CSV content.');
                 return false;
             }
         } catch (err) {
-            LOG.info('[test_CSVtojson] JSON file does not exist:', err);
+            ASBLOG.info('[test_CSVtojson] JSON file does not exist:', err);
             return err;
         }
     } catch (err) {
-        LOG.info('Error:', err);
+        ASBLOG.info('Error:', err);
         return err;
     }
 }

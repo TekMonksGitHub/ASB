@@ -5,6 +5,6 @@
  */
 
 exports.start = (routeName, _output, _messageContainer, message) => {
-    LOG.info(`[OUTPUT_NULL] Processing message with timestamp: ${message.timestamp}`);
+    ASBLOG.info(`[OUTPUT_NULL] Processing message with timestamp: ${message.timestamp}`);
     message.addRouteDone(routeName);
 }

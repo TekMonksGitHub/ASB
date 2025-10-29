@@ -8,7 +8,7 @@ const utils = require(`${CONSTANTS.LIBDIR}/utils.js`);
 exports.start = (routeName, js, messageContainer, message) => {
     if (message.env[routeName]?.isProcessing) return;
     if (!message.env[routeName]) message.env[routeName] = {isProcessing: true};
-    LOG.info(`[ROUTE_JS] Processing message with timestamp: ${message.timestamp}`);
+    ASBLOG.info(`[ROUTE_JS] Processing message with timestamp: ${message.timestamp}`);
 
     if (js.module) {
         const jsModule = require(utils.expandProperty(js.module, js.flow, message));
@@ -19,8 +19,8 @@ exports.start = (routeName, js, messageContainer, message) => {
             eval(js.js);
             if (!js.isAsync) message.addRouteDone(routeName);
         } catch (e) {
-            LOG.error(`[ROUTE_JS] Error in computing: ${e}, dropping this message`);
-            LOG.error(`[ROUTE_JS] Dropping: ${JSON.stringify(message)}`);
+            ASBLOG.error(`[ROUTE_JS] Error in computing: ${e}, dropping this message`);
+            ASBLOG.error(`[ROUTE_JS] Dropping: ${JSON.stringify(message)}`);
             message.addRouteError(routeName);
         }
     }

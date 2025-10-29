@@ -18,7 +18,7 @@ exports.start = (routeName, rest, _messageContainer, message) => {
         if (!rest.method) rest.method = "get";
     }
 
-    LOG.info(`[REST] REST call to ${rest.host}:${rest.port} with incoming message with timestamp: ${message.timestamp}`);
+    ASBLOG.info(`[REST] REST call to ${rest.host}:${rest.port} with incoming message with timestamp: ${message.timestamp}`);
 
     if (!rest.port) rest.port = (rest.isSecure?443:80);           // handle ports
 
@@ -36,7 +36,7 @@ exports.start = (routeName, rest, _messageContainer, message) => {
 
     restClient[rest.method](rest.host, rest.port, rest.path, headers, message.content, rest.timeout, rest.sslObj, (error, data) =>{
         if (error) {
-            LOG.error(`[REST] Call failed with error: ${error}`);
+            ASBLOG.error(`[REST] Call failed with error: ${error}`);
             message.addRouteError(routeName);
             delete message.env[routeName];  // clean up our mess
             message.setGCEligible(true);
@@ -45,8 +45,8 @@ exports.start = (routeName, rest, _messageContainer, message) => {
             delete message.env[routeName];  // clean up our mess
             message.setGCEligible(true);
             message.content = data;
-            LOG.info(`[REST] Response received for message with timestamp: ${message.timestamp}`);
-            LOG.debug(`[REST] Response data is: ${JSON.stringify(data)}`);
+            ASBLOG.info(`[REST] Response received for message with timestamp: ${message.timestamp}`);
+            ASBLOG.debug(`[REST] Response data is: ${JSON.stringify(data)}`);
         }
     });
 }

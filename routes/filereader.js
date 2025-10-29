@@ -14,7 +14,7 @@ exports.start = (routeName, filereader, _messageContainer, message) => {
     message.setGCEligible(false);
 
     const handleError = e => {
-        LOG.error(`[FILEREADER] ${e}`); message.addRouteError(routeName); message.setGCEligible(true); return;}
+        ASBLOG.error(`[FILEREADER] ${e}`); message.addRouteError(routeName); message.setGCEligible(true); return;}
 
     const filepath = filereader.path||message.env.filepath;
 
@@ -27,8 +27,8 @@ exports.start = (routeName, filereader, _messageContainer, message) => {
 
             if (filereader.donePath) try {
                 const newPath = `${filereader.donePath}/${path.basename(filepath)}.${utils.getTimeStamp()}`;
-                fs.rename(filepath, newPath, err => {if (err) LOG.error(`[FILEREADER] Error moving: ${err}`)});
-            } catch (e) {LOG.error(`[FILEREADER] Error moving: ${e}`);}
+                fs.rename(filepath, newPath, err => {if (err) ASBLOG.error(`[FILEREADER] Error moving: ${err}`)});
+            } catch (e) {ASBLOG.error(`[FILEREADER] Error moving: ${e}`);}
         }
     }
 

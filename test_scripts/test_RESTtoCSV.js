@@ -1,6 +1,6 @@
 exports.runTestsAsync = async function (argv) {
     if ((argv[0]) && (argv[0].toLowerCase() != "resttocsv")) {
-        LOG.info(`Skipping RESTtoCSV, not called.\n`)
+        ASBLOG.info(`Skipping RESTtoCSV, not called.\n`)
         return;
     }
     try {
@@ -18,10 +18,10 @@ exports.runTestsAsync = async function (argv) {
             throw new Error(`[test_RESTtoCSV] HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        LOG.info({ result: true, output: data.response });
+        ASBLOG.info({ result: true, output: data.response });
         return true;
     } catch (err) {
-        LOG.info({ result: false, err: "[test_RESTtoCSV] error in that flow ." });
+        ASBLOG.info({ result: false, err: "[test_RESTtoCSV] error in that flow ." });
         return err;
     }
 }

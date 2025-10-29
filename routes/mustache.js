@@ -17,8 +17,8 @@ exports.start = (routeName, mustache, _messageContainer, message) => {
         message.setGCEligible(false);                       // we are not done
         fs.readFile(mustache.template, {encoding: "utf-8"}, (err, data) => {
             if (err) {
-                LOG.error(`[MUSTACHE] Error reading template: ${e}`);
-                LOG.error("[MUSTACHE] Disabling the flow.");
+                ASBLOG.error(`[MUSTACHE] Error reading template: ${e}`);
+                ASBLOG.error("[MUSTACHE] Disabling the flow.");
                 mustache.flow.fatalError = true;
                 delete mustache.flow.env.mustache[mustache.template];
                 message.addRouteError(routeName);
@@ -31,7 +31,7 @@ exports.start = (routeName, mustache, _messageContainer, message) => {
         return;
     }
 
-    LOG.debug("[MUSTACHE] Called for message: "+message.content);
+    ASBLOG.debug("[MUSTACHE] Called for message: "+message.content);
 
     try {
         const results = hairyone.render(mustache.flow.env.mustache[mustache.template], message.content);
@@ -39,9 +39,9 @@ exports.start = (routeName, mustache, _messageContainer, message) => {
         message.setGCEligible(true);
         message.addRouteDone(routeName);
 
-        LOG.info(`[MUSTACHE] Parsed message with timestamp: ${message.timestamp}`);
+        ASBLOG.info(`[MUSTACHE] Parsed message with timestamp: ${message.timestamp}`);
     } catch (e) {
-        LOG.error(`[MUSTACHE] Error parsing: ${e}`);
+        ASBLOG.error(`[MUSTACHE] Error parsing: ${e}`);
         message.addRouteError(routeName);
     }
 }
