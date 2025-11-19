@@ -13,20 +13,17 @@
 
 const IN_PROC_MB = "inproc_mb"; 
 
-_createInProcMB();
-function _createInProcMB() {
-    if (global.ESB.env[IN_PROC_MB]) return; // already exists
-    global.ESB.env[IN_PROC_MB] = {
-        subscribers: [],
-        publish: message => {for (const subscriber of subscribers) subscriber.onmessage(message)},
-        subscribe: subscriber => subscribers.push(subscriber)
-    }
-}
+const ESB_INPROC_BB = global.ESB.env[IN_PROC_MB] || {
+    subscribers: [],
+    publish: message => {for (const subscriber of ESB_INPROC_BB.subscribers) subscriber.onmessage(message)},
+    subscribe: subscriber => ESB_INPROC_BB.subscribers.push(subscriber)
+};
+global.ESB.env[IN_PROC_MB] = global.ESB.env[IN_PROC_MB] || ESB_INPROC_BB;
 
 exports.start = (routeName, listener, messageContainer) => {
     if (listener.flow.env[routeName]) return;   // already listening
     else {
-        global.ESB.env[IN_PROC_MB].subscribe({onmessage: idmessage => {
+        ESB_INPROC_BB.subscribe({onmessage: idmessage => {
             if (idmessage.id != listener.id) return;  // not for us
             const {messageContent, responseReceiver} = idmessage.content;
             const message = MESSAGE_FACTORY.newMessageAllocSafe();
@@ -46,4 +43,4 @@ exports.start = (routeName, listener, messageContainer) => {
     }
 }
 
-exports.inject = (id, content) => global.ESB.env[IN_PROC_MB].publish({id, content});
+exports.inject = (id, content) => ESB_INPROC_BB.publish({id, content});
