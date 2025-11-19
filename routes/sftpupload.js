@@ -6,8 +6,8 @@
 const path = require("path");
 const SSHClient = require("ssh2").Client;
 const fspromises = require("fs").promises;
-const utils = require(CONSTANTS.LIBDIR+"/utils.js");
-const crypt = require(`${CONSTANTS.LIBDIR}/crypt.js`);
+const utils = require(ASBCONSTANTS.LIBDIR+"/utils.js");
+const crypt = require(`${ASBCONSTANTS.LIBDIR}/crypt.js`);
 
 const _log = (logFunction, message, sshConnection) => logFunction.bind(LOG)(`[SFTPUPLOAD] [CONNECTION: ${sshConnection.__asb_id}] ${message}`);
 

@@ -4,7 +4,7 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
-const restClient = require(`${CONSTANTS.LIBDIR}/rest.js`);
+const restClient = require(`${ASBCONSTANTS.LIBDIR}/rest.js`);
 
 exports.start = (routeName, rest, _messageContainer, message) => {
     if (message.env[routeName] && message.env[routeName].isProcessing) return;

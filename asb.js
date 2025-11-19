@@ -8,7 +8,7 @@ global.CONSTANTS = require(__dirname + "/lib/constants.js");
 const cluster = require("cluster");
 
 if (cluster.isMaster) {
-	const conf = require(CONSTANTS.CONFDIR + "/cluster.json");
+	const conf = require(ASBCONSTANTS.CONFDIR + "/cluster.json");
 
 	// Figure out number of workers.
 	let numWorkers = conf.workers;
@@ -27,4 +27,4 @@ if (cluster.isMaster) {
 		console.log("Forking a new process to compensate.");
 		cluster.fork();
 	});
-} else require(CONSTANTS.LIBDIR + "/main.js").bootstrap();
+} else require(ASBCONSTANTS.LIBDIR + "/main.js").bootstrap();

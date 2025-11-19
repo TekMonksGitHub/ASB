@@ -5,7 +5,7 @@
  */
 
 const urlMod = require("url");
-const httpServerFactory = require(`${CONSTANTS.LIBDIR}/httpServerFactory.js`);
+const httpServerFactory = require(`${ASBCONSTANTS.LIBDIR}/httpServerFactory.js`);
 
 exports.start = (routeName, listener, messageContainer) => {
     if ((listener.flow.env[routeName] && listener.flow.env[routeName].server) ||

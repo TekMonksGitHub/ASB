@@ -63,11 +63,11 @@ async function createAndMoveFile() {
                 }
             ]
         }
-        const templatePath = `${CONSTANTS.ROOTDIR}/testing/json2SAP_ORDERS05.xml`;
+        const templatePath = `${ASBCONSTANTS.ROOTDIR}/testing/json2SAP_ORDERS05.xml`;
         const template = fs.readFileSync(templatePath, 'utf8');
-        const JsonFilePath = `${CONSTANTS.ROOTDIR}/json2SAP_ORDERS05.json`;
-        const newJsonFilePath = `${CONSTANTS.ROOTDIR}/testing/in/json2SAP_ORDERS05.json`;
-        const xmlFilePath = `${CONSTANTS.ROOTDIR}/testing/json2xml_out_SAP_ORDERS05.xml`;
+        const JsonFilePath = `${ASBCONSTANTS.ROOTDIR}/json2SAP_ORDERS05.json`;
+        const newJsonFilePath = `${ASBCONSTANTS.ROOTDIR}/testing/in/json2SAP_ORDERS05.json`;
+        const xmlFilePath = `${ASBCONSTANTS.ROOTDIR}/testing/json2xml_out_SAP_ORDERS05.xml`;
         fs.writeFileSync(JsonFilePath, JSON.stringify(jsonContent, null, 2));
         fs.mkdirSync(path.dirname(newJsonFilePath), { recursive: true });
         fs.renameSync(JsonFilePath, newJsonFilePath);

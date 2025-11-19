@@ -14,7 +14,7 @@ exports.start = (routeName, ediparser, _messageContainer, message) => {
 
     ASBLOG.debug(`[EDIPARSER] Called for EDI message: ${message.content}`);
 
-    const extediparser = spawn(ediparser.java, ["-jar", `${CONSTANTS.LIBDIR}/3p/ediconv.jar`]);
+    const extediparser = spawn(ediparser.java, ["-jar", `${ASBCONSTANTS.LIBDIR}/3p/ediconv.jar`]);
     let results = ""; let error = ""; hadError = false;
 
     extediparser.stdout.on("data", data => results += data);

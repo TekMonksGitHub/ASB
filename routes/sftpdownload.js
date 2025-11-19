@@ -5,7 +5,7 @@
  */
 const SSHClient = require("ssh2").Client;
 const fspromises = require("fs").promises;
-const crypt = require(`${CONSTANTS.LIBDIR}/crypt.js`);
+const crypt = require(`${ASBCONSTANTS.LIBDIR}/crypt.js`);
 
 const _log = (logFunction, message, sshConnection) => logFunction.bind(LOG)(`[SFTPDOWNLOAD] [CONNECTION: ${sshConnection.__asb_id}] ${message}`);
 

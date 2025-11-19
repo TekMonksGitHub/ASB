@@ -8,7 +8,7 @@ const fs = require("fs");
 const path = require("path");
 const { spawn } = require('child_process');
 global.CONSTANTS = require(__dirname + "/lib/constants.js");
-const { initiateReport, updateReport } = require(`${CONSTANTS.LIBDIR}/report`);
+const { initiateReport, updateReport } = require(`${ASBCONSTANTS.LIBDIR}/report`);
 
 
 let asbProcess; 
@@ -56,18 +56,18 @@ async function runTestsAsync(argv, report) {
 	}
 }
 function setupServerEnvironmentForTesting() {
-	const conf = require(`${CONSTANTS.CONFDIR}/server.json`);
+	const conf = require(`${ASBCONSTANTS.CONFDIR}/server.json`);
 	/* Init - Server bootup */
 	console.log("creating server for testing ..");
 	/* Init the logs */
 	console.log("Initializing the logs.");
-	require(CONSTANTS.LIBDIR + "/ASBLOG.js").initGlobalLoggerSync(`${CONSTANTS.LOGDIR}/${conf.logfile}`);
+	require(ASBCONSTANTS.LIBDIR + "/ASBLOG.js").initGlobalLoggerSync(`${ASBCONSTANTS.LOGDIR}/${conf.logfile}`);
 	ASBLOG.overrideConsole();
 	/* Warn if in debug mode */
 	if (conf.debug_mode) {
 		ASBLOG.info("**** Server is in debug mode, expect severe performance degradation.\n");
 	}
-	asbProcess = spawn('node', [CONSTANTS.ROOTDIR + "/asb.js"], {
+	asbProcess = spawn('node', [ASBCONSTANTS.ROOTDIR + "/asb.js"], {
 		stdio: ['inherit']  // This will capture the stdout and stderr
 	});
 	return new Promise((resolve, reject) => {
