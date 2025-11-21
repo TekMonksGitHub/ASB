@@ -4,14 +4,17 @@
  * (C) 2018 TekMonks. All rights reserved.
  */
 
+const utils = require(`${ASBCONSTANTS.LIBDIR}/utils.js`);
+
 exports.start = (routeName, listener, messageContainer) => {
-    const message = MESSAGE_FACTORY.newMessageAllocSafe();
-    if (!message) {ASBLOG.error("[JS_LISTENER] Message creation error, throttling listener."); return;}
+    if (listener.flow.env[routeName]) return;   // already listening
+    else listener.flow.env[routeName] = true;
 
-    if (listener.module) {message.content = require(listener.module).start(routeName, listener, messageContainer);} 
-    else {message.content = new Function(listener.js)();}
-
-    message.addRouteDone(routeName);
-    messageContainer.add(message);
-    ASBLOG.info(`[JS_LISTENER] Injected message with timestamp: ${message.timestamp}`); 
+    if (listener.module) {
+        const listenerModule = require(utils.expandProperty(listener.module, listener.flow, message));
+        listenerModule.start(routeName, listener, messageContainer);
+    } else {
+        const functionSync = utils.createSyncFunction(listener.js);
+        functionSync({flow: listener.flow, routeName, listener, messageContainer}); 
+    }
 }

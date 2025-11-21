@@ -23,6 +23,7 @@ global.ESB.env[IN_PROC_MB] = global.ESB.env[IN_PROC_MB] || ESB_INPROC_BB;
 exports.start = (routeName, listener, messageContainer) => {
     if (listener.flow.env[routeName]) return;   // already listening
     else {
+        listener.flow.env[routeName] = true;
         ESB_INPROC_BB.subscribe({onmessage: idmessage => {
             if (idmessage.id != listener.id) return;  // not for us
             const {messageContent, responseReceiver} = idmessage.content;
