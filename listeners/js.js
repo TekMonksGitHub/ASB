@@ -14,7 +14,7 @@ exports.start = (routeName, listener, messageContainer) => {
         const listenerModule = require(utils.expandProperty(listener.module, listener.flow, message));
         listenerModule.start(routeName, listener, messageContainer);
     } else {
-        const functionSync = utils.createSyncFunction(listener.js);
-        functionSync({flow: listener.flow, routeName, listener, messageContainer}); 
+        const functionAsync = utils.createAsyncFunction(listener.js);   // why? because async can run sync as well as async code
+        functionAsync({flow: listener.flow, routeName, listener, messageContainer}); // we don't wait either way
     }
 }

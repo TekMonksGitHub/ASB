@@ -14,7 +14,9 @@ exports.start = (routeName, js, messageContainer, message) => {
     const handleError = e => {
         ASBLOG.error(`[ROUTE_JS] ${routeName}: Error in computing: ${e}, dropping this message`);
         ASBLOG.error(`[ROUTE_JS] ${routeName}: Dropping: ${JSON.stringify(message)}`);
-        message.addRouteError(routeName); message.setGCEligible(true);
+        delete message.env[routeName]; 
+        if (!message.popRouteStampManuallyModified()) message.addRouteError(routeName); 
+        message.setGCEligible(true);
     }
 
     try {
@@ -25,13 +27,18 @@ exports.start = (routeName, js, messageContainer, message) => {
             if (js.isAsync) {
                 const functionAsync = utils.createAsyncFunction(js.js);
                 functionAsync({flow: js.flow, routeName, js, messageContainer, message}).then(
-                    _result => {message.addRouteDone(routeName); message.setGCEligible(true);},
+                    _result => {
+                        delete message.env[routeName];  // clean up our mess
+                        if (!message.popRouteStampManuallyModified()) message.addRouteDone(routeName); 
+                        message.setGCEligible(true);
+                    },
                     error => handleError(error)
                 );
             } else {
                 const functionSync = utils.createSyncFunction(js.js);
                 functionSync({flow: js.flow, routeName, js, messageContainer, message}); 
-                message.addRouteDone(routeName);
+                delete message.env[routeName];  // clean up our mess
+                if (!message.popRouteStampManuallyModified()) message.addRouteDone(routeName);
                 message.setGCEligible(true);
             }
         }
