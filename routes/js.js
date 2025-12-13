@@ -9,11 +9,11 @@ const utils = require(`${ASBCONSTANTS.LIBDIR}/utils.js`);
 exports.start = (routeName, js, messageContainer, message) => {
     if (message.env[routeName]?.isProcessing) return;
     if (!message.env[routeName]) message.env[routeName] = {isProcessing: true}; message.setGCEligible(false);
-    ASBLOG.info(`[ROUTE_JS] Processing message with timestamp: ${message.timestamp}`);
+    ASBLOG.info(`[ROUTE_JS] ${routeName}: Processing message with timestamp: ${message.timestamp}`);
 
     const handleError = e => {
-        ASBLOG.error(`[ROUTE_JS] Error in computing: ${e}, dropping this message`);
-        ASBLOG.error(`[ROUTE_JS] Dropping: ${JSON.stringify(message)}`);
+        ASBLOG.error(`[ROUTE_JS] ${routeName}: Error in computing: ${e}, dropping this message`);
+        ASBLOG.error(`[ROUTE_JS] ${routeName}: Dropping: ${JSON.stringify(message)}`);
         message.addRouteError(routeName); message.setGCEligible(true);
     }
 
