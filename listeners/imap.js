@@ -7,6 +7,7 @@
  */
 
 const {ImapFlow} = require("imapflow");
+const crypt = require(`${ASBCONSTANTS.LIBDIR}/crypt.js`);
 const asbutils = require(`${ASBCONSTANTS.LIBDIR}/utils.js`);
 
 const DEFAULT_MAX_MESSAGES_TO_FETCH = 10, DEFAULT_MAX_EMAIL_SIZE = 30*1024*1024;   // 30 MB max email size by default
@@ -20,8 +21,9 @@ exports.start = async (routeName, imapnode, messageContainer, _message) => {
 
     let imapClient, imap_mailbox_lock, isConnected = false;
     try {
+        const imapPassword = crypt.decrypt(imapnode.password); 
         imapClient = new ImapFlow({host: imapnode.host, port: imapnode.port, secure: imapnode.tls,
-            auth: {user: imapnode.user, pass: imapnode.password}});
+            auth: {user: imapnode.user, pass: imapPassword}});
         await imapClient.connect(); isConnected = true;
         imap_mailbox_lock = await imapClient.getMailboxLock(imapnode.mailbox || "INBOX");
 
@@ -59,9 +61,9 @@ exports.start = async (routeName, imapnode, messageContainer, _message) => {
                     message.content.attachments = [attachmentThisPart, ...(message.content.attachments||[])];
                 }
             }
+            await imapClient.messageFlagsAdd(emailToInject.seq, ["\\Seen"]);
             message.addRouteDone(routeName);
             messageContainer.add(message);
-            await imapClient.messageFlagsAdd(emailToInject.seq, ["\\Seen"]);
             ASBLOG.info(`[IMAP_LISTENER] Injected message with timestamp: ${message.timestamp}`); 
         }
     } catch (err) {
