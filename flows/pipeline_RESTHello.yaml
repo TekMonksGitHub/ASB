@@ -1,0 +1,27 @@
+# RESTHello flow, but in YAML.
+---
+flow:
+  name: Hello world REST API
+  disabled: false
+  expandRouteProperties: true
+	
+listener:
+  type: rest_listener
+  isMessageGenerator: true
+  host: 127.0.0.1
+  port: 9090
+  url: "/hello"
+  allow_origin: "*"
+  timeout: 120000
+
+route0:
+  type: js
+  dependencies: listener
+  isAsync: false
+  js: message.content.response = `Hello ${message.content.name}`; delete message.content.name;
+
+output:
+  type: rest_responder
+  dependencies:
+  - listener
+  - route0

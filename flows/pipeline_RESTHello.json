@@ -1,7 +1,7 @@
 {
 	"flow": {
 		"name":"Hello world REST API",
-		"disabled": false,
+		"disabled": true,
 		"expandRouteProperties": true
 	},
 	"listener": {

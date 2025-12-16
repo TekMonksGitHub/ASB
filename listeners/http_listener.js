@@ -4,7 +4,6 @@
  * (C) 2024 TekMonks. All rights reserved.
  */
 
-const urlMod = require("url");
 const httpServerFactory = require(`${ASBCONSTANTS.LIBDIR}/httpServerFactory.js`);
 
 exports.start = (routeName, listener, messageContainer) => {
@@ -24,7 +23,8 @@ exports.start = (routeName, listener, messageContainer) => {
         delete listener.flow.env[routeName].creatingServer; // done
 
         listener.flow.env[routeName].server.on("request", (req, res) => {
-            const endPoint = urlMod.parse(req.url, true).pathname;
+            const baseurl = `${listener.isSecure?"https":"http"}://${listener.host}:${listener.port}`;
+            const endPoint = new URL(req.url, baseurl).pathname;
             if (endPoint != listener.url) return;   // not ours to handle
 
             const data = [];
