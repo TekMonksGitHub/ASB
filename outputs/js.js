@@ -12,11 +12,11 @@ exports.start = (routeName, output, messageContainer, message) => {
     ASBLOG.info(`[OUTPUT_JS] Processing message with timestamp: ${message.timestamp}`);
     
     const handleError = e => {
-        ASBLOG.error(`[ROUTE_JS] Error in computing: ${e}, dropping this message`);
-        ASBLOG.error(`[ROUTE_JS] Dropping: ${JSON.stringify(message)}`);
         delete message.env[routeName]; 
         if (!message.popRouteStampManuallyModified()) message.addRouteError(routeName); 
         message.setGCEligible(true);
+        ASBLOG.error(`[OUTPUT_JS] Error in computing: ${e}, dropping this message`);
+        ASBLOG.error(`[OUTPUT_JS] Dropping message with timestamp: ${message.timestamp}`);
     }
 
     try {
@@ -37,7 +37,7 @@ exports.start = (routeName, output, messageContainer, message) => {
             } else {
                 const functionSync = utils.createSyncFunction(js.js);
                 functionSync({flow: output.flow, routeName, output, messageContainer, message}); 
-                delete message.env[routeName]; 
+                delete message.env[routeName];  // clean up our mess
                 if (!message.popRouteStampManuallyModified()) message.addRouteDone(routeName);
                 message.setGCEligible(true);
             }

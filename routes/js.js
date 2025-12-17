@@ -12,11 +12,11 @@ exports.start = (routeName, js, messageContainer, message) => {
     ASBLOG.info(`[ROUTE_JS] ${routeName}: Processing message with timestamp: ${message.timestamp}`);
 
     const handleError = e => {
-        ASBLOG.error(`[ROUTE_JS] ${routeName}: Error in computing: ${e}, dropping this message`);
-        ASBLOG.error(`[ROUTE_JS] ${routeName}: Dropping: ${JSON.stringify(message)}`);
         delete message.env[routeName]; 
         if (!message.popRouteStampManuallyModified()) message.addRouteError(routeName); 
         message.setGCEligible(true);
+        ASBLOG.error(`[ROUTE_JS] ${routeName}: Error in computing: ${e}, dropping this message`);
+        ASBLOG.error(`[ROUTE_JS] ${routeName}: Dropping message with timestamp: ${message.timestamp}`);
     }
 
     try {
