@@ -68,7 +68,7 @@ exports.start = async (routeName, imapnode, messageContainer, _message) => {
         }
     } catch (err) {
         ASBLOG.error(`[IMAP_LISTENER] IMAP server error for node ${routeName}, the error is ${JSON.stringify(err)}`)
-    } finally { if (imap_mailbox_lock) imap_mailbox_lock.release(); if (isConnected && imapClient) await imapClient.logout();}
+    } finally { try {if (imap_mailbox_lock) imap_mailbox_lock.release(); if (isConnected && imapClient) await imapClient.logout();} catch (err) {} }
 
     imapnode.flow.env[routeName] = {"busy":false};
 }
