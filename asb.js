@@ -3,7 +3,7 @@
  * 
  * (C) 2018 TekMonks. All rights reserved.
  */
-global.CONSTANTS = require(__dirname + "/lib/constants.js");
+global.ASBCONSTANTS = require(__dirname + "/lib/constants.js");
 
 const cluster = require("cluster");
 
