@@ -21,9 +21,9 @@
 	"output": {
 		"type": "filewriter",
         "dependencies":"listener",
-		"path":"{{{ESB_DIR}}}/email.json",
-		"prettyJSON": 4,
-		"append": false,
+		"path":"{{{ESB_DIR}}}/email.ndjson",
+		"write_ndjson": true,
+		"append": true,
 		"writeCloseTimeout": 5000
 	}
 }
