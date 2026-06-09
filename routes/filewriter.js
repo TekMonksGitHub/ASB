@@ -17,8 +17,9 @@ exports.start = (routeName, filewriter, messageContainer, message) => {
     if (filewriter.interceptor_js) new Function(["require", "routeName", "filewriter", "messageContainer", "message"], 
         filewriter.interceptor_js)(require, routeName, filewriter, messageContainer, message);
 
-    let output = (message.content instanceof Object ? JSON.stringify(message.content, null, filewriter.prettyJSON) :
-        message.content);
+    let output = (message.content instanceof Object ? (filewriter.prettyJSON ? 
+        JSON.stringify(message.content, null, filewriter.prettyJSON) : JSON.stringify(message.content)) 
+        : message.content);
     if (message.content instanceof Object && filewriter.write_ndjson) output += "\n";   // ndjson format
 
     let fw; let flow = filewriter.flow;
