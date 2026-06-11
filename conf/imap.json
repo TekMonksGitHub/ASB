@@ -1,0 +1,5 @@
+{
+    "socketTimeout": 60000,
+    "greetingTimeout": 5000,
+    "connectionTimeout": 10000
+}
